@@ -1,0 +1,72 @@
+{
+  "name": "sssg",
+  "version": "0.0.1",
+  "description": "Simple static site generator. Generate static website from developer-friendly languages like pug, styulus, es6, flow.",
+  "main": "index.js",
+  "bin": {
+    "sssg": "./bin/sssg.js"
+  },
+  "scripts": {
+    "test": "mocha",
+    "cover": "istanbul cover _mocha",
+    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hinaser/sssg.git"
+  },
+  "author": "Hinaser",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Hinaser/sssg/issues"
+  },
+  "homepage": "https://github.com/Hinaser/sssg#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-files": "^1.4.0",
+    "chai-fs": "^1.0.0",
+    "chai-http": "^3.0.0",
+    "coveralls": "^2.13.1",
+    "eslint": "^4.6.1",
+    "eslint-plugin-mocha": "^4.11.0",
+    "eslint-plugin-node": "^5.1.1",
+    "mocha": "^3.5.0",
+    "mocha-lcov-reporter": "^1.3.0",
+    "nyc": "^11.2.1"
+  },
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-flow": "^6.23.0",
+    "babelify": "^7.3.0",
+    "browser-sync": "^2.18.13",
+    "browserify": "^14.4.0",
+    "del": "^3.0.0",
+    "event-stream": "^3.3.4",
+    "flow-bin": "^0.54.0",
+    "globby": "^6.1.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.0.0",
+    "gulp-babel": "^7.0.0",
+    "gulp-clean-css": "^3.8.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-data": "^1.2.1",
+    "gulp-debug": "^3.1.0",
+    "gulp-environments": "^0.1.2",
+    "gulp-if": "^2.0.2",
+    "gulp-newer": "^1.3.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-pug": "^3.3.0",
+    "gulp-sourcemaps": "^2.6.1",
+    "gulp-stylus": "^2.6.0",
+    "gulp-uglify": "^3.0.0",
+    "gulp-uncache": "^0.4.0-beta1",
+    "gulp-util": "^3.0.8",
+    "require-dir": "^0.3.2",
+    "run-sequence": "^2.1.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "vinyl-transform": "^1.0.0"
+  }
+}
