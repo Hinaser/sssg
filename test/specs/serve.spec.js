@@ -17,7 +17,7 @@ describe('Serve', function() {
     before(function (done) {
       this.timeout(30000);
       share = new Share().suppressConsole();
-      ssg.do("serve:dev", share.testConfig, function () {
+      ssg.do("serve", share.testConfig, function () {
         share.resetConsole();
         done();
       });

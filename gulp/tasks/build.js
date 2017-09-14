@@ -19,8 +19,6 @@ var source = require('vinyl-source-stream');
 var uncache = require('gulp-uncache');
 var debug = require('gulp-debug');
 
-var config = require('../config.js');
-
 var node_modules = __dirname + "/../../node_modules/";
 var babel_presets = [
   node_modules + "babel-preset-flow",
@@ -35,6 +33,8 @@ var babel_presets = [
  * it skips building.
  */
 gulp.task('build:css', function(){
+  var config = require('../config.js');
+  
   return gulp.src([config['css']['srcDir'] + '/**/*.styl', "!" + config['css']['srcDir'] + "/*.part.styl"])
     .pipe(plumber())
     .on('error', function(err){
@@ -55,6 +55,8 @@ gulp.task('build:css', function(){
  * Other than that behavior is the same as build:css.
  */
 gulp.task('rebuild:css', ['clean:css'], function(){
+  var config = require('../config.js');
+  
   return gulp.src(config['css']['srcDir'] + '/main.styl')
     .pipe(plumber())
     .on('error', function(err){
@@ -74,6 +76,8 @@ gulp.task('rebuild:css', ['clean:css'], function(){
  * Build es6 js files to standard es5 js files.
  */
 gulp.task('build:js', function(){
+  var config = require('../config.js');
+  
   return browserify({debug: config['js']['sourcemaps']})
     .add(config['js']['srcDir'] + '/main.js')
     .transform(babelify, {presets: babel_presets})
@@ -88,6 +92,8 @@ gulp.task('build:js', function(){
 });
 
 gulp.task('rebuild:js', ['clean:js'], function(){
+  var config = require('../config.js');
+  
   return browserify({debug: config['js']['sourcemaps']})
     .add(config['js']['srcDir'] + '/main.js')
     .transform(babelify, {presets: babel_presets})
@@ -107,6 +113,8 @@ gulp.task('rebuild:js', ['clean:js'], function(){
  * 'tiff', 'svg', 'jpeg', 'jpg', 'png' or 'gif'.
  */
 gulp.task('build:image', function(){
+  var config = require('../config.js');
+  
   return gulp.src([config['image']['srcDir'] + '/**/*.{tiff,svg,jpeg,jpg,png,gif}'], {base: config['image']['srcDir']})
     .pipe(newer(config['image']['destDir']))
     .pipe(debug({title: "build:image"}))
@@ -115,6 +123,8 @@ gulp.task('build:image', function(){
 });
 
 gulp.task('rebuild:image', ['clean:image'], function(){
+  var config = require('../config.js');
+  
   return gulp.src([config['image']['srcDir'] + '/**/*.{tiff,svg,jpeg,jpg,png,gif}'], {base: config['image']['srcDir']})
     .pipe(plumber())
     .pipe(gulp.dest(config['image']['destDir']));
@@ -125,6 +135,8 @@ gulp.task('rebuild:image', ['clean:image'], function(){
  * This task builds not only html but also css/js/image files.
  */
 gulp.task('build:html', function(){
+  var config = require('../config.js');
+  
   var indexStream = gulp.src([config['html']['srcDir'] + "/index.pug"], {base: config['html']['srcDir']})
     .pipe(plumber())
     .pipe(pug({
@@ -160,6 +172,8 @@ gulp.task('build:html', function(){
 });
 
 gulp.task('rebuild:html', function(){
+  var config = require('../config.js');
+  
   var indexStream = gulp.src([config['html']['srcDir'] + "/index.pug"], {base: config['html']['srcDir']})
     .pipe(plumber())
     .pipe(pug({
@@ -196,11 +210,15 @@ gulp.task('rebuild:html', function(){
 
 //gulp.task('build', ['build:html', 'build:css', 'build:js', 'build:image', 'build:lib']);
 gulp.task('build', function(cb){
+  var config = require('../config.js');
+  
   runSequence(['build:css', 'build:js', 'build:image', 'build:lib'], 'build:html', cb);
 });
 
 //gulp.task('rebuild', ['rebuild:html', 'rebuild:css', 'rebuild:js', 'rebuild:image', 'rebuild:lib']);
 gulp.task('rebuild', function(cb){
+  var config = require('../config.js');
+  
   runSequence(['rebuild:css', 'rebuild:js', 'rebuild:image', 'rebuild:lib'], 'rebuild:html', cb);
 });
 
@@ -208,6 +226,8 @@ gulp.task('rebuild', function(cb){
  * Build library js files like jQuery.
  */
 gulp.task('build:lib:js', function(){
+  var config = require('../config.js');
+  
   return gulp.src(config['js']['libDir'] + '/*.js')
     .pipe(newer(config['js']['destDir'] + '/lib.js'))
     .pipe(debug({title: "build:lib:js"}))
@@ -220,6 +240,8 @@ gulp.task('build:lib:js', function(){
 });
 
 gulp.task('rebuild:lib:js', ['clean:lib:js'], function(){
+  var config = require('../config.js');
+  
   return gulp.src(config['js']['libDir'] + '/*.js')
     .pipe(plumber())
     .pipe(gulpif(config['js']['sourcemaps'], sourcemaps.init()))
@@ -233,6 +255,8 @@ gulp.task('rebuild:lib:js', ['clean:lib:js'], function(){
  * Build library css files like Bootstrap.
  */
 gulp.task('build:lib:css', function(){
+  var config = require('../config.js');
+  
   return gulp.src(config['css']['libDir'] + '/*.css')
     .pipe(newer(config['css']['destDir'] + '/lib.css'))
     .pipe(debug({title: "build:lib:css"}))
@@ -245,6 +269,8 @@ gulp.task('build:lib:css', function(){
 });
 
 gulp.task('rebuild:lib:css', ['clean:lib:css'], function(){
+  var config = require('../config.js');
+  
   return gulp.src(config['css']['libDir'] + '/*.css')
     .pipe(plumber())
     .pipe(gulpif(config['css']['sourcemaps'], sourcemaps.init()))

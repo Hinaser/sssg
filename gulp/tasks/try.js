@@ -6,7 +6,7 @@ gulp.task('build:css:sync', ['build:css'], function(){browsersync.reload();});
 gulp.task('build:image:sync', ['build:image'], function(){browsersync.reload();});
 gulp.task('build:html:sync', ['build:html'], function(){browsersync.reload();});
 
-gulp.task('serve', ['build'], function(){
+gulp.task('try', ['build'], function(){
   var config = require( '../config.js');
   
   return new Promise(function(resolve, reject){

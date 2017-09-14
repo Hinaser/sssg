@@ -1,8 +1,6 @@
 var gulp = require('gulp');
 var del = require('del');
 var resolve = require('path').resolve;
-var config = require('../config');
-
 /**
  * Because glob style file selection is used, target destination folder path
  * must be under nodejs project directory. It is too risky to trust configuration edited by an anonymous user.
@@ -27,6 +25,8 @@ function throwExceptionIfDangerousPath (path){
 }
 
 gulp.task('clean:css', function(){
+  var config = require('../config');
+  
   var destDir = config['css']['destDir'];
   throwExceptionIfDangerousPath(destDir);
   
@@ -34,6 +34,8 @@ gulp.task('clean:css', function(){
 });
 
 gulp.task('clean:js', function(){
+  var config = require('../config');
+  
   var destDir = config['js']['destDir'];
   throwExceptionIfDangerousPath(destDir);
 
@@ -41,6 +43,8 @@ gulp.task('clean:js', function(){
 });
 
 gulp.task('clean:image', function(){
+  var config = require('../config');
+  
   var destDir = config['image']['destDir'];
   throwExceptionIfDangerousPath(destDir);
 
@@ -48,6 +52,8 @@ gulp.task('clean:image', function(){
 });
 
 gulp.task('clean:html', function(){
+  var config = require('../config');
+  
   var destIndexDir = config['html']['destIndexDir'];
   var destDir = config['html']['destDir'];
   throwExceptionIfDangerousPath(destIndexDir);
@@ -57,6 +63,8 @@ gulp.task('clean:html', function(){
 });
 
 gulp.task('clean:lib:js', function(){
+  var config = require('../config');
+  
   var destDir = config['js']['destDir'];
   throwExceptionIfDangerousPath(destDir);
 
@@ -64,6 +72,8 @@ gulp.task('clean:lib:js', function(){
 });
 
 gulp.task('clean:lib:css', function(){
+  var config = require('../config');
+  
   var destDir = config['css']['destDir'];
   throwExceptionIfDangerousPath(destDir);
 
