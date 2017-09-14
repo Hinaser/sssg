@@ -1,0 +1,21 @@
+{
+  "extends": ["eslint:recommended", "plugin:node/recommended"],
+  "plugins": [
+    "node",
+    "mocha"
+  ],
+  "parserOptions": {},
+  "env": {
+    "node": true,
+    "mocha": true
+  },
+  "globals": {
+    "describe": false,
+    "it": false,
+    "before": false
+  },
+  "rules": {
+    "node/no-unsupported-features": ["error", {"version": 6}],
+    "mocha/no-exclusive-tests": "error"
+  }
+}

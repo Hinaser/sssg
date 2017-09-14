@@ -1,0 +1,118 @@
+@import "mixins.part.styl"
+
+*
+  box-sizing border-box
+
+div
+  border 1px solid #A0A0A0
+
+body
+  background-color rgb(200, 230, 210)
+  color #0F3B44
+  height 100%
+  width 100%
+
+.title
+  $width = 400px
+  $height = 440px
+
+  border-radius 6px
+  background-color white
+  width $width
+  height $height
+  position fixed
+  centering $width, $height
+  padding 20px 30px
+
+  .title-logo
+    margin-bottom 20px
+    border none
+    height 100px
+
+  .short-name, .full-name, .description
+    width 340px
+    padding 5px
+
+  .short-name
+    height 30px
+    display block
+    border 1px solid #A0A0A0
+
+  .full-name
+    margin-top 20px
+    height 30px
+
+  .description
+    margin-top 20px
+    font-size 14px
+    font-style italic
+
+  .padding-top
+    position absolute
+    top 0
+    left 60px
+    border none
+    border-left 1px dashed #999
+    font-size 11px
+    height 140px
+    line-height 20px
+    padding-left 10px
+
+  .margin-int
+    position absolute
+    top 220px
+    left 60px
+    border none
+    border-left 1px dashed #999
+    font-size 11px
+    height 20px
+    line-height 20px
+    padding-left 10px
+
+  .padding-left
+    position absolute
+    top 155px
+    left 0
+    border none
+    border-top 1px dashed #999
+    font-size 11px
+    width 30px
+    padding-left 3px
+    padding-top 10px
+
+  .logos
+    width 254px
+    margin-top 20px
+    margin-left auto
+    margin-right auto
+    border none
+    img
+      height 30px
+      display inline-block
+    img + img
+      margin-left 10px
+
+  .menu
+    border none
+    margin-top 40px
+    width $width
+    .menu-item
+      border none
+      width 112px
+      padding 5px 0
+      float left
+      text-align center
+      border-radius 6px
+      transition all ease 0.3s
+      cursor pointer
+      color rgb(100, 140, 240)
+    .menu-item + .menu-item
+      margin-left 2px
+  .menu-item:hover
+    background-color rgb(200, 230, 210)
+  .menu:after
+    content ""
+    display table
+    clear both
+
+
