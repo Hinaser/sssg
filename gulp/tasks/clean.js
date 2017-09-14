@@ -7,20 +7,20 @@ var resolve = require('path').resolve;
  * @param {String} path - A path string for destination folder.
  * @throws {Error} - If the path is not relative path or blank, throws an Error.
  */
-function throwExceptionIfDangerousPath (path){
-  var trimmedPath = path.trim();
-  var allowedRootPath = __dirname + "/../../../../";
-  var projectParentDir = resolve(__dirname + "../../../").split(require('path').sep);
+function throwExceptionIfUnsecurePath (path){
+  var securePath = resolve(__dirname + "/../../../../");
+  var projectParentDir = resolve(__dirname + "/../../../").split(require('path').sep);
   
+  // Forcibly convert relative path to absolute path.
+  path = path[0] === "/" ? path : resolve("./" + path);
+  
+  // Allow any path to be deleted if this npm module is installed globally.
   if(projectParentDir[projectParentDir.length-1] !== "node_modules"){
-    console.log("clean.js assumes you are just developing this module.");
-    console.log("Dangerous path protection is disabled.");
+    securePath = "/";
   }
-  else{
-    // At this time, dangerous path protection is disabled
-    if(false && !trimmedPath.includes(resolve(allowedRootPath))){
-      throw new Error("Could not delete files in a path outside this nodejs project.");
-    }
+  
+  if(!path.includes(securePath)){
+    throw new Error("Could not delete files in a path outside this nodejs project.");
   }
 }
 
@@ -28,7 +28,7 @@ gulp.task('clean:css', function(){
   var config = require('../config');
   
   var destDir = config['css']['destDir'];
-  throwExceptionIfDangerousPath(destDir);
+  throwExceptionIfUnsecurePath(destDir);
   
   return del([destDir + '/main.css'], {force: true});
 });
@@ -37,7 +37,7 @@ gulp.task('clean:js', function(){
   var config = require('../config');
   
   var destDir = config['js']['destDir'];
-  throwExceptionIfDangerousPath(destDir);
+  throwExceptionIfUnsecurePath(destDir);
 
   return del([destDir + '/main.js'], {force: true});
 });
@@ -46,7 +46,7 @@ gulp.task('clean:image', function(){
   var config = require('../config');
   
   var destDir = config['image']['destDir'];
-  throwExceptionIfDangerousPath(destDir);
+  throwExceptionIfUnsecurePath(destDir);
 
   return del([destDir + '/**/*.{tiff,svg,jpeg,jpg,png,gif}'], {force: true});
 });
@@ -56,8 +56,8 @@ gulp.task('clean:html', function(){
   
   var destIndexDir = config['html']['destIndexDir'];
   var destDir = config['html']['destDir'];
-  throwExceptionIfDangerousPath(destIndexDir);
-  throwExceptionIfDangerousPath(destDir);
+  throwExceptionIfUnsecurePath(destIndexDir);
+  throwExceptionIfUnsecurePath(destDir);
 
   return del([destIndexDir + '/index.html', destDir], {force: true});
 });
@@ -66,7 +66,7 @@ gulp.task('clean:lib:js', function(){
   var config = require('../config');
   
   var destDir = config['js']['destDir'];
-  throwExceptionIfDangerousPath(destDir);
+  throwExceptionIfUnsecurePath(destDir);
 
   return del([destDir + '/lib.js'], {force: true});
 });
@@ -75,7 +75,7 @@ gulp.task('clean:lib:css', function(){
   var config = require('../config');
   
   var destDir = config['css']['destDir'];
-  throwExceptionIfDangerousPath(destDir);
+  throwExceptionIfUnsecurePath(destDir);
 
   return del([destDir + '/lib.css'], {force: true});
 });
