@@ -69,4 +69,8 @@ typings/
 # Mocha test seed data
 test/testdata/output
 
+# Coveralls configuration
 .coveralls.yml
+
+# Temporary directory
+tmp/
