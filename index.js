@@ -20,7 +20,8 @@ var tasks = [
   "clean:lib",
   "clean:lib:js",
   "clean:lib:css",
-  "serve"
+  "serve",
+  "init"
 ];
 
 /**
