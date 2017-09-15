@@ -12,7 +12,6 @@ if(task === "try"){
   main.do("init", options, function(){
     options.src = "./src";
     options.dst = "./docs";
-    
     main.do("serve", options);
   });
   
@@ -22,6 +21,12 @@ if(task === "try"){
 options.src = argv.src || argv.s;
 options.dst = argv.dst || argv.d;
 options.root = argv.root || argv.r;
-options.env =  argv.env || argv.e;
+
+if(task === "serve"){
+  options.env =  argv.env || argv.e || "development";
+}
+else {
+  options.env =  argv.env || argv.e || "production";
+}
 
 main.do(task, options);
