@@ -19,10 +19,9 @@ var source = require('vinyl-source-stream');
 var uncache = require('gulp-uncache');
 var debug = require('gulp-debug');
 
-var node_modules = __dirname + "/../../node_modules/";
 var babel_presets = [
-  node_modules + "babel-preset-flow",
-  node_modules + "babel-preset-env"
+  require.resolve("babel-preset-flow"),
+  require.resolve("babel-preset-env")
 ];
 
 /**
