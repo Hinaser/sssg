@@ -2,6 +2,89 @@
 [![Build Status](https://travis-ci.org/Hinaser/sssg.svg?branch=develop)](https://travis-ci.org/Hinaser/sssg)
 [![Coverage Status](https://coveralls.io/repos/github/Hinaser/sssg/badge.svg?branch=develop)](https://coveralls.io/github/Hinaser/sssg?branch=develop)
 
-Generate static website from developer-friendly languages like pug, styulus, es6, flow.
+Generate static website from developer-friendly languages like pug, stylus, es6, flow.
 
-More detail will be described later.
+# Install
+```
+npm install git+https://github.com/Hinaser/sssg
+```
+
+# Try prototyping
+```
+./node_modules/.bin/sssg try
+```
+
+After dispatching `sssg try`,
+- Directories `./src/` and `./dst/` will be created at your working directory.
+- Browser will open `./docs/index.html`.
+- The web page in browser will be live-reloaded with src file modifications 
+
+|dir|description|
+|---|-----------|
+|`./src/`|Stores files to be edited.  |
+|`./docs/`|Stores files to be served by web server|
+
+You can freely edit files in the `./src/` folder and see changes on your browser's page.
+
+# Build static web files
+```
+./node_modules/.bin/sssg init ./src
+./node_modules/.bin/sssg build --src ./src --dst ./docs
+```
+
+# Build details
+## Source directory
+```
+<src-dir>/                 <- You can specify src folder locatoin by --src/-s option
+ - html/
+    - index.pug            <- Cannot be removed. Will be compiled to index.html
+    - test/                <- (*) The same folder will be created at dest dir
+       - sample1.pug       <- (*) Will be compiled to sample1.html
+       - sample2.part.pug  <- (*) Won't be compiled except it is included by any .pug files
+ - css/
+    - main.styl            <- Cannot be removed. Will be compiled to main.css
+    - lib1.styl            <- (*) Won't be compiled except it is imported by main.styl
+ - image/                  <- Will be copied to destination directory
+    - sample1.png          <- (*) 
+ - js/
+    - main.js              <- Cannot be removed.  Will be compiled to main.js in the dest dir.
+    - lib1.js              <- (*) Won't be compiled except it is imported by main.js
+```
+
+__(*) Optional. You can freely name it__
+
+## Destination directory
+```
+<dst-dir>/                 <- You can specify dst folder locatoin by --dst/-d option
+ - index.html              <- Originally <src-dir>/html/index.pug
+ - contents/
+    - test/                <- User defined folder in the src dir
+       - sample1.html      <- User defined html file. Originally <src-dir>/html/test/sample1.pug
+ - css/
+    - main.css             <- Originally <src-dir>/css/main.styl
+ - image/
+    - sample1.png          <- Just a copy from src dir.
+ - js/
+    - main.js              <- Originally <src-dir>/js/main.js
+```
+
+### html
+sssg will compile `*.pug` files under `<src-dir>/html/` directory.
+Files whose extension is `*.part.pug` will be ignored.
+`*.part.pug` files can be used to store template to be imported by `.pug` files.
+
+For pug/html, resulted files will be generated into several locations.
+The one is just under the directory specified by `--dst` option.
+In this location, only `index.html` will be generated from `<src-dir>/html/index.pug`.
+All pug files except for `<src-dir>/html/index.pug` will be generated under `<dst-dir>/contents/`.
+
+Custom directories you create under `<src-dir>/html/` directory will be created in the dst folder as well.
+
+### css
+sssg will compile `<src-dir>/css/main.styl` into `<dst-dir>/js/main.css`.
+
+### image
+sssg will just copy image files from src to dst.
+
+### javascript
+sssg will compile `<src-dir>/js/main.js` into `<dst-dir>/js/main.js`.
