@@ -40,7 +40,7 @@ var SSG = {};
 
 /**
  * Check whether a task is supported
- * @param {string} task - Name of task. i.e. build/clean/serve:dev
+ * @param {string} task - Name of task. i.e. build/clean/serve
  * @returns {boolean}
  */
 SSG.isSupported = function(task){

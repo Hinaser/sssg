@@ -14,19 +14,19 @@ var Share = require('./shared');
 var ssg = require('../../');
 
 describe('Main/Index module', function() {
-  it("should support build task", function(done){
+  it("should support build task", function(){
     expect(ssg.isSupported("build")).to.be.true;
   });
   
-  it("should support clean task", function(done){
+  it("should support clean task", function(){
     expect(ssg.isSupported("clean")).to.be.true;
   });
   
-  it("should support init task", function(done){
+  it("should support init task", function(){
     expect(ssg.isSupported("init")).to.be.true;
   });
   
-  it("should support serve task", function(done){
+  it("should support serve task", function(){
     expect(ssg.isSupported("serve")).to.be.true;
   });
 });
