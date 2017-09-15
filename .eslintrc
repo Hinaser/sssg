@@ -16,6 +16,7 @@
   },
   "rules": {
     "node/no-unsupported-features": ["error", {"version": 6}],
-    "mocha/no-exclusive-tests": "error"
+    "mocha/no-exclusive-tests": "error",
+    "no-console": 0
   }
 }
