@@ -58,7 +58,7 @@ SSG.supportedTasks = function(){
  * Do task.
  * @param {string} task - Name of a task.
  * @param {Options} options
- * @param {function} cb - Function called when task has done.
+ * @param {function=} cb - Function called when task has done.
  */
 SSG.do = function(task, options, cb){
   if(!SSG.isSupported(task)){
@@ -106,6 +106,8 @@ function setOption(options){
     "NODE_ENV": process.env["NODE_ENV"]
   };
   var isUpdated = false;
+  
+  if(!options) return isUpdated;
   
   if(options.src){
     process.env["SSG_SRC"] = options.src;
