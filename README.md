@@ -6,12 +6,12 @@ Generate static website from developer-friendly languages like pug, stylus, es6,
 
 # Install
 ```
-npm install git+https://github.com/Hinaser/sssg
+sudo npm install -g git+https://github.com/Hinaser/sssg
 ```
 
 # Try prototyping
 ```
-./node_modules/.bin/sssg try
+sssg try
 ```
 
 After dispatching `sssg try`,
@@ -28,8 +28,8 @@ You can freely edit files in the `./src/` folder and see changes on your browser
 
 # Build static web files
 ```
-./node_modules/.bin/sssg init ./src
-./node_modules/.bin/sssg build --src ./src --dst ./docs
+sssg init ./src
+sssg build --src ./src --dst ./docs
 ```
 
 # Build details
