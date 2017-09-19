@@ -25,8 +25,6 @@ gulp.task('clean:css', function(){
   var config = require('../config');
   
   if(!isValidDir()){
-    console.log("Not yet initialized: " + config['html']['destIndexDir']);
-    console.log("Skipped cleaning");
     return;
   }
   
@@ -39,8 +37,6 @@ gulp.task('clean:js', function(){
   var config = require('../config');
   
   if(!isValidDir()){
-    console.log("Not yet initialized: " + config['html']['destIndexDir']);
-    console.log("Skipped cleaning");
     return;
   }
   
@@ -53,8 +49,6 @@ gulp.task('clean:image', function(){
   var config = require('../config');
   
   if(!isValidDir()){
-    console.log("Not yet initialized: " + config['html']['destIndexDir']);
-    console.log("Skipped cleaning");
     return;
   }
   
@@ -67,8 +61,6 @@ gulp.task('clean:html', function(){
   var config = require('../config');
   
   if(!isValidDir()){
-    console.log("Not yet initialized: " + config['html']['destIndexDir']);
-    console.log("Skipped cleaning");
     return;
   }
   
@@ -82,8 +74,6 @@ gulp.task('clean:lib:js', function(){
   var config = require('../config');
   
   if(!isValidDir()){
-    console.log("Not yet initialized: " + config['html']['destIndexDir']);
-    console.log("Skipped cleaning");
     return;
   }
   
@@ -96,8 +86,6 @@ gulp.task('clean:lib:css', function(){
   var config = require('../config');
   
   if(!isValidDir()){
-    console.log("Not yet initialized: " + config['html']['destIndexDir']);
-    console.log("Skipped cleaning");
     return;
   }
   
@@ -110,8 +98,6 @@ gulp.task('clean:lib:misc', function(){
   var config = require('../config');
   
   if(!isValidDir()){
-    console.log("Not yet initialized: " + config['html']['destIndexDir']);
-    console.log("Skipped cleaning");
     return;
   }
   
