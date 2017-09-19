@@ -1,5 +1,8 @@
 .git*
 docs/
 test/
-
-.coveralls.yml
+.eslintrc
+coverage/
+.idea/
+.travis.yml
+node_modules/
