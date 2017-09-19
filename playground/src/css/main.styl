@@ -89,16 +89,18 @@ body
     img
       height 30px
       display inline-block
-    img + img
+    a + a
       margin-left 10px
 
   .menu
     border none
     margin-top 40px
     width $width
+    font-size 16px
+
     .menu-item
       border none
-      width 112px
+      width 100px
       padding 5px 0
       float left
       text-align center
@@ -106,13 +108,83 @@ body
       transition all ease 0.3s
       cursor pointer
       color rgb(100, 140, 240)
-    .menu-item + .menu-item
-      margin-left 2px
+      height 26px
+
+    .menu-item-arrow
+      float left
+      height 26px
+      width 18px
+      padding 5px 0
+      border none
+      margin 0 2px
+      text-align center
+
   .menu-item:hover
     background-color rgb(200, 230, 210)
+
   .menu:after
     content ""
     display table
     clear both
 
+.layer
+  position fixed
+  top 0
+  left 0
+  width 100%
+  height 100%
+  transition all ease 0.4s
+  background-color transparent
+  opacity 0.3
+  z-index -1
+  &.dark
+    background-color rgb(0,0,0)
+    z-index 10
 
+.popup
+  position fixed
+  top 50%
+  left 50%
+  width 540px
+  height 300px
+  margin-left -270px
+  margin-top -150px
+  opacity 1
+  transition all ease 0.3s
+  border-radius 6px
+  background-color #fff
+  z-index 11
+  padding 15px
+  transform scale(0)
+
+.popup.template
+  box-shadow 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19)
+  transform scale(1)
+  h1:first-child
+    margin-top 10px
+    margin-left 15px
+  ol
+    padding-left 15px
+    > li
+      > .caption
+        font-weight bold
+        border none
+        margin-bottom 5px
+      > .caption + code
+        margin-top 16px
+  ol > li + li
+    margin-top 20px
+
+.popup.hidden
+  border none
+  opacity 0
+
+.templates
+  display none
+
+code
+  display block
+  border-radius 3px
+  background-color #333
+  color #fff
+  padding 10px

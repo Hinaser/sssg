@@ -2,24 +2,71 @@
 <html>
   <head>
     <title>sssg - Simple Static Site Generator</title>
-    <link href="css/main.css?05c89a539a" rel="stylesheet">
-    <script src="js/main.js?5802aeec6b"></script>
+    <meta name="viewport" content="initial-scale=0.6">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/main.css?9747eed1a0" rel="stylesheet">
+    <script src="js/lib.js"></script>
+    <script src="js/main.js?18e4002338"></script>
   </head>
-  <body>
+  <body><a href="https://github.com/Hinaser/sssg"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
     <div class="title">
       <div class="title-logo"><img src="image/sssg.png"></div>
       <input class="short-name" type="text" value="sssg">
       <div class="full-name">Simple Static Site Generator</div>
       <div class="description">Generate static website from developer-friendly languages like pug, stylus, es6, flow</div>
-      <div class="logos"><img src="image/pug.png"><img src="image/stylus.png"><img src="image/es6.png"></div>
+      <div class="logos"><a href="https://pugjs.org/" target="_blank"><img src="image/pug.png"></a><a href="https://stylus-lang.com" target="_blank"><img src="image/stylus.png"></a><a href="http://es6-features.org" target="_blank"><img src="image/es6.png"></a></div>
       <div class="menu">
-        <div class="menu-item">Install</div>
-        <div class="menu-item">Initialize</div>
-        <div class="menu-item">Develop!</div>
+        <div class="menu-item" id="install">Install</div>
+        <div class="menu-item-arrow">></div>
+        <div class="menu-item" id="init">Initialize</div>
+        <div class="menu-item-arrow">></div>
+        <div class="menu-item" id="develop">Develop!</div>
       </div>
       <div class="padding-top">140px</div>
       <div class="padding-left">30px</div>
       <div class="margin-int">20px</div>
+    </div>
+    <div class="popup hidden"></div>
+    <div class="templates">
+      <div class="template install">
+        <h1><i class="fa fa-diamond"></i>&nbsp;
+          Install
+        </h1>
+        <ol>
+          <li>
+            <div class="caption">Install NodeJS 6.x</div>
+            <p>Follow instruction on NodeJS official page.<br><a href="https://nodejs.org/en/download/package-manager/" target="_blank">Installing Node.js (nodejs.org) &nbsp;<i class="fa fa-clone"></i></a></p>
+          </li>
+          <li>
+            <div class="caption">Install sssg globally (You can also install locally)</div><code>$ sudo npm install -g git+https://github.com/Hinaser/sssg</code>
+          </li>
+        </ol>
+      </div>
+      <div class="template init">
+        <h1><i class="fa fa-coffee"></i>&nbsp;
+          Initialize
+        </h1>
+        <ol>
+          <li>
+            <div class="caption">Create project directory</div><code>$ mkdir sample<br>$ cd ./sample</code>
+          </li>
+          <li>
+            <div class="caption">Initialize source directory</div><code>$ sssg init<br>$ ls -l</code>
+            <p>Confirm that ./src directory has been created</p>
+          </li>
+        </ol>
+      </div>
+      <div class="template develop">
+        <h1><i class="fa fa-code"></i>&nbsp;
+          Develop
+        </h1>
+        <p>Now you are ready to develop! Type "sssg serve" like the following.</p><code>$ sssg serve</code>
+        <p>Browser will launch a web page for you.</p>
+        <p>
+          As soon as you edit source files in "./src" folder, the latest change will
+          be live-reloaded on your browser's page.
+        </p>
+      </div>
     </div>
   </body>
 </html>

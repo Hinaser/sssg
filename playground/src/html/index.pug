@@ -1,33 +1,94 @@
-doctype html
-html
-  head
-    title sssg - Simple Static Site Generator
-    // uncache
-    link(href="css/main.css", rel="stylesheet")
-    // enduncache
-    // uncache
-    script(src="js/main.js")
-    // enduncache
-  body
-    .title
-      .title-logo
-        img(src='image/sssg.png')
-      input(type='text' value='sssg').short-name
-      .full-name
-        | Simple Static Site Generator
-      .description
-        | Generate static website from developer-friendly languages like pug, stylus, es6, flow
-      .logos
+extends layout.part.pug
+
+block title
+  title sssg - Simple Static Site Generator
+
+block body
+  //- Form me on GitHub!
+  a(href="https://github.com/Hinaser/sssg")
+    img(style="position: absolute; top: 0; right: 0; border: 0;", src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67", alt="Fork me on GitHub", data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png")
+
+  .title
+    .title-logo
+      img(src='image/sssg.png')
+    input(type='text' value='sssg').short-name
+    .full-name
+      | Simple Static Site Generator
+    .description
+      | Generate static website from developer-friendly languages like pug, stylus, es6, flow
+    .logos
+      a(href="https://pugjs.org/", target="_blank")
         img(src='image/pug.png')
+      a(href="https://stylus-lang.com", target="_blank")
         img(src='image/stylus.png')
+      a(href="http://es6-features.org", target="_blank")
         img(src='image/es6.png')
-      .menu
-        .menu-item
-          | Install
-        .menu-item
-          | Initialize
-        .menu-item
-          | Develop!
-      .padding-top 140px
-      .padding-left 30px
-      .margin-int 20px
+    .menu
+      .menu-item#install
+        | Install
+      .menu-item-arrow
+        | >
+      .menu-item#init
+        | Initialize
+      .menu-item-arrow
+        | >
+      .menu-item#develop
+        | Develop!
+    .padding-top 140px
+    .padding-left 30px
+    .margin-int 20px
+  .popup.hidden
+  .templates
+    .template.install
+      h1
+        i.fa.fa-diamond
+        | &nbsp;
+        | Install
+      ol
+        li
+          .caption Install NodeJS 6.x
+          p
+            | Follow instruction on NodeJS official page.
+            br
+            a(href="https://nodejs.org/en/download/package-manager/", target="_blank")
+              | Installing Node.js (nodejs.org) &nbsp;
+              i.fa.fa-clone
+        li
+          .caption Install sssg globally (You can also install locally)
+          code
+            | $ sudo npm install -g git+https://github.com/Hinaser/sssg
+    .template.init
+      h1
+        i.fa.fa-coffee
+        | &nbsp;
+        | Initialize
+      ol
+        li
+          .caption Create project directory
+          code
+            | $ mkdir sample
+            br
+            | $ cd ./sample
+        li
+          .caption Initialize source directory
+          code
+            | $ sssg init
+            br
+            | $ ls -l
+          p
+            | Confirm that ./src directory has been created
+    .template.develop
+      h1
+        i.fa.fa-code
+        | &nbsp;
+        | Develop
+      p
+        | Now you are ready to develop! Type "sssg serve" like the following.
+      code
+        | $ sssg serve
+      p
+        | Browser will launch a web page for you.
+      p
+        | As soon as you edit source files in "./src" folder, the latest change will
+        | be live-reloaded on your browser's page.
+
