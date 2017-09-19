@@ -22,6 +22,10 @@ describe('Main/Index module', function() {
     expect(ssg.isSupported("clean")).to.be.true;
   });
   
+  it("should support rebuild task", function(){
+    expect(ssg.isSupported("rebuild")).to.be.true;
+  });
+  
   it("should support init task", function(){
     expect(ssg.isSupported("init")).to.be.true;
   });

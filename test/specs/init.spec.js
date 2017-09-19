@@ -7,6 +7,7 @@ chai.use(chaiFiles);
 var del = require('del');
 
 var file = chaiFiles.file;
+var dir = chaiFiles.dir;
 
 var Share = require('./shared');
 
@@ -27,24 +28,24 @@ describe('Init', function(){
     });
   });
 
-  it('should copy index.pug from playground dir', function(done){
+  it('should copy index.pug from playground dir', function(){
     expect(file(dstDir + "/html/index.pug")).to.equal(file(srcDir + "/html/index.pug"));
-    done();
   });
 
-  it('should copy main.styl from playground dir', function(done){
+  it('should copy main.styl from playground dir', function(){
     expect(file(dstDir + "/css/main.styl")).to.equal(file(srcDir+ "/css/main.styl"));
-    done();
   });
 
-  it('should copy image file from playground dir', function(done){
+  it('should copy image file from playground dir', function(){
     expect(file(dstDir + "/image/es6.png")).to.equal(file(srcDir + "/image/es6.png"));
-    done();
   });
 
-  it('should copy javascript file from playground dir', function(done){
+  it('should copy javascript file from playground dir', function(){
     expect(file(dstDir + "/js/main.js")).to.equal(file(srcDir+ "/js/main.js"));
-    done();
+  });
+  
+  it('should create misc dir', function(){
+    expect(dir(dstDir + "/misc")).to.exist;
   });
   
   after(function(done){
