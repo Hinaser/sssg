@@ -28,29 +28,29 @@ describe('Clean', function(){
       });
     });
   
-    it('should clean index.html', function(done){
+    it('should clean index.html', function(){
       expect(file(share.testdata.output + "/index.html")).to.not.exist;
-      done();
     });
 
-    it('should clean sub content html', function(done){
+    it('should clean sub content html', function(){
       expect(dir(share.testdata.output + "/contents/")).to.not.exist;
-      done();
     });
 
-    it('should clean all css files', function(done){
+    it('should clean all css files', function(){
       expect(dir(share.testdata.output + "/css/")).to.be.empty;
-      done();
     });
 
-    it('should clean all image files', function(done){
+    it('should clean all image files', function(){
       expect(dir(share.testdata.output + "/image/")).to.be.empty;
-      done();
     });
 
-    it('should clean all javascript files', function(done){
+    it('should clean all javascript files', function(){
       expect(dir(share.testdata.output + "/js/")).to.be.empty;
-      done();
     });
+  
+    it('should clean sub content html', function(){
+      expect(dir(share.testdata.output + "/misc/")).to.not.exist;
+    });
+    
   })
 });

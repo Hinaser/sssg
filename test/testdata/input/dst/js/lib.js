@@ -1,0 +1,5 @@
+window.$$ = 1;
+
+console.log("libtest");
+
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImxpYjEuanMiLCJsaWIyLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0FBQ0E7QUNEQTtBQUNBIiwiZmlsZSI6ImxpYi5qcyIsInNvdXJjZXNDb250ZW50IjpbIndpbmRvdy4kJCA9IDE7XG4iLCJjb25zb2xlLmxvZyhcImxpYnRlc3RcIik7XG4iXX0=

@@ -1,6 +1,6 @@
 # sssg - Simple Static Site Generator
-[![Build Status](https://travis-ci.org/Hinaser/sssg.svg?branch=develop)](https://travis-ci.org/Hinaser/sssg)
-[![Coverage Status](https://coveralls.io/repos/github/Hinaser/sssg/badge.svg?branch=develop)](https://coveralls.io/github/Hinaser/sssg?branch=develop)
+[![Build Status](https://travis-ci.org/Hinaser/sssg.svg)](https://travis-ci.org/Hinaser/sssg)
+[![Coverage Status](https://coveralls.io/repos/github/Hinaser/sssg/badge.svg)](https://coveralls.io/github/Hinaser/sssg?branch=develop)
 
 Generate static website from developer-friendly languages like pug, stylus, es6, flow.
 
@@ -43,15 +43,22 @@ sssg build --src ./src --dst ./docs
        - sample2.part.pug  <- (*) Won't be compiled except it is included by any .pug files
  - css/
     - main.styl            <- Cannot be removed. Will be compiled to main.css
-    - lib1.styl            <- (*) Won't be compiled except it is imported by main.styl
+    - mixins.styl          <- (*) Won't be compiled except it is imported by main.styl
+    - lib/
+       - useful-lib.css    <- (*) Files under lib/ will be merged into a file without transformation
  - image/                  <- Will be copied to destination directory
     - sample1.png          <- (*) 
  - js/
     - main.js              <- Cannot be removed.  Will be compiled to main.js in the dest dir.
-    - lib1.js              <- (*) Won't be compiled except it is imported by main.js
+    - func.js              <- (*) Won't be compiled except it is imported by main.js
+    - lib/
+       - useful-lib.js     <- (*) Files under lib/ will be merged into a file without transformation
+ - misc/
+    - anydir
+       - anyfile           <- (*) Will be just copied to dst dir without any transformation
 ```
 
-__(*) Optional. You can freely name it__
+__(*) Optional. You can freely name/ignore it__
 
 ## Destination directory
 ```
@@ -62,10 +69,15 @@ __(*) Optional. You can freely name it__
        - sample1.html      <- User defined html file. Originally <src-dir>/html/test/sample1.pug
  - css/
     - main.css             <- Originally <src-dir>/css/main.styl
+    - lib.css              <- A static lib file merged from files under source lib/ directory.
  - image/
     - sample1.png          <- Just a copy from src dir.
  - js/
     - main.js              <- Originally <src-dir>/js/main.js
+    - lib.js               <- A static lib file merged from files under source lib/ directory.
+ - misc/
+    - anydir
+       - anyfile           <- Just copied from source misc/ directory
 ```
 
 ### html
