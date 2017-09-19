@@ -22,36 +22,56 @@ function isValidDir(){
 }
 
 gulp.task('clean:css', function(){
-  if(!isValidDir()) throw new Error("Unrecognized directory to be deleted.");
-  
   var config = require('../config');
+  
+  if(!isValidDir()){
+    console.log("Not yet initialized: " + config['html']['destIndexDir']);
+    console.log("Skipped cleaning");
+    return;
+  }
+  
   var destDir = config['css']['destDir'];
 
   return del([destDir + '/main.css'], {force: true});
 });
 
 gulp.task('clean:js', function(){
-  if(!isValidDir()) throw new Error("Unrecognized directory to be deleted.");
-  
   var config = require('../config');
+  
+  if(!isValidDir()){
+    console.log("Not yet initialized: " + config['html']['destIndexDir']);
+    console.log("Skipped cleaning");
+    return;
+  }
+  
   var destDir = config['js']['destDir'];
 
     return del([destDir + '/main.js'], {force: true});
 });
 
 gulp.task('clean:image', function(){
-  if(!isValidDir()) throw new Error("Unrecognized directory to be deleted.");
-  
   var config = require('../config');
+  
+  if(!isValidDir()){
+    console.log("Not yet initialized: " + config['html']['destIndexDir']);
+    console.log("Skipped cleaning");
+    return;
+  }
+  
   var destDir = config['image']['destDir'];
 
   return del([destDir + '/**/*.{tiff,svg,jpeg,jpg,png,gif}'], {force: true});
 });
 
 gulp.task('clean:html', function(){
-  if(!isValidDir()) throw new Error("Unrecognized directory to be deleted.");
-  
   var config = require('../config');
+  
+  if(!isValidDir()){
+    console.log("Not yet initialized: " + config['html']['destIndexDir']);
+    console.log("Skipped cleaning");
+    return;
+  }
+  
   var destIndexDir = config['html']['destIndexDir'];
   var destDir = config['html']['destDir'];
 
@@ -59,24 +79,48 @@ gulp.task('clean:html', function(){
 });
 
 gulp.task('clean:lib:js', function(){
-  if(!isValidDir()) throw new Error("Unrecognized directory to be deleted.");
-  
   var config = require('../config');
+  
+  if(!isValidDir()){
+    console.log("Not yet initialized: " + config['html']['destIndexDir']);
+    console.log("Skipped cleaning");
+    return;
+  }
+  
   var destDir = config['js']['destDir'];
 
   return del([destDir + '/lib.js'], {force: true});
 });
 
 gulp.task('clean:lib:css', function(){
-  if(!isValidDir()) throw new Error("Unrecognized directory to be deleted.");
-  
   var config = require('../config');
+  
+  if(!isValidDir()){
+    console.log("Not yet initialized: " + config['html']['destIndexDir']);
+    console.log("Skipped cleaning");
+    return;
+  }
+  
   var destDir = config['css']['destDir'];
 
   return del([destDir + '/lib.css'], {force: true});
 });
 
-gulp.task('clean:lib', ['clean:lib:js', 'clean:lib:css']);
+gulp.task('clean:lib:misc', function(){
+  var config = require('../config');
+  
+  if(!isValidDir()){
+    console.log("Not yet initialized: " + config['html']['destIndexDir']);
+    console.log("Skipped cleaning");
+    return;
+  }
+  
+  var destDir = config['misc']['destDir'];
+  
+  return del([destDir], {force: true});
+});
+
+gulp.task('clean:lib', ['clean:lib:js', 'clean:lib:css', 'clean:lib:misc']);
 
 gulp.task('clean', ['clean:css', 'clean:js', 'clean:image', 'clean:html', 'clean:lib'], function(){
   return true;

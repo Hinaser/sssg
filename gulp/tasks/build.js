@@ -280,7 +280,21 @@ gulp.task('rebuild:lib:css', ['clean:lib:css'], function(){
 });
 
 /**
+ * Copy raw files to build destination directory.
+ */
+var buildLibMisc = function(){
+  var config = require('../config.js');
+  
+  return gulp.src(config['misc']['srcDir'] + '/**/*', {base: config['misc']['srcDir']})
+    .pipe(plumber())
+    .pipe(gulp.dest(config['misc']['destDir']))
+};
+
+gulp.task('build:lib:misc', buildLibMisc);
+gulp.task('rebuild:lib:misc', ['clean:lib:misc'], buildLibMisc);
+
+/**
  * Build css/js library files.
  */
-gulp.task('build:lib', ['build:lib:js', 'build:lib:css']);
-gulp.task('rebuild:lib', ['rebuild:lib:js', 'rebuild:lib:css']);
+gulp.task('build:lib', ['build:lib:js', 'build:lib:css', 'build:lib:misc']);
+gulp.task('rebuild:lib', ['rebuild:lib:js', 'rebuild:lib:css', 'rebuild:lib:misc']);

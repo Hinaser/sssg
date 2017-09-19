@@ -79,6 +79,10 @@ var defaultConfig = {
     "destIndexDir": docRoot,
     "pretty": false
   },
+  "misc": {
+    "srcDir": srcDir + "misc",
+    "destDir": dstDir + "misc"
+  },
   "environment": ""
 };
 
