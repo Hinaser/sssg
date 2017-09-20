@@ -1,0 +1,91 @@
+$sidebar-width = 400px
+
+/*
+div,img
+  debug()
+//*/
+
+#main[data-page="dev"]
+  #sidebar-area
+    position fixed
+    top 0
+    left 0
+    bottom 0
+    width $sidebar-width
+    background-color rgb(40, 180, 120)
+    color #fff
+    padding 0
+
+    .sidebar-logo
+      margin-top 20px
+      position relative
+      height 240px
+
+      .circle
+        width 240px
+        height 240px
+        border-radius 120px
+        border 120px solid transparent
+        background-color white
+        position absolute
+        top 0
+        left 50%
+        margin-left -120px
+
+      img
+        position relative
+        top 70px
+        display block
+        margin 0 auto 0 auto
+        transition all ease 0.3s
+
+      .rotate
+        transform rotate(360deg)
+      .rotate72
+        transform rotate(72deg)
+      .rotate144
+        transform rotate(144deg)
+      .rotate216
+        transform rotate(216deg)
+      .rotate288
+        transform rotate(288deg)
+      .rotate360
+        transform rotate(360deg)
+
+    .sidebar-menu
+      margin-top 20px
+
+      ul.nav
+        list-style none
+        padding-left 40px
+        padding-right 40px
+
+        li
+          font-size 24px
+
+          a
+            display block
+            padding 7px
+            width 100%
+            text-decoration none
+            color white
+            transition all ease 0.4s
+            border-radius 10px
+
+          a:hover
+            background-color #fff
+            color #2080df
+            opacity 0.3
+
+  #content-area
+    position fixed
+    top 0
+    left $sidebar-width
+    bottom 0
+    width "calc(100% - %s)" % $sidebar-width
+    height 100%
+
+    #content
+      width 800px
+      margin 0 auto 0 auto
+      border 1px solid black

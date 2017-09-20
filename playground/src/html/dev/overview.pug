@@ -1,0 +1,13 @@
+extends ../layout.part.pug
+
+block variables
+  - var title = "test"
+  - var webRoot = "../.."
+
+block body
+  #main(data-page="dev")
+    #sidebar-area
+      include sidebar.part.pug
+    #content-area
+      #content
+        | test
