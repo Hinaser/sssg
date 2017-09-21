@@ -1,0 +1,97 @@
+dev-sidebar-collapse()
+  width 60px
+
+  .sidebar-logo
+    height 40px
+
+    .circle
+      width 40px
+      height 40px
+      border-radius 20px
+      border 20px solid transparent
+      margin-left -20px
+
+    img
+      top 10px
+      width 100%
+      transform rotate(720deg)
+
+  .sidebar-menu
+    ul.nav
+      padding-left 3px
+      padding-right 3px
+
+      li
+        a
+          .label
+            opacity 0
+            max-width 0
+
+  .sidebar-toggle
+    .to-expand
+      opacity 1
+
+    .to-collapse
+      opacity 0
+
+dev-sidebar-expand()
+  width 400px
+
+  .sidebar-logo
+    height 240px
+
+    .circle
+      width 240px
+      height 240px
+      border-radius 120px
+      border 120px solid transparent
+      margin-left -120px
+
+    img
+      top 70px
+      width unset
+      transform rotate(0deg)
+
+  .sidebar-menu
+    ul.nav
+      padding-left 40px
+      padding-right 40px
+
+      li
+        a
+          .label
+            opacity unset
+            max-width unset
+
+  .sidebar-toggle
+    a
+      .to-expand
+        opacity 0
+
+      .to-collapse
+        opacity 1
+
+
+
+
+@media(max-width: 1199px)
+  #main[data-page="dev"]
+    #sidebar-area:not(.expand)
+      dev-sidebar-collapse()
+
+    #sidebar-area.expand
+      dev-sidebar-expand()
+
+    #sidebar-area
+      .sidebar-toggle
+        display block
+
+    #content-area
+      left 60px
+      width "calc(100% - %s)" % 60px
+
+@media(min-width: 1200px)
+  #main[data-page="dev"]
+    #sidebar-area.expand
+      dev-sidebar-collapse()
+
