@@ -1,0 +1,165 @@
+$sidebar-width = 400px
+
+/*
+div,img
+  debug()
+//*/
+
+#main[data-page="dev"]
+  #sidebar-area
+    z-index 20
+    position fixed
+    top 0
+    left 0
+    bottom 0
+    width $sidebar-width
+    background-color rgb(40, 180, 120)
+    color #fff
+    padding 0
+    transition all ease 0.3s
+
+    .sidebar-logo
+      margin-top 20px
+      position relative
+      height 240px
+
+      .circle
+        width 240px
+        height 240px
+        border-radius 120px
+        border 120px solid transparent
+        background-color white
+        position absolute
+        top 0
+        left 50%
+        margin-left -120px
+
+      img
+        cursor pointer
+        position relative
+        top 70px
+        display block
+        margin 0 auto 0 auto
+        transition transform ease 0.3s
+
+      .rotate
+        transform rotate(360deg) !important
+      .rotate72
+        transform rotate(72deg) !important
+      .rotate144
+        transform rotate(144deg) !important
+      .rotate216
+        transform rotate(216deg) !important
+      .rotate288
+        transform rotate(288deg) !important
+      .rotate360
+        transform rotate(360deg) !important
+
+    .sidebar-menu
+      margin-top 20px
+
+      ul.nav
+        list-style none
+        padding-left 40px
+        padding-right 40px
+        transition all ease 0.3s
+
+        li
+          font-size 24px
+          transition all ease 0.3s
+
+          a
+            display block
+            width 100%
+            text-decoration none
+            color white
+            transition all ease 0.4s
+            border-radius 10px
+            height 54px
+            position relative
+
+            .logo
+              position absolute
+              top 7px
+              left 7px
+              width 40px
+              height 40px
+              line-height 40px
+              text-align center
+
+            .logo-circle
+              top 7px
+              left 7px
+              width 40px
+              height 40px
+              position absolute
+              border-radius 20px
+              border 2px solid white
+              content ''
+
+            .label
+              position absolute
+              top 7px
+              left 54px
+              height 40px
+              line-height 40px
+              overflow hidden
+
+          a:hover
+            background-color #fff
+            color #2080df
+            opacity 0.3
+
+    .sidebar-toggle
+      position absolute
+      left 0
+      bottom 0
+      width 100%
+      height 40px
+      padding 2px 0
+      display none
+
+      a
+        background-color rgba(50, 155, 100, 0.3)
+        text-decoration none
+        display block
+        width 100%
+        height 100%
+        text-align center
+        line-height 38px
+        transition all ease 0.3s
+        border 1px solid transparent
+        cursor pointer
+        position relative
+
+        .to-expand, .to-collapse
+          position absolute
+          top 0
+          right 0
+          bottom 0
+          left 0
+          transition all ease 0.2s
+          color #fff
+
+        .to-expand
+          opacity 0
+
+        .to-collapse
+          opacity 1
+
+      a:hover
+        background-color rgba(50, 155, 100, 0.7)
+        border 1px solid rgba(50, 155, 100, 1)
+
+  #content-area
+    position fixed
+    top 0
+    left $sidebar-width
+    bottom 0
+    width "calc(100% - %s)" % $sidebar-width
+    height 100%
+
+    #content
+      width 800px
+      margin 20px auto 20px auto
+

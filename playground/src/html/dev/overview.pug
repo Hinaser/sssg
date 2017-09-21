@@ -1,0 +1,18 @@
+extends ../layout.part.pug
+
+block variables
+  - var title = "SSSG - Overview"
+  - var webRoot = "../.."
+
+block body
+  #main(data-page="dev")
+    #sidebar-area
+      include sidebar.part.pug
+    #content-area
+      #content
+        h1.title
+          | Overview
+        p test
+        hr
+        h2 What's this
+        p test

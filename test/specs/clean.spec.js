@@ -37,18 +37,18 @@ describe('Clean', function(){
     });
 
     it('should clean all css files', function(){
-      expect(dir(share.testdata.output + "/css/")).to.be.empty;
+      expect(dir(share.testdata.output + "/css/")).to.not.exist;
     });
 
     it('should clean all image files', function(){
-      expect(dir(share.testdata.output + "/image/")).to.be.empty;
+      expect(dir(share.testdata.output + "/image/")).to.not.exist;
     });
 
     it('should clean all javascript files', function(){
-      expect(dir(share.testdata.output + "/js/")).to.be.empty;
+      expect(dir(share.testdata.output + "/js/")).to.not.exist;
     });
   
-    it('should clean sub content html', function(){
+    it('should clean misc contents', function(){
       expect(dir(share.testdata.output + "/misc/")).to.not.exist;
     });
     

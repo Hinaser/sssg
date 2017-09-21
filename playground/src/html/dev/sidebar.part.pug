@@ -1,0 +1,37 @@
+.sidebar-logo
+  .circle
+    | &nbsp;
+  img(src=webRoot + "/image/sssg.png")
+.sidebar-menu
+  ul.nav
+    li
+      a(href=webRoot + "/contents/dev/overview.html", data-page="overview")
+        .logo O
+        .logo-circle
+        .label Overview
+    li
+      a(href=webRoot + "/contents/dev/code_html.html", data-page="code_html")
+        .logo H
+        .logo-circle
+        .label Coding HTML
+    li
+      a(href=webRoot + "/contents/dev/code_style.html", data-page="code_style")
+        .logo S
+        .logo-circle
+        .label Coding Style
+    li
+      a(href=webRoot + "/contents/dev/code_js.html", data-page="code_js")
+        .logo J
+        .logo-circle
+        .label Coding Javascript
+    li
+      a(href=webRoot + "/contents/dev/misc.html", data-page="misc")
+        .logo M
+        .logo-circle
+        .label Misc
+.sidebar-toggle
+  a.btn
+    .to-expand
+      | >
+    .to-collapse
+      | <
