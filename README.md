@@ -1,6 +1,6 @@
 # sssg - Simple Static Site Generator
 [![Build Status](https://travis-ci.org/Hinaser/sssg.svg)](https://travis-ci.org/Hinaser/sssg)
-[![Coverage Status](https://coveralls.io/repos/github/Hinaser/sssg/badge.svg)](https://coveralls.io/github/Hinaser/sssg?branch=develop)
+[![Coverage Status](https://coveralls.io/repos/github/Hinaser/sssg/badge.svg)](https://coveralls.io/github/Hinaser/sssg)
 
 Generate static website from developer-friendly languages like pug, stylus, es6, flow.
 
@@ -15,16 +15,16 @@ sssg try
 ```
 
 After dispatching `sssg try`,
-- Directories `./src/` and `./dst/` will be created at your working directory.
-- Browser will open `./docs/index.html`.
-- The web page in browser will be live-reloaded with src file modifications 
+- Directories `./src` and `./dst` will be created at your working directory.
+- Browser app will launch and open `./docs/index.html`.
+- The web page in browser will be live-reloaded when you update files in `./src` folder. 
 
 |dir|description|
 |---|-----------|
-|`./src/`|Stores files to be edited.  |
-|`./docs/`|Stores files to be served by web server|
+|`./src`|Stores files to be edited.  |
+|`./docs`|Stores files to be served by web server|
 
-You can freely edit files in the `./src/` folder and see changes on your browser's page.
+You can freely edit files in the `./src` folder and see changes on your browser's page.
 
 # Build static web files
 ```

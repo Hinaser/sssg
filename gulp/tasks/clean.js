@@ -30,7 +30,7 @@ gulp.task('clean:css', function(){
   
   var destDir = config['css']['destDir'];
 
-  return del([destDir + '/main.css'], {force: true});
+  return del([destDir], {force: true});
 });
 
 gulp.task('clean:js', function(){
@@ -42,7 +42,7 @@ gulp.task('clean:js', function(){
   
   var destDir = config['js']['destDir'];
 
-    return del([destDir + '/main.js'], {force: true});
+    return del([destDir], {force: true});
 });
 
 gulp.task('clean:image', function(){
@@ -54,7 +54,7 @@ gulp.task('clean:image', function(){
   
   var destDir = config['image']['destDir'];
 
-  return del([destDir + '/**/*.{tiff,svg,jpeg,jpg,png,gif}'], {force: true});
+  return del([destDir], {force: true});
 });
 
 gulp.task('clean:html', function(){
