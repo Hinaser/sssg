@@ -34,7 +34,7 @@ var babel_presets = [
 gulp.task('build:css', function(){
   var config = require('../config.js');
   
-  return gulp.src([config['css']['srcDir'] + '/**/*.styl', "!" + config['css']['srcDir'] + "/*.part.styl"])
+  return gulp.src(config['css']['srcDir'] + '/main.styl')
     .pipe(plumber())
     .on('error', function(err){
       console.error(err.message);
