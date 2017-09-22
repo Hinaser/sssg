@@ -1,10 +1,5 @@
 $sidebar-width = 400px
 
-/*
-div,img
-  debug()
-//*/
-
 #main[data-page="dev"]
   #sidebar-area
     z-index 20
@@ -57,6 +52,7 @@ div,img
 
     .sidebar-menu
       margin-top 20px
+      margin-bottom 40px
 
       ul.nav
         list-style none
@@ -111,10 +107,10 @@ div,img
             opacity 0.3
 
     .sidebar-toggle
-      position absolute
+      position fixed
       left 0
       bottom 0
-      width 100%
+      width 400px
       height 40px
       padding 2px 0
       display none
@@ -162,4 +158,9 @@ div,img
     #content
       width 800px
       margin 20px auto 20px auto
+
+      .i-need-code
+        font-style italic
+        font-weight bold
+        color red
 

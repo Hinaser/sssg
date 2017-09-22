@@ -28,6 +28,7 @@ dev-sidebar-collapse()
             max-width 0
 
   .sidebar-toggle
+    width 60px
     .to-expand
       opacity 1
 
@@ -64,6 +65,7 @@ dev-sidebar-expand()
             max-width unset
 
   .sidebar-toggle
+    width 400px
     a
       .to-expand
         opacity 0
@@ -72,10 +74,13 @@ dev-sidebar-expand()
         opacity 1
 
 
+#main[data-page="dev"]
+  @media(max-width: 860px)
+    #content-area
+      #content
+        width calc(100% - 40px)
 
-
-@media(max-width: 1199px)
-  #main[data-page="dev"]
+  @media(max-width: 1199px)
     #sidebar-area:not(.expand)
       dev-sidebar-collapse()
 
@@ -90,8 +95,7 @@ dev-sidebar-expand()
       left 60px
       width "calc(100% - %s)" % 60px
 
-@media(min-width: 1200px)
-  #main[data-page="dev"]
+  @media(min-width: 1200px)
     #sidebar-area.expand
       dev-sidebar-collapse()
 

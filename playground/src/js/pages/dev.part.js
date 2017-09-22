@@ -25,7 +25,8 @@ export default class DevController extends AppController {
       window.location = "../../";
     });
     
-    $("#content-area").niceScroll();
+    $("#sidebar-area").niceScroll();
+    $("#content-area").niceScroll({autohidemode: "hidden"});
   }
   
   setMenuAnime(){
@@ -43,8 +44,13 @@ export default class DevController extends AppController {
   }
   
   setMenuToggleEvent(){
+    const sidebarArea = $("#sidebar-area");
     this.sidebarToggle.on("click", (e) => {
-      $("#sidebar-area").toggleClass("expand");
+      sidebarArea.toggleClass("expand");
+    });
+  
+    sidebarArea.on("transitionend", (e) => {
+      sidebarArea.getNiceScroll().resize();
     });
   }
 }
