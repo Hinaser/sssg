@@ -1,5 +1,10 @@
-var gulp = require( 'gulp');
+var gulp = require('gulp');
 var browsersync = require( 'browser-sync').create();
+require('./build');
+require('./build-js');
+require('./build-css');
+require('./build-image');
+require('./build-html');
 
 gulp.task('build:js:sync', ['build:js'], function(){browsersync.reload();});
 gulp.task('build:css:sync', ['build:css'], function(){browsersync.reload();});
