@@ -51,7 +51,34 @@ describe('Serve', function() {
         expect(response.text).to.equal(file(__dirname + "/../testdata/input/dst/index.html"));
       });
     });
+  
+    describe('Request to "http://localhost:3000/contents/sub1/test.html"', function(){
+      var response = null;
     
+      before(function(done){
+        this.timeout(10000);
+      
+        chai.request("http://localhost:3000")
+          .get("/contents/sub1/test.html")
+          .end(function(err, res){
+            response = res;
+            done();
+          });
+      });
+    
+      it("should response status code 200", function(){
+        expect(response).to.have.status(200);
+      });
+    
+      it("should be html", function(){
+        expect(response).to.be.html;
+      });
+    
+      it("should be equal to local index.html file", function(){
+        expect(response.text).to.equal(file(__dirname + "/../testdata/input/dst/contents/sub1/test.html"));
+      });
+    });
+  
     describe('Request to "http://localhost:3000/css/main.css"', function(){
       var response = null;
     
