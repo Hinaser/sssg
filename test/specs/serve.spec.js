@@ -6,19 +6,21 @@ chai.use(require('chai-http'));
 var chaiFiles = require('chai-files');
 chai.use(chaiFiles);
 var file = chaiFiles.file;
-
+var del = require('del');
 var Share = require('./shared');
 
 // Load main module for test
 var ssg = require('../../');
 
+var DEBUG = false; // Set true to show verbose messages in test
+
 describe('Serve', function() {
   describe('#dev', function () {
-    var share = null;
+    var share = new Share();
     
     before(function (done) {
       this.timeout(30000);
-      share = new Share().suppressConsole();
+      if(!DEBUG) share.suppressConsole();
       ssg.do("serve", share.testConfig, function () {
         share.resetConsole();
         done();
@@ -48,10 +50,37 @@ describe('Serve', function() {
       });
       
       it("should be equal to local index.html file", function(){
-        expect(response.text).to.equal(file(__dirname + "/../testdata/input/dst/index.html"));
+        expect(response.text).to.equal(file(share.testdata.expected + "/index.html"));
       });
     });
+  
+    describe('Request to "http://localhost:3000/contents/sub1/test.html"', function(){
+      var response = null;
     
+      before(function(done){
+        this.timeout(10000);
+      
+        chai.request("http://localhost:3000")
+          .get("/contents/sub1/test.html")
+          .end(function(err, res){
+            response = res;
+            done();
+          });
+      });
+    
+      it("should response status code 200", function(){
+        expect(response).to.have.status(200);
+      });
+    
+      it("should be html", function(){
+        expect(response).to.be.html;
+      });
+    
+      it("should be equal to local index.html file", function(){
+        expect(response.text).to.equal(file(share.testdata.expected + "/contents/sub1/test.html"));
+      });
+    });
+  
     describe('Request to "http://localhost:3000/css/main.css"', function(){
       var response = null;
     
@@ -75,7 +104,7 @@ describe('Serve', function() {
       });
     
       it("should be equal to local main.css file", function(){
-        expect(response.text).to.equal(file(__dirname + "/../testdata/input/dst/css/main.css"));
+        expect(response.text).to.equal(file(share.testdata.expected + "/css/main.css"));
       });
     });
   
@@ -108,5 +137,13 @@ describe('Serve', function() {
       });
       */
     });
-  })
+  
+    if(!DEBUG){
+      after(function(done){
+        del(share.testdata.output, {force: true}).then(function(){
+          done();
+        });
+      });
+    }
+  });
 });

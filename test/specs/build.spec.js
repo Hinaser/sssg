@@ -4,21 +4,22 @@ var chai = require('chai');
 var expect = chai.expect;
 var chaiFiles = require('chai-files');
 chai.use(chaiFiles);
-
+var del = require('del');
 var file = chaiFiles.file;
-
 var Share = require('./shared');
 
 // Load main module for test
 var ssg = require('../../');
 
+var DEBUG = false; // Set true to show verbose messages in test
+
 describe('Build', function(){
   describe('#all', function(){
-    var share = null;
+    var share = new Share();
     
     before(function(done){
       this.timeout(30000);
-      share = new Share().suppressConsole();
+      if(!DEBUG) share.suppressConsole();
       ssg.do("build", share.testConfig, function(){
         share.resetConsole();
         done();
@@ -26,7 +27,7 @@ describe('Build', function(){
     });
   
     it('should generate index.html', function(){
-      expect(file(share.testdata.output + "index.html")).to.equal(file(share.testdata.expected + "/index.html"));
+      expect(file(share.testdata.output + "/index.html")).to.equal(file(share.testdata.expected + "/index.html"));
     });
 
     it('should generate sub content html', function(){
@@ -56,5 +57,13 @@ describe('Build', function(){
     it('should copy raw misc files', function(){
       expect(file(share.testdata.output + "/misc/sample1/test.json")).to.equal(file(share.testdata.expected + "/misc/sample1/test.json"));
     });
+    
+    if(!DEBUG){
+      after(function(done){
+        del(share.testdata.output, {force: true}).then(function(){
+          done();
+        });
+      });
+    }
   })
 });

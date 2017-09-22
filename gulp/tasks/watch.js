@@ -1,4 +1,9 @@
 var gulp = require('gulp');
+require('./build-js');
+require('./build-css');
+require('./build-image');
+require('./build-html');
+
 gulp.task('watch-js', ['build:js'], function(){
   var config = require('../config.js');
   

@@ -1,28 +1,38 @@
 "use strict";
 
-var gulp = null;
-var gulpTasks = null;
+var gulp = require('gulp');
 
-var tasks = [
-  "build", "rebuild",
-  "build:css", "rebuild:css",
-  "build:js", "rebuild:js",
-  "build:image", "rebuild:image",
-  "build:html", "rebuild:html",
-  "build:lib", "rebuild:lib",
-  "build:lib:js", "rebuild:lib:js",
-  "build:lib:css", "rebuild:lib:css",
-  "clean",
-  "clean:css",
-  "clean:js",
-  "clean:image",
-  "clean:html",
-  "clean:lib",
-  "clean:lib:js",
-  "clean:lib:css",
-  "serve",
-  "init"
-];
+var tasks = {
+  "build":            "./gulp/tasks/build.js",
+  "build:css":        "./gulp/tasks/build-css.js",
+  "build:js":         "./gulp/tasks/build-js.js",
+  "build:image":      "./gulp/tasks/build-image.js",
+  "build:html":       "./gulp/tasks/build-html.js",
+  "build:lib":        "./gulp/tasks/build-lib.js",
+  "build:lib:js":     "./gulp/tasks/build-lib-js.js",
+  "build:lib:css":    "./gulp/tasks/build-lib-css.js",
+  "build:lib:misc":   "./gulp/tasks/build-lib-misc.js",
+  "rebuild":          "./gulp/tasks/rebuild.js",
+  "rebuild:css":      "./gulp/tasks/rebuild-css.js",
+  "rebuild:js":       "./gulp/tasks/rebuild-js.js",
+  "rebuild:image":    "./gulp/tasks/rebuild-image.js",
+  "rebuild:html":     "./gulp/tasks/rebuild-html.js",
+  "rebuild:lib":      "./gulp/tasks/rebuild-lib.js",
+  "rebuild:lib:css":  "./gulp/tasks/rebuild-lib-css.js",
+  "rebuild:lib:js":   "./gulp/tasks/rebuild-lib-js.js",
+  "rebuild:lib:misc": "./gulp/tasks/rebuild-lib-misc.js",
+  "clean":            "./gulp/tasks/clean.js",
+  "clean:css":        "./gulp/tasks/clean-css.js",
+  "clean:js":         "./gulp/tasks/clean-js.js",
+  "clean:image":      "./gulp/tasks/clean-image.js",
+  "clean:html":       "./gulp/tasks/clean-html.js",
+  "clean:lib":        "./gulp/tasks/clean-lib.js",
+  "clean:lib:css":    "./gulp/tasks/clean-lib-css.js",
+  "clean:lib:js":     "./gulp/tasks/clean-lib-js.js",
+  "clean:lib:misc":   "./gulp/tasks/clean-lib-misc.js",
+  "serve":            "./gulp/tasks/serve.js",
+  "init":             "./gulp/tasks/init.js"
+};
 
 /**
  * SSG = Static Site Generator.
@@ -44,7 +54,7 @@ var SSG = {};
  * @returns {boolean}
  */
 SSG.isSupported = function(task){
-  return tasks.includes(task);
+  return Object.keys(tasks).includes(task);
 };
 
 /**
@@ -52,7 +62,7 @@ SSG.isSupported = function(task){
  * @returns {Array}
  */
 SSG.supportedTasks = function(){
-  return tasks;
+  return Object.keys(tasks);
 };
 
 /**
@@ -70,15 +80,13 @@ SSG.do = function(task, options, cb){
     cb = errorHandler;
   }
   
-  if(!gulp){
-    gulp = require('gulp');
-  }
-  
   var isUpdated = setOption(options);
   
-  if(!gulpTasks || isUpdated){
-    gulpTasks = require('./gulpfile');
+  if(isUpdated){
+    delete require.cache[require.resolve(tasks[task])];
   }
+  
+  require(tasks[task]);
   
   // Valid for gulp 3.x
   if(gulp.start){
