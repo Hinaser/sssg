@@ -32,7 +32,18 @@ gulp.task('rebuild:html', ['clean:html'], function(){
     .pipe(uncache({
       rename: false,
       append: "hash",
-      srcDir: config['html']['destDir']
+      srcFileMap: function(filename){
+        var fixedPath = filename.split(/[/]/)
+          .map(function(val){
+            if(val === ".."){
+              return null;
+            }
+            return val;
+          })
+          .filter(function(s){ return s })
+          .join("/");
+        return config['html']['destDir'] + "/../" + fixedPath;
+      }
     }))
     .pipe(gulp.dest(config['html']['destDir']));
   
