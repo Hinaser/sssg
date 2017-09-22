@@ -1,3 +1,8 @@
-a
-  | test2
+extends ../layout.part.pug
 
+block variables
+  - var title = "sub"
+  - var webRoot = "../.."
+
+block body
+  a test

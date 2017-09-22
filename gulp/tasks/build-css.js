@@ -27,5 +27,5 @@ gulp.task('build:css', function(){
     }))
     .pipe(autoprefixer())
     .pipe(gulpif(config['css']['sourcemaps'], sourcemaps.write()))
-    .pipe(gulp.dest(config['css']['destDir']))
+    .pipe(gulp.dest(config['css']['destDir']));
 });

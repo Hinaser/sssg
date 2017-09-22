@@ -6,19 +6,21 @@ chai.use(require('chai-http'));
 var chaiFiles = require('chai-files');
 chai.use(chaiFiles);
 var file = chaiFiles.file;
-
+var del = require('del');
 var Share = require('./shared');
 
 // Load main module for test
 var ssg = require('../../');
 
+var DEBUG = false; // Set true to show verbose messages in test
+
 describe('Serve', function() {
   describe('#dev', function () {
-    var share = null;
+    var share = new Share();
     
     before(function (done) {
       this.timeout(30000);
-      share = new Share().suppressConsole();
+      if(!DEBUG) share.suppressConsole();
       ssg.do("serve", share.testConfig, function () {
         share.resetConsole();
         done();
@@ -48,7 +50,7 @@ describe('Serve', function() {
       });
       
       it("should be equal to local index.html file", function(){
-        expect(response.text).to.equal(file(__dirname + "/../testdata/input/dst/index.html"));
+        expect(response.text).to.equal(file(share.testdata.expected + "/index.html"));
       });
     });
   
@@ -75,7 +77,7 @@ describe('Serve', function() {
       });
     
       it("should be equal to local index.html file", function(){
-        expect(response.text).to.equal(file(__dirname + "/../testdata/input/dst/contents/sub1/test.html"));
+        expect(response.text).to.equal(file(share.testdata.expected + "/contents/sub1/test.html"));
       });
     });
   
@@ -102,7 +104,7 @@ describe('Serve', function() {
       });
     
       it("should be equal to local main.css file", function(){
-        expect(response.text).to.equal(file(__dirname + "/../testdata/input/dst/css/main.css"));
+        expect(response.text).to.equal(file(share.testdata.expected + "/css/main.css"));
       });
     });
   
@@ -135,5 +137,13 @@ describe('Serve', function() {
       });
       */
     });
-  })
+  
+    if(!DEBUG){
+      after(function(done){
+        del(share.testdata.output, {force: true}).then(function(){
+          done();
+        });
+      });
+    }
+  });
 });

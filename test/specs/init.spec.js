@@ -15,13 +15,13 @@ var Share = require('./shared');
 var ssg = require('../../');
 
 describe('Init', function(){
-  var share = null;
+  var share = new Share();
   var srcDir = "./playground/src/";
   var dstDir = "./src/";
   
   before(function(done){
     this.timeout(30000);
-    share = new Share().suppressConsole();
+    share.suppressConsole();
     ssg.do("init", null, function(){
       share.resetConsole();
       done();
