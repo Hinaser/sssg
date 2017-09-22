@@ -4,14 +4,6 @@
   height 100%
   width 100%
   position fixed
-  background-image repeating-linear-gradient(
-    45deg,
-    #999,
-    #999 25%,
-    transparent 25%,
-    transparent 50%
-  )
-  background-size 6px 6px
 
   .title
     $width = 400px
@@ -106,7 +98,6 @@
       .menu-item
         border none
         width 100px
-        padding 5px 0
         float left
         text-align center
         border-radius 6px
@@ -114,6 +105,7 @@
         cursor pointer
         color rgb(100, 140, 240)
         height 26px
+        line-height 26px
 
       .menu-item-arrow
         float left
@@ -191,6 +183,7 @@
 
   .navigate
     position relative
+    margin-bottom 20px
 
   @keyframes bounce {
     0%, 20%, 50%, 80%, 100% {

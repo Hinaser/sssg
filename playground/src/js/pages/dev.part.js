@@ -36,11 +36,12 @@ export default class DevController extends AppController {
       menu.on("mouseleave", (e) => this.sidebarLogo.removeClass(cssClass));
     };
   
-    handleMenuEvent("overview", "rotate72");
-    handleMenuEvent("code_html", "rotate144");
-    handleMenuEvent("code_style", "rotate216");
-    handleMenuEvent("code_js", "rotate288");
-    handleMenuEvent("misc", "rotate");
+    handleMenuEvent("overview", "rotate60");
+    handleMenuEvent("build", "rotate120");
+    handleMenuEvent("usage", "rotate180");
+    handleMenuEvent("code_html", "rotate240");
+    handleMenuEvent("code_style", "rotate300");
+    handleMenuEvent("code_js", "rotate360");
   }
   
   setMenuToggleEvent(){

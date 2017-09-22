@@ -19,16 +19,19 @@ export default class IndexController extends AppController {
     const btn_dev = $("#develop");
   
     btn_install.on("click", (e) => {
+      e.stopPropagation();
       const template = $(".templates .install").wrap("<div/>").parent().html();
       this.popUp(template);
     });
   
     btn_init.on("click", (e) => {
+      e.stopPropagation();
       const template = $(".templates .init").wrap("<div/>").parent().html();
       this.popUp(template);
     });
   
     btn_dev.on("click", (e) => {
+      e.stopPropagation();
       const template = $(".templates .develop").wrap("<div/>").parent().html();
       this.popUp(template);
     });
@@ -47,7 +50,7 @@ export default class IndexController extends AppController {
       popup.append(template);
       popup.find(".template").niceScroll();
     }, 0);
-  
+
     layer.on("click", (e)=>{
       popup.addClass("hidden");
       layer.removeClass("dark");
