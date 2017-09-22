@@ -1,17 +1,19 @@
-var es = require('event-stream');
 var gulp = require('gulp');
 var pug = require('gulp-pug');
 var plumber = require('gulp-plumber');
 var uncache = require('gulp-uncache');
+var path = require('path');
 
 /**
  * Build html file from source pug files.
  * This task builds not only html but also css/js/image files.
  */
-gulp.task('build:html', function(){
+gulp.task('build:html', ['build:html:root', 'build:html:sub']);
+
+gulp.task("build:html:root", function(){
   var config = require('../config.js');
   
-  var indexStream = gulp.src([config['html']['srcDir'] + "/index.pug"], {base: config['html']['srcDir']})
+  return gulp.src([config['html']['srcDir'] + "/index.pug"], {base: config['html']['srcDir']})
     .pipe(plumber())
     .pipe(pug({
       pretty: config['html']['pretty']
@@ -22,8 +24,12 @@ gulp.task('build:html', function(){
       srcDir: config['html']['destIndexDir']
     }))
     .pipe(gulp.dest(config['html']['destIndexDir']));
+});
+
+gulp.task("build:html:sub", function(){
+  var config = require('../config.js');
   
-  var subStream = gulp.src([
+  return gulp.src([
     config['html']['srcDir'] + "/**/*.pug",
     "!" + config['html']['srcDir'] + "/index.pug",
     "!" + config['html']['srcDir'] + "/**/*.part.pug"
@@ -45,13 +51,8 @@ gulp.task('build:html', function(){
           })
           .filter(function(s){ return s })
           .join("/");
-        return config['html']['destDir'] + "/../" + fixedPath;
+        return path.resolve(config['html']['destDir'] + "/../" + fixedPath);
       }
     }))
     .pipe(gulp.dest(config['html']['destDir']));
-  
-  return es.merge([
-    indexStream,
-    subStream
-  ]);
 });
