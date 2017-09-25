@@ -16,7 +16,7 @@ var ssg = require('../../');
 
 describe('Init', function(){
   var share = new Share();
-  var srcDir = "./playground/src/";
+  var srcDir = "./lib/templates/playground/src/";
   var dstDir = "./src/";
   
   before(function(done){

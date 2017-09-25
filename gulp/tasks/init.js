@@ -2,7 +2,7 @@ var gulp = require('gulp');
 var argv = require("yargs").argv;
 
 gulp.task('init', function(){
-  var srcDir = __dirname + "/../../playground/src";
+  var srcDir = __dirname + "/../../lib/templates/playground/src";
   var dstDir = "./src";
 
   if(argv.s || argv.src){
