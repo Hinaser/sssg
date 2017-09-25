@@ -157,6 +157,10 @@ $sidebar-width = 400px
     width "calc(100% - %s)" % $sidebar-width
     height 100%
 
+    .hidden
+      opacity 0
+      z-index 0
+
     #content
       width 800px
       margin 20px auto 20px auto
@@ -166,3 +170,168 @@ $sidebar-width = 400px
         font-weight bold
         color red
 
+      h1
+        font-size 2em
+      h2
+        font-size 1.2em
+
+      h1
+        margin-top 80px
+      .overview-image + h1
+        margin-top 20px
+
+      .overview-image
+        height 586px
+        position relative
+
+        img
+          position absolute
+          transition all ease 0.3s
+          border 10px solid transparent
+          border-radius 6px
+
+        img.es6-sample
+          top 0
+          left 0
+          border 10px solid transparent
+          z-index 1
+
+        img.es6-sample + img
+          opacity 0
+          top 180px
+          left 440px
+          border 2px solid rgb(33, 33, 33)
+
+        img.stylus-sample
+          top 60px
+          left 100px
+          z-index 2
+
+        img.stylus-sample + img
+          opacity 0
+          top 240px
+          left 560px
+          border 2px solid rgb(33, 33, 33)
+
+        img.pug-sample
+          top 120px
+          left 200px
+          z-index 3
+
+        img.pug-sample + img
+          opacity 0
+          top 300px
+          left 660px
+          border 2px solid rgb(33, 33, 33)
+
+        img.dev-sample
+          border none
+          top 0
+          left 0
+          z-index 0
+
+        img.result-sample
+          top 0
+          left 90px
+          z-index 0
+
+        .pug-sample:hover, .stylus-sample:hover, .es6-sample:hover
+          z-index 4
+          border 10px solid rgba(30,30,30,.4)
+          box-shadow 6px 6px 3px 1px rgba(100, 100, 100, .2)
+
+          & + img
+            opacity 1
+            z-index 4
+
+        .switcher
+          position absolute
+          top 520px
+          left calc(50% - 90px)
+          width 180px
+          height 40px
+
+          .input
+            position absolute
+            top 25px
+            left 0
+            width 60px
+            height 40px
+            text-align center
+            line-height 40px
+            cursor pointer
+
+          .dev
+            position absolute
+            top 25px
+            left 60px
+            width 60px
+            height 40px
+            text-align center
+            line-height 40px
+            cursor pointer
+
+          .output
+            position absolute
+            top 25px
+            right 0
+            width 60px
+            height 40px
+            text-align center
+            line-height 40px
+            cursor pointer
+
+          .btn
+            position absolute
+            top 10px
+            left 10px
+            width 20px
+            height 20px
+            transition all ease 0.4s
+            cursor pointer
+            z-index 5
+            border-radius 10px
+            border 3px solid rgb(70, 150, 180)
+            background-color rgb(0, 240, 120)
+            box-shadow 0 0 20px 6px rgba(0, 200, 120, .7)
+
+          .btn.dev
+            left 80px
+            background-color rgb(70, 180, 140)
+            box-shadow 0 0 20px 6px rgba(0, 100, 120, .4)
+
+          .btn.out
+            left 150px
+            background-color rgb(70, 100, 120)
+            box-shadow 0 0 20px 6px rgba(0, 100, 120, .4)
+
+          .rail
+            z-index 1
+            position absolute
+            top 16px
+            left 20px
+            right 20px
+            height 8px
+            border 2px solid green
+            border-radius 4px
+
+      .sssg-build-image
+        margin-top 20px
+        margin-bottom 20px
+        text-align left
+        width 590px
+
+        img
+          width 100%
+
+      .outline-sample
+        width 780px
+
+        img
+          width 100%
+
+      .debug-screen
+        width 600px
+
+        img
+          width 100%

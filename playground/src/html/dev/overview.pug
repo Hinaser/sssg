@@ -10,6 +10,22 @@ block body
       include sidebar.part.pug
     #content-area
       #content
+        .overview-image
+          .source-sample
+            img.pug-sample(src=webRoot + "/image/pug-sample.png")
+            img(src=webRoot + "/image/pug.png")
+            img.stylus-sample(src=webRoot + "/image/stylus-sample.png")
+            img(src=webRoot + "/image/stylus.png")
+            img.es6-sample(src=webRoot + "/image/es6-sample.png")
+            img(src=webRoot + "/image/es6.png")
+          img.dev-sample.hidden(src=webRoot + "/image/sssg-screenshot.png")
+          img.result-sample.hidden(src=webRoot + "/image/result-sample.png")
+          .switcher
+            .rail
+            .btn
+            .input IN
+            .dev DEV
+            .output OUT
         h1.title
           | Overview
         p
@@ -25,27 +41,102 @@ block body
             | to code web service with developer friendly transpile languages like
             | Pug, Stylus, ES6 Javascript.
           li
-            | to see real time preview of a web page on coding.
+            | to see real time preview of a web page on coding. (WYSIWYG)
           li
             | to export resulted static web files anywhere.
         p
           | I originally wanted prototyping tool for website and found some wireframing services.
           | Those services is useful in that users don't need to code anything to outline site design.
-        p
+          br
           | However, as a programmer myself,&nbsp;
-          span.i-need-code I NEED CODE to spec out web designs.
+          | I NEEDED CODE to spec out web designs.
+          br
+          | By the reason above, this framework is targeting coders who want to share prototype design
+          | based on text.
 
-        hr
+        h1 Simple = The rest is yours
+        p
+          | SSSG does only a few things.
+        p
+          | Basically, it
+        ul
+          li compiles `index.pug` in source folder into `index.html` in destination folder.
+          li compiles `main.styl` in source folder into `main.css` in destination folder.
+          li compiles `main.js` in source folder into `main.js` in destination folder.
+          li copies image files and other misc files into destination folder.
 
-        h2 Simple = Freedom
-        p - editing -
+        .sssg-build-image
+          img(src=webRoot + "/image/sssg-build-image.png")
 
-        hr
+        p
+          | This is so simple, isn't it? Actually SSSG is not a framework but just a convention.
 
-        h2 Try it out
-        p - editing -
+        p
+          | While SSSG does just simple works, you can fully take advantages of pug/stylus/es6 features without concerns.
 
-        hr
+        b
+          a(href="https://pugjs.org/", target="_blank") Pug
+        p
+          | Pug is equipped with code template system. If your website utilizes the same layout over several pages,
+          | you should split the pages into static components(sidebar, header, footer, etc) and dynamic components.
+          br
+          | Pug encourages you to do so.
+          br
+          | How you structure your website components is up to you. The choice is yours.
 
-        h2 Develop your own static site generator
-        p - editing -
+        b
+          a(href="https://stylus-lang.com", target="_blank") Stylus
+        p
+          | Haven't you hear DRY coding? If no, you've got a chance to learn it. As well as Pug,
+          | Stylus makes you code less, by representing parent-child structure as an indent.
+          | To fully speed up coding, you should try IDE that supports Stylus.
+          br
+          | Additionally, Stylus also supports modular system. It can `import` any other stylus files.
+          | You can construct your own modular structure as clean as you feel comfortable.
+          br
+          | Of course, you can write all style information only in `main.styl`.
+
+        b
+          a(href="http://es6-features.org", target="_blank") ES6
+        p
+          | Unlike Pug/Stylus, ES6 itself is not equipped with less-code syntax.
+          | But it has asynchronous system with `Promise`, native class support,
+          | and like Stylus, `import` statement.
+          br
+          | With `class` and `import` feature, you can fully modularize your front-end
+          | business logic into reusable and structured framework.
+
+        h1 Try it out
+        h2 Requirements
+        p You need to have&nbsp;
+          a(href="https://git-scm.com/book/id/v2/Getting-Started-Installing-Git", target="_blank") Git
+          | &nbsp;and&nbsp
+          a(href="https://nodejs.org/en/download/package-manager/", target="_blank") NodeJS 6.x
+          | &nbsp;installed your computer.
+          br
+          | Check out official installation manual.
+        p
+          | After you installed these requirements, install SSSG globally on your computer.
+        code
+          | $ npm install -g git+https://github.com/Hinaser/sssg
+        p
+          | Let's try
+        code
+          | $ cd [work folder]
+          br
+          | $ sssg try
+        p
+          | After dispatching the above command, browser will launch and open ./docs/index.html
+          | created in your working folder.
+        p
+          | Let's edit ./src/html/index.pug and see what happens.
+
+        h1 Debug
+        .outline-sample
+          img(src=webRoot + "/image/sssg-screenshot.png")
+        p Debug your web design with element outlining by accessing http://localhost:3001
+        p
+          | This debug feature comes from&nbsp;
+          a(href="https://www.browsersync.io/", target="_blank") BrowserSync
+        .debug-screen
+          img(src=webRoot + "/image/debug.png")
