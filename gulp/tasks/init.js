@@ -2,8 +2,15 @@ var gulp = require('gulp');
 var argv = require("yargs").argv;
 
 gulp.task('init', function(){
-  var srcDir = __dirname + "/../../playground/src";
+  const minimal = __dirname + "/../../lib/templates/minimal/src";
+  const readme = __dirname + "/../../lib/templates/readme/src";
+  
+  var srcDir = minimal;
   var dstDir = "./src";
+  
+  if(argv.readme){
+    srcDir = readme;
+  }
 
   if(argv.s || argv.src){
     dstDir = argv.s || argv.src;
