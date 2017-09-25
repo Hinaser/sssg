@@ -69,7 +69,7 @@ block body
           img(src=webRoot + "/image/sssg-build-image.png")
 
         p
-          | This is so simple, isn't it? Actually SSSG is not a framework but just a convention.
+          | This is so simple, isn't it? Actually SSSG is not a framework but kind of a convention of folder structure.
 
         p
           | While SSSG does just simple works, you can fully take advantages of pug/stylus/es6 features without concerns.
@@ -88,7 +88,7 @@ block body
           a(href="https://stylus-lang.com", target="_blank") Stylus
         p
           | Haven't you hear DRY coding? If no, you've got a chance to learn it. As well as Pug,
-          | Stylus makes you code less, by representing parent-child structure as an indent.
+          | Stylus makes you code less, by representing parent-child relationship as an indent.
           | To fully speed up coding, you should try IDE that supports Stylus.
           br
           | Additionally, Stylus also supports modular system. It can `import` any other stylus files.
@@ -99,7 +99,7 @@ block body
         b
           a(href="http://es6-features.org", target="_blank") ES6
         p
-          | Unlike Pug/Stylus, ES6 itself is not equipped with less-code syntax.
+          | Unlike Pug/Stylus, ES6 itself is not equipped with DRY syntax.
           | But it has asynchronous system with `Promise`, native class support,
           | and like Stylus, `import` statement.
           br
@@ -114,7 +114,8 @@ block body
           a(href="https://nodejs.org/en/download/package-manager/", target="_blank") NodeJS 6.x
           | &nbsp;installed your computer.
           br
-          | Check out official installation manual.
+          | Check out official installation manual for details.
+        h2 Install
         p
           | After you installed these requirements, install SSSG globally on your computer.
         code
@@ -130,6 +131,11 @@ block body
           | created in your working folder.
         p
           | Let's edit ./src/html/index.pug and see what happens.
+        h2 Tips
+        p
+          | You can try customizing this page by the command below.
+        code
+          | $ sssg try --readme
 
         h1 Debug
         .outline-sample
