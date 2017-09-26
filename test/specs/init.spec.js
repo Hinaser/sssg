@@ -11,6 +11,8 @@ var dir = chaiFiles.dir;
 
 var Share = require('./shared');
 
+var DEBUG = false; // Set true to show verbose messages in test
+
 describe('Init', function(){
   describe('with default template', function(){
     var share = new Share();
@@ -20,11 +22,15 @@ describe('Init', function(){
     before(function(done){
       // Clear require cache for testing
       delete require.cache[require.resolve('../../')];
+    
+      // Without any arguments
+      require('yargs')([]);
+    
       // Load main module for test
       var ssg = require('../../');
-  
+    
       this.timeout(30000);
-      share.suppressConsole();
+      if(!DEBUG) share.suppressConsole();
       ssg.do("init", null, function(){
         share.resetConsole();
         done();
@@ -67,12 +73,15 @@ describe('Init', function(){
       this.timeout(30000);
   
       // Clear require cache for testing
-      Object.keys(require.cache).forEach(function(key) { delete require.cache[key] })
+      Object.keys(require.cache).forEach(function(key) { delete require.cache[key] });
+      
+      // With --readme option
+      require('yargs')(["--readme"]);
+      
       // Load main module for test
-      process.argv.push("--readme");
       var ssg = require('../../');
   
-      share.suppressConsole();
+      if(!DEBUG) share.suppressConsole();
       ssg.do("init", null, function(){
         share.resetConsole();
         done();
