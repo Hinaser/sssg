@@ -11,11 +11,8 @@ gulp.task('init', function(){
   if(argv.readme){
     srcDir = readme;
   }
-
-  if(argv.s || argv.src){
-    dstDir = argv.s || argv.src;
-  }
-  else if(argv._.length <= 1) {
+  
+  if(argv._.length <= 1) { // argv._[0] should be always "init"
     dstDir = "./src";
   }
   else if(argv._.length === 2) {

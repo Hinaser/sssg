@@ -13,5 +13,5 @@ var buildLibMisc = function(){
     .pipe(gulp.dest(config['misc']['destDir']))
 };
 
-gulp.task('rebuild:lib:misc', ['clean-lib-misc'], buildLibMisc);
+gulp.task('rebuild:lib:misc', ['clean:lib:misc'], buildLibMisc);
 

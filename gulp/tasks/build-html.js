@@ -23,7 +23,8 @@ gulp.task("build:html:root", function(){
       append: "hash",
       srcDir: config['html']['destIndexDir']
     }))
-    .pipe(gulp.dest(config['html']['destIndexDir']));
+    .pipe(gulp.dest(config['html']['destIndexDir']))
+    ;
 });
 
 gulp.task("build:html:sub", function(){
@@ -54,5 +55,6 @@ gulp.task("build:html:sub", function(){
         return path.resolve(config['html']['destDir'] + "/../" + fixedPath);
       }
     }))
-    .pipe(gulp.dest(config['html']['destDir']));
+    .pipe(gulp.dest(config['html']['destDir']))
+    ;
 });

@@ -1,7 +1,5 @@
 "use strict";
 
-var gulp = require('gulp');
-
 var tasks = {
   "build":            "./gulp/tasks/build.js",
   "build:css":        "./gulp/tasks/build-css.js",
@@ -31,7 +29,8 @@ var tasks = {
   "clean:lib:js":     "./gulp/tasks/clean-lib-js.js",
   "clean:lib:misc":   "./gulp/tasks/clean-lib-misc.js",
   "serve":            "./gulp/tasks/serve.js",
-  "init":             "./gulp/tasks/init.js"
+  "init":             "./gulp/tasks/init.js",
+  "package":          "./gulp/tasks/package.js"
 };
 
 /**
@@ -87,6 +86,7 @@ SSG.do = function(task, options, cb){
   }
   
   require(tasks[task]);
+  var gulp = require('gulp');
   
   // Valid for gulp 3.x
   if(gulp.start){
@@ -108,34 +108,76 @@ SSG.do = function(task, options, cb){
  * @return {boolean} - true if any option values update current settings.
  */
 function setOption(options){
-  var initialState = {
-    "SSG_SRC": process.env["SSG_SRC"],
-    "SSG_DST": process.env["SSG_DST"],
-    "SSG_ROOT": process.env["SSG_ROOT"],
-    "NODE_ENV": process.env["NODE_ENV"]
-  };
-  var isUpdated = false;
+  if(!options) return false;
   
-  if(!options) return isUpdated;
+  var yargs = require('./lib/args');
   
+  var newArgs = {};
+  
+  // Save current arguments to temporary buffer
+  Object.keys(yargs.argv).forEach(function(key){
+    if(key === "_"){
+      newArgs._ = yargs.argv[key];
+    }
+    else if(key !== "$0" && key.length > 1 && yargs.argv[key]){ // Shorthand notation like "-x" will be ignored.
+      newArgs[key] = yargs.argv[key];
+    }
+  });
+  
+  // Update arguments in temporary buffer
   if(options.src){
-    process.env["SSG_SRC"] = options.src;
-    isUpdated = true;
+    newArgs["src"] = options.src;
   }
   if(options.dst){
-    process.env["SSG_DST"] = options.dst;
-    isUpdated = true;
+    newArgs["dst"] = options.dst;
   }
   if(options.root){
-    process.env["SSG_ROOT"] = options.root;
-    isUpdated = true;
+    newArgs["root"] = options.root;
   }
   if(options.env){
-    process.env["NODE_ENV"] = options.env;
-    isUpdated = true;
+    newArgs["env"] = options.env;
   }
   
-  return isUpdated;
+  // Clear old config
+  if(require.cache[require.resolve('./gulp/config')]){
+    var oldConfig = require('./gulp/config');
+    delete require.cache[require.resolve('./gulp/config')];
+  
+    // Provision updated arguments to yargs
+    yargs(parseArgs(newArgs));
+  
+    var newConfig = require('./gulp/config');
+    
+    return (JSON.stringify(oldConfig) === JSON.stringify(newConfig));
+  }
+  else{
+    // Provision updated arguments to yargs
+    yargs(parseArgs(newArgs));
+    return true;
+  }
+}
+
+/**
+ *
+ * @param argv
+ */
+function parseArgs(argv){
+  var newArgs = [];
+  Object.keys(argv).forEach(function(key){
+    if(key === "_"){
+      newArgs = newArgs.concat(argv[key]);
+    }
+    else if(key !== "$0"){
+      if(typeof(argv[key]) === "boolean"){
+        newArgs = newArgs.concat(["--" + key]);
+      }
+      else {
+        newArgs = newArgs.concat(["--" + key, argv[key]]);
+      }
+    }
+  });
+  
+  return newArgs;
 }
 
 /**
