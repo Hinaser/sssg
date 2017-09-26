@@ -1,6 +1,5 @@
-var environments = require('gulp-environments');
 var gutil = require('gulp-util');
-var argv = require("yargs").argv;
+var argv = require("../lib/args").argv;
 
 /**
  * Set default environment to 'production' to
@@ -10,42 +9,40 @@ var env = argv.env || process.env.NODE_ENV;
 if(!env || !["production", "development"].includes(env)){
   env = "production";
 }
-environments.current(environments.make(env));
 
-var srcDir = argv.src || process.env.SSG_SRC || "src/";
-var dstDir = argv.dst || process.env.SSG_DST || "docs/";
-var docRoot = argv.root || process.env.SSG_ROOT || dstDir;
+/**
+ * Set option from user input.
+ */
+var srcDir = argv.src;
+var dstDir = argv.dst;
+var docRoot = argv.root || dstDir;
 
-function addTrailingSlash(path){
-  if(path[path.length-1] !== "/"){
-    return path + "/";
-  }
-  
-  return path;
-}
+/**
+ * Set custom options
+ */
+var allInOne = argv.allinone || false;
 
-srcDir = addTrailingSlash(srcDir);
-dstDir = addTrailingSlash(dstDir);
-docRoot = addTrailingSlash(docRoot);
-
+/**
+ * Default configuration.(Targetting env=production)
+ */
 var defaultConfig = {
   "js": {
-    "srcDir": srcDir + "js",
-    "destDir": dstDir + "js",
+    "srcDir": srcDir + "/js",
+    "destDir": dstDir + "/js",
     "compress": true,
     "sourcemaps": false,
-    "libDir": srcDir + "js/lib"
+    "libDir": srcDir + "/js/lib"
   },
   "css": {
-    "srcDir": srcDir + "css",
-    "destDir": dstDir + "css",
+    "srcDir": srcDir + "/css",
+    "destDir": dstDir + "/css",
     "compress": true,
     "sourcemaps": false,
-    "libDir": srcDir + "css/lib"
+    "libDir": srcDir + "/css/lib"
   },
   "image": {
-    "srcDir": srcDir + "image",
-    "destDir": dstDir + "image"
+    "srcDir": srcDir + "/image",
+    "destDir": dstDir + "/image"
   },
   /**
    * As for html, transaction is bit different than other types of source file.
@@ -74,37 +71,33 @@ var defaultConfig = {
    *
    */
   "html": {
-    "srcDir": srcDir + "html",
-    "destDir": dstDir + "contents",
+    "srcDir": srcDir + "/html",
+    "destDir": dstDir + "/contents",
     "destIndexDir": docRoot,
-    "pretty": false
+    "pretty": false,
+    "allinone": allInOne
   },
   "misc": {
-    "srcDir": srcDir + "misc",
-    "destDir": dstDir + "misc"
+    "srcDir": srcDir + "/misc",
+    "destDir": dstDir + "/misc"
   },
-  "environment": ""
+  "environment": "production"
 };
 
-var clone = function(obj){
-  return JSON.parse(JSON.stringify(obj));
-};
+var config = defaultConfig;
 
-var config = {
-  "production": clone(defaultConfig),
-  "development": clone(defaultConfig)
-};
+/**
+ * Set development configuration if env is development
+ */
+if(env === "development"){
+  config["environment"] = env;
+  config["css"]["sourcemaps"] = true;
+  config["css"]["compress"] = false;
+  config["js"]["compress"] = false;
+  config["js"]["sourcemaps"] = true;
+  config["html"]["pretty"] = true;
+}
 
-config["development"]["css"]["minify"] = false;
-config["development"]["css"]["sourcemaps"] = true;
-config["development"]["css"]["compress"] = false;
-config["development"]["js"]["compress"] = false;
-config["development"]["js"]["sourcemaps"] = true;
-config["development"]["html"]["pretty"] = true;
+module.exports = config;
 
-var exports = config[env];
-exports.environment = env;
-
-module.exports = exports;
-
-gutil.log("Active configuration: " + JSON.stringify(exports, null, 2));
+gutil.log("Active configuration: " + JSON.stringify(config, null, 2));
