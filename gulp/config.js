@@ -20,7 +20,6 @@ var docRoot = argv.root || dstDir;
 /**
  * Set custom options
  */
-var allInOne = argv.allinone || false;
 
 /**
  * Default configuration.(Targetting env=production)
@@ -74,8 +73,7 @@ var defaultConfig = {
     "srcDir": srcDir + "/html",
     "destDir": dstDir + "/contents",
     "destIndexDir": docRoot,
-    "pretty": false,
-    "allinone": allInOne
+    "pretty": false
   },
   "misc": {
     "srcDir": srcDir + "/misc",

@@ -29,7 +29,8 @@ var tasks = {
   "clean:lib:js":     "./gulp/tasks/clean-lib-js.js",
   "clean:lib:misc":   "./gulp/tasks/clean-lib-misc.js",
   "serve":            "./gulp/tasks/serve.js",
-  "init":             "./gulp/tasks/init.js"
+  "init":             "./gulp/tasks/init.js",
+  "package":          "./gulp/tasks/package.js"
 };
 
 /**
