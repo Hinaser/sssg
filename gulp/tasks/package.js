@@ -1,25 +1,29 @@
 var gulp = require('gulp');
-var pug = require('gulp-pug');
-var plumber = require('gulp-plumber');
+var runSequence = require('run-sequence');
+
+require('./rebuild');
+require('./clean');
 
 /**
  * Build html file from source pug files.
  * This task builds not only html but also css/js/image files.
  */
-gulp.task('package', ['package:html:root', 'package:html:sub']);
+gulp.task('package', function(cb){
+  return runSequence(
+    "rebuild",
+    ['package:html:root', 'package:html:sub'],
+    ['clean:css', 'clean:js', 'clean:image'],
+    cb
+  );
+});
 
 gulp.task("package:html:root", function(){
   var dom = require('gulp-dom');
   var inline = require('gulp-inline-source');
   var config = require('../config.js');
   
-  return gulp.src([config['html']['srcDir'] + "/index.pug"], {base: config['html']['srcDir']})
-    .pipe(plumber())
-    .pipe(pug({
-      pretty: config['html']['pretty']
-    }))
+  return gulp.src([config['html']['destIndexDir'] + "/index.html"], {base: config['html']['destIndexDir']})
     .pipe(dom(markInline))
-    .pipe(gulp.dest(config['html']['destIndexDir']))
     .pipe(inline({
       compress: !config['html']['pretty']
     }))
@@ -33,16 +37,10 @@ gulp.task("package:html:sub", function(){
   var config = require('../config.js');
   
   return gulp.src([
-    config['html']['srcDir'] + "/**/*.pug",
-    "!" + config['html']['srcDir'] + "/index.pug",
-    "!" + config['html']['srcDir'] + "/**/*.part.pug"
-  ], {base: config['html']['srcDir']})
-    .pipe(plumber())
-    .pipe(pug({
-      pretty: config['html']['pretty']
-    }))
+    config['html']['destDir'] + "/**/*.html",
+    "!" + config['html']['destIndexDir'] + "/index.html"
+  ], {base: config['html']['destDir']})
     .pipe(dom(markInline))
-    .pipe(gulp.dest(config['html']['destDir']))
     .pipe(inline({
       compress: !config['html']['pretty']
     }))
