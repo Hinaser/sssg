@@ -11,7 +11,7 @@ var Share = require('./shared');
 // Load main module for test
 var ssg = require('../../');
 
-var DEBUG = false; // Set true to show verbose messages in test
+var DEBUG = true; // Set true to show verbose messages in test
 
 describe('Build', function(){
   describe('#all', function(){
