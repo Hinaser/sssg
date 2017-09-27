@@ -165,11 +165,6 @@ $sidebar-width = 400px
       width 800px
       margin 20px auto 20px auto
 
-      .i-need-code
-        font-style italic
-        font-weight bold
-        color red
-
       h1
         font-size 2em
       h2
@@ -251,35 +246,24 @@ $sidebar-width = 400px
           width 180px
           height 40px
 
-          .input
+          .clickable
             position absolute
-            top 25px
-            left 0
+            top 0
             width 60px
             height 40px
             text-align center
-            line-height 40px
             cursor pointer
+            background-color transparent
+            z-index 6
+
+          .input
+            left 0
 
           .dev
-            position absolute
-            top 25px
             left 60px
-            width 60px
-            height 40px
-            text-align center
-            line-height 40px
-            cursor pointer
 
           .output
-            position absolute
-            top 25px
             right 0
-            width 60px
-            height 40px
-            text-align center
-            line-height 40px
-            cursor pointer
 
           .btn
             position absolute
@@ -314,6 +298,7 @@ $sidebar-width = 400px
             height 8px
             border 2px solid green
             border-radius 4px
+            background-color forestgreen
 
       .sssg-build-image
         margin-top 20px
