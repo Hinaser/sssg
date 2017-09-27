@@ -1,10 +1,17 @@
 #!/usr/bin/env node
 
-var argv = require("../lib/args").argv;
+var args = require("../lib/args");
+var argv = args.argv;
 var main = require('../');
 
 var task = argv._[0];
 var options = {};
+
+if(!main.isSupported(task)){
+  console.error("Error unsupported task: " + task);
+  args.showHelp();
+  return;
+}
 
 if(task === "try"){
   options.env = "development";
