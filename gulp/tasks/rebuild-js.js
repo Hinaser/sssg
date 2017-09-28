@@ -7,6 +7,8 @@ var browserify = require('browserify');
 var buffer = require('vinyl-buffer');
 var source = require('vinyl-source-stream');
 
+require('./clean-js');
+
 var babel_presets = [
   require.resolve("babel-preset-flow"),
   require.resolve("babel-preset-env")
