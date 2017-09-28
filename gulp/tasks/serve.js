@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 var browsersync = require( 'browser-sync').create();
-require('./build');
+require('./rebuild');
 require('./build-js');
 require('./build-css');
 require('./build-image');
