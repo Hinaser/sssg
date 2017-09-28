@@ -23,22 +23,18 @@ block body
           .switcher
             .rail
             .btn
-            .input IN
-            .dev DEV
-            .output OUT
+            .input.clickable
+            .dev.clickable
+            .output.clickable
         h1.title
           | Overview
         p
           | SSSG is a super-lightweight framework for composing static website with live preview.
         p
-          | As SSSG is just a compilation of many useful npm modules,
-          | this how-to-document shows you little about what SSSG does
-          | but much about how SSSG utilizes these npm modules.
-        p
           | The goal for this framework are:
         ul
           li
-            | to code web service with developer friendly transpile languages like
+            | to code web service in developer friendly languages
             | Pug, Stylus, ES6 Javascript.
           li
             | to see real time preview of a web page on coding. (WYSIWYG)
@@ -46,10 +42,10 @@ block body
             | to export resulted static web files anywhere.
         p
           | I originally wanted prototyping tool for website and found some wireframing services.
-          | Those services is useful in that users don't need to code anything to outline site design.
+          | Those services are useful in that users don't need to code anything to outline site design.
           br
           | However, as a programmer myself,&nbsp;
-          | I NEEDED CODE to spec out web designs.
+          | I needed CODE to spec out web designs.
           br
           | By the reason above, this framework is targeting coders who want to share prototype design
           | based on text.
@@ -59,10 +55,25 @@ block body
           | SSSG does only a few things.
         p
           | Basically, it
-        ul
-          li compiles `index.pug` in source folder into `index.html` in destination folder.
-          li compiles `main.styl` in source folder into `main.css` in destination folder.
-          li compiles `main.js` in source folder into `main.js` in destination folder.
+        ul.sssg-does-few
+          li
+            | compiles&nbsp;
+            code.inline index.pug
+            | &nbsp;in source folder into&nbsp;
+            code.inline index.html
+            | &nbsp;in destination folder.
+          li
+            | compiles&nbsp;
+            code.inline main.styl
+            | &nbsp;in source folder into&nbsp;
+            code.inline main.css
+            | &nbsp;in destination folder.
+          li
+            | compiles&nbsp;
+            code.inline main.js
+            | &nbsp;in source folder into&nbsp;
+            code.inline main.js
+            | &nbsp;in destination folder.
           li copies image files and other misc files into destination folder.
 
         .sssg-build-image
@@ -70,6 +81,18 @@ block body
 
         p
           | This is so simple, isn't it? Actually SSSG is not a framework but kind of a convention of folder structure.
+          br
+          | SSSG itself does just a few things. It relies on some useful npm modules such as gulp, babel and so on.
+        p
+          | You even do not need SSSG and write your own task to generate static web site with gulp.
+          | However, to generate static website with gulp task, those tasks may differ little and
+          | everyone will write similar codes everywhere.
+        p
+          | I believe I could save many of your time by SSSG, which is a collection of common gulp tasks
+          | for static websites.
+
+        p
+          | Believe my sense and you will spare your time handsomely.
 
         p
           | While SSSG does just simple works, you can fully take advantages of pug/stylus/es6 features without concerns.
@@ -118,7 +141,11 @@ block body
         p
           strong * For Windows Users.
           br
-          | Global npm modules location "%AppData%\npm" must be added to PATH environment variable.
+          | Global npm modules location&nbsp;
+          i %AppData%\npm
+          | &nbsp;must be added to&nbsp;
+          i PATH
+          | &nbsp;environment variable.
         h2 Install
         p
           | After you installed these requirements, install SSSG globally on your computer.

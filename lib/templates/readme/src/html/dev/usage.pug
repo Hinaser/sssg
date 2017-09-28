@@ -12,27 +12,278 @@ block body
       #content
         h1.title
           | Usage
-        p Command Line Reference
+        .command-format
+          | sssg &lt;command&gt; [options]
+
+        ul.list-of-commands
+          li
+            a(href="#sssg-try") sssg try
+          li
+            a(href="#sssg-init") sssg init
+          li
+            a(href="#sssg-build") sssg build
+          li
+            a(href="#sssg-clean") sssg clean
+          li
+            a(href="#sssg-rebuild") sssg rebuild
+          li
+            a(href="#sssg-serve") sssg serve
+          li
+            a(href="#sssg-package") sssg package
 
         hr
 
-        h3.command
-          | sssg init
-        p.description
-          | - editing -
+        .command#sssg-try
+          h3
+            | sssg try [--readme]
+          .description
+            pre.sample
+              | $ sssg try
+              | Creating src directory to ./src
+              | ...
+              | [Browsersync] Serving files from: docs/
+              | Finished!
+            p
+              | Start experiencing SSSG just now.
+              br
+              | This will create&nbsp;
+              code.inline ./src
+              | &nbsp;and&nbsp;
+              code.inline ./docs
+              | &nbsp; at your working directory.
+            p
+              | Actually this just does&nbsp;
+              code.inline sssg init
+              | &nbsp;and&nbsp;
+              code.inline sssg serve
+              | &nbsp;sequentially.
+              br
+              | Try adding code.inlines to &nbsp;
+              code.inline ./src/html/index.pug
+              | &nbsp;and see browser changes.
+              br
+              | Edit styles via &nbsp;
+              code.inline ./src/css/main.styl
+              | &nbsp;and front-end logic via &nbsp;
+              code.inline ./src/js/main.js
 
-        h3.command
-          | sssg build
-        p
-          | - editing -
+            .option
+              .label
+                | --readme
+              .desc
+                | Optional.
+                br
+                | If this option is set, ./src folder is initialized
+                | with this introduction document.
+                br
+                | If not set, the minimal set of files will be put into ./src.
 
-        h3.command
-          | sssg clean
-        p
-          | - editing -
+        .command#sssg-init
+          h3
+            | sssg init [path]
+          .description
+            pre.sample
+              | $ sssg init
+              | Creating src directory to ./src
+              | Finished!
+            p
+              | Initialize SSSG. This will make &nbsp;
+              code.inline ./src
+              | &nbsp;folder at your working directory and put source files (index.pug/main.styl/main.css/etc)
+              | into the folder.
 
-        h3.command
-          | sssg serve
-        p
-          | - editing -
+            .option
+              .label path
+              .desc
+                | Optional.
+                br
+                | Default is &nbsp;
+                code.inline ./src
+                | .
+                br
+                | Directory path to put source files into.
 
+        .command#sssg-build
+          h3
+            | sssg build [--src|-s path] [--dst|-d path] [--env|-e env] [--root|-r path]
+          .description
+            pre.sample
+              | $ sssg build
+              | [15:21:09] Active configuration: {
+              |   "js": {
+              |     "srcDir": "src//js",
+              | ...
+              | [15:21:10] build:js main.js
+              | [15:21:10] build:js 1 item
+              | Finished!
+            p
+              | Load source files and build it into destination folder.
+              br
+              | This will compile pug/stylus/es6 to html/css/javascript.
+              br
+              | Build details are described in the following page.
+              br
+              a(href="./build.html") Build Mechanism
+
+            .option#option-src
+              .label --src | -s path
+              .desc
+                | Optional.
+                br
+                | Default is &nbsp;
+                code.inline ./src
+                | .
+                br
+                | Source files directory path to load
+
+            .option#option-dst
+              .label --dst | -d path
+              .desc
+                | Optional.
+                br
+                | Default is &nbsp;
+                code.inline ./dst
+                | .
+                br
+                | Destination folder to put compiled files into
+
+            .option#option-env
+              .label --env | -e env
+              .desc
+                | Optional.
+                br
+                | Default is
+                code.inline production
+                | .
+                br
+                | Possible value is either "development" or "production".
+                br
+                | If "development" is specified, debugging information will be added to javascript/css files.
+                | Also all files are output in human-friendly format and not minified.
+                br
+                | If "production" is specified, all debugging information will be cut and contents will be
+                | minified.
+
+            .option#option-root
+              .label --root | -r path
+              .desc
+                | Optional.
+                br
+                | Default is &nbsp;
+                code.inline ./dst
+                | .
+                br
+                | A folder which root&nbsp;
+                code.inline index.html
+                | &nbsp; will be output to. In most cases, you don't need to use this option.
+
+        .command#sssg-clean
+          h3
+            | sssg clean [--dst|-d path] [--root|-r path]
+          .description
+            pre.sample
+              | $ sssg clean
+              | [17:13:10] Active configuration: {
+              |   "js": {
+              |     "srcDir": "src//js",
+              | ...
+              |   "environment": "production"
+              | }
+              | Finished!
+            p
+              | Clean output folder. This will remove all files/dirs in --dst folder.
+              br
+              | --dst folder itself is not deleted.
+
+            .option
+              .label --dst | -d path
+              .desc
+                | Optional.
+                br
+                | Default is &nbsp;
+                code.inline ./dst
+                | .
+                br
+                | See&nbsp;
+                a(href="#option-dst") here
+            .option
+              .label --root | -r path
+              .desc
+                | Optional.
+                br
+                | Default is &nbsp;
+                code.inline ./dst
+                | .
+                br
+                | See&nbsp;
+                a(href="#option-root") here
+
+        .command
+          h3#sssg-rebuild
+            | sssg rebuild [--src|-s path] [--dst|-d path] [--env|-e env] [--root|-r path]
+          .description
+            pre.sample
+              | $ sssg rebuild
+              | [15:21:09] Active configuration: {
+              |   "js": {
+              |     "srcDir": "src//js",
+              | ...
+              | [15:21:10] build:js main.js
+              | [15:21:10] build:js 1 item
+              | Finished!
+            p
+              | Just do
+              code.inline sssg clean
+              | &nbsp;and&nbsp;
+              code.inline sssg build
+
+          .command
+          h3#sssg-serve
+            | sssg serve [--src|-s path] [--dst|-d path] [--env|-e env] [--root|-r path]
+          .description
+            pre.sample
+              | $ sssg serve
+              | [17:21:24] Active configuration: {
+              |   "js": {
+              |     "srcDir": "src//js",
+              |
+              | ...
+              |
+              | [17:21:25] build:js 1 item
+              | [Browsersync] Access URLs:
+              |  ---------------------------------------
+              |        Local: http://localhost:3000
+              |     External: http://10.160.250.116:3000
+              |  ---------------------------------------
+              |           UI: http://localhost:3001
+              |  UI External: http://10.160.250.116:3001
+              |  ---------------------------------------
+              | [Browsersync] Serving files from: docs/
+              | Finished!
+            p
+              | Serve generated contents for live preview. Update source files and page will be immediately
+              | reloaded. You can compose your website in WYSIWYG style with this command.
+            p
+              | Options are the same as&nbsp;
+              code.inline sssg build
+              | &nbsp;except that default value of --env is "development".
+
+        .command#sssg-package
+          h3
+            | sssg package [--src|-s path] [--dst|-d path] [--env|-e env] [--root|-r path]
+          .description
+            pre.sample
+              | $ sssg package
+              | [10:20:10] Active configuration: {
+              | ...
+              | }
+              | Finished!
+            p
+              | All source css/js/image which dst html file is referencing will be merged into the html file.
+              br
+              | You get all-in-one html file with all css/js/image file injected in one file.
+
+            p
+              | Options are all the same as&nbsp;
+              code.inline sssg serve
+              | &nbsp;.

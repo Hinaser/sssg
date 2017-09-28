@@ -13,14 +13,14 @@ var ssg = require('../../');
 
 var DEBUG = false; // Set true to show verbose messages in test
 
-describe('Build', function(){
+describe('Rebuild', function(){
   describe('#all', function(){
     var share = new Share();
     
     before(function(done){
       this.timeout(30000);
       if(!DEBUG) share.suppressConsole();
-      ssg.do("build", share.testConfig, function(){
+      ssg.do("rebuild", share.testConfig, function(){
         share.resetConsole();
         done();
       });

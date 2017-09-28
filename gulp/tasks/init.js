@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-var argv = require("yargs").argv;
+var argv = require("../../lib/args").argv;
 
 gulp.task('init', function(){
   const minimal = __dirname + "/../../lib/templates/minimal/src";
