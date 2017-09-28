@@ -5,9 +5,9 @@
     <meta name="viewport" content="initial-scale=1">
     <title>SSSG - Overview</title>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="../../css/main.css?0d7151dda4" rel="stylesheet">
+    <link href="../../css/main.css?872609db7c" rel="stylesheet">
     <script src="../../js/lib.js"></script>
-    <script src="../../js/main.js?31623a6ec1"></script>
+    <script src="../../js/main.js?7e6e55f5ec"></script>
   </head>
   <body>
     <div id="main" data-page="dev">
@@ -61,15 +61,10 @@
           </div>
           <h1 class="title">Overview</h1>
           <p>SSSG is a super-lightweight framework for composing static website with live preview.</p>
-          <p>
-            As SSSG is just a compilation of many useful npm modules,
-            this how-to-document shows you little about what SSSG does
-            but much about how SSSG utilizes these npm modules.
-          </p>
           <p>The goal for this framework are:</p>
           <ul>
             <li>
-              to code web service with developer friendly transpile languages like
+              to code web service in developer friendly languages
               Pug, Stylus, ES6 Javascript.
             </li>
             <li>to see real time preview of a web page on coding. (WYSIWYG)</li>
@@ -77,21 +72,31 @@
           </ul>
           <p>
             I originally wanted prototyping tool for website and found some wireframing services.
-            Those services is useful in that users don't need to code anything to outline site design.<br>However, as a programmer myself,&nbsp;
-            I NEEDED CODE to spec out web designs.<br>By the reason above, this framework is targeting coders who want to share prototype design
+            Those services are useful in that users don't need to code anything to outline site design.<br>However, as a programmer myself,&nbsp;
+            I needed CODE to spec out web designs.<br>By the reason above, this framework is targeting coders who want to share prototype design
             based on text.
           </p>
           <h1>Simple = The rest is yours</h1>
           <p>SSSG does only a few things.</p>
           <p>Basically, it</p>
-          <ul>
-            <li>compiles `index.pug` in source folder into `index.html` in destination folder.</li>
-            <li>compiles `main.styl` in source folder into `main.css` in destination folder.</li>
-            <li>compiles `main.js` in source folder into `main.js` in destination folder.</li>
+          <ul class="sssg-does-few">
+            <li>compiles&nbsp;<code class="inline">index.pug</code>&nbsp;in source folder into&nbsp;<code class="inline">index.html</code>&nbsp;in destination folder.</li>
+            <li>compiles&nbsp;<code class="inline">main.styl</code>&nbsp;in source folder into&nbsp;<code class="inline">main.css</code>&nbsp;in destination folder.</li>
+            <li>compiles&nbsp;<code class="inline">main.js</code>&nbsp;in source folder into&nbsp;<code class="inline">main.js</code>&nbsp;in destination folder.</li>
             <li>copies image files and other misc files into destination folder.</li>
           </ul>
           <div class="sssg-build-image"><img src="../../image/sssg-build-image.png"></div>
-          <p>This is so simple, isn't it? Actually SSSG is not a framework but kind of a convention of folder structure.</p>
+          <p>This is so simple, isn't it? Actually SSSG is not a framework but kind of a convention of folder structure.<br>SSSG itself does just a few things. It relies on some useful npm modules such as gulp, babel and so on.</p>
+          <p>
+            You even do not need SSSG and write your own task to generate static web site with gulp.
+            However, to generate static website with gulp task, those tasks may differ little and
+            everyone will write similar codes everywhere.
+          </p>
+          <p>
+            I believe I could save many of your time by SSSG, which is a collection of common gulp tasks
+            for static websites.
+          </p>
+          <p>Believe my sense and you will spare your time handsomely.</p>
           <p>While SSSG does just simple works, you can fully take advantages of pug/stylus/es6 features without concerns.</p><b><a href="https://pugjs.org/" target="_blank">Pug</a></b>
           <p>
             Pug is equipped with code template system. If your website utilizes the same layout over several pages,
@@ -112,7 +117,7 @@
           <h1>Try it out</h1>
           <h2>Requirements</h2>
           <p>You need to have&nbsp;<a href="https://git-scm.com/book/id/v2/Getting-Started-Installing-Git" target="_blank">Git</a>&nbsp;and&nbsp<a href="https://nodejs.org/en/download/package-manager/" target="_blank">NodeJS 6.x</a>&nbsp;installed on your computer.<br>Check out official installation manual for details.</p>
-          <p><strong>* For Windows Users.</strong><br>Global npm modules location "%AppData%\npm" must be added to PATH environment variable.</p>
+          <p><strong>* For Windows Users.</strong><br>Global npm modules location&nbsp;<i>%AppData%\npm</i>&nbsp;must be added to&nbsp;<i>PATH</i>&nbsp;environment variable.</p>
           <h2>Install</h2>
           <p>After you installed these requirements, install SSSG globally on your computer.</p><code>$ npm install -g git+https://github.com/Hinaser/sssg</code>
           <p>Let's try</p><code>$ cd [work folder]<br>$ sssg try</code>
