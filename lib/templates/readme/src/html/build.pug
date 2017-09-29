@@ -1,0 +1,144 @@
+extends ./layout.part.pug
+
+block variables
+  - var title = "SSSG - Build"
+  - var webRoot = ".."
+
+block body
+  #main(data-page="dev")
+    #sidebar-area
+      include sidebar.part.pug
+    #content-area
+      #content.build-mechanism
+        h1.title
+          | Build Mechanism
+
+        .build-image.overview
+          img.clickable-img(src=webRoot + "/image/build-image.png")
+
+        p.
+          #[b.red-bold Red bold folders/files] ... Fixed name folders/files required for build#[br]
+          #[span.grayed-thin Grayed thin folders/files] ... User defined folders/files optional for build
+
+        p.
+          The picture above depicts how source files are built into output folder.
+          #[br]
+          Only red bold folders/files are recognized as build target. Thin black folders/files
+          will be ignored if they are not referred to by the red bold source files.
+
+        p.
+          #[code.inline src/] and #[code.inline docs/] are customizable via --src/--dst options.#[br]
+          For all available options on build, please check out #[a(href="./usage.html#sssg-build") Usage]
+
+        p.
+          Build process can be divided by target contents such as html/css/javascript/others.#[br]
+          If you want to go deep as to how SSSG works, please check the source hosted in
+          #[a(href="https://github.com/Hinaser/sssg") GitHub].
+
+        h2 Building Stylus for CSS
+        .build-image.css
+          img.clickable-img(src=webRoot + "/image/build-css.png")
+        p.
+          SSSG build #[code.inline src/css/main.styl] into #[code.inline docs/css/main.css].#[br]
+          All library files in #[code.inline src/css/lib/] such as
+          #[code.inline bootstrap.css] and #[code.inline font-awesome.css] will be just merged into
+          #[code.inline docs/css/lib.css].
+
+        p.
+          You can modularize stylus files by utilizing #[code.inline import] statement. In the example above,
+          #[code.inline main.styl] imports #[code.inline aaa.styl]. You can break a file into pieces based on
+          pages.#[br]
+          All files except for #[code.inline main.styl] or files under #[code.inline src/css/lib/] will be ignored
+          unless they are #[code.inline import]ed by #[code.inline main.styl].
+
+        p.
+          In #[code.inline sssg serve] command, building time of #[code.inline main.css] and #[code.inline lib.css] should be noted carefully.#[br]
+          While #[code.inline main.css] is dynamically and frequently updated as you edit source stylus files,
+          #[code.inline lib.css] is only compiled/updated once #[code.inline sssg serve] launches.
+
+        h2 Building ES6 Javascript for Browser compatible ES5 Javascript
+        .build-image.js
+          img.clickable-img(src=webRoot + "/image/build-js.png")
+        p.
+          Building javascript is very similar to building css. Other than file extension and folder name,
+          I can say they are almost the same.
+
+        p.
+          SSSG build #[code.inline src/js/main.js] into #[code.inline docs/js/main.js].#[br]
+          Although file extension does not change, its content transforms from es6 into
+          es5, which most modern(~2017) browsers support.
+          All library files in #[code.inline src/js/lib/] such as
+          #[code.inline jquery.js] and #[code.inline bootstrap.js] will be just merged into
+          #[code.inline docs/js/lib.js].
+
+        p.
+          There is one thing to remember.#[br]
+          #[code.inline import] statement works against global/local npm modules.#[br]
+          If you installed SSSG as a local npm module, you can #[code.inline import] modules
+          in #[code.inline node_modules] folder.
+
+        p.
+          Though importing from npm_modules is helpful, it is not recommended because it imports
+          npm module into #[code.inline main.js], not #[code.inline lib.js].#[br]
+          As well as building stylus, in #[code.inline sssg serve] command, #[code.inline main.js] is dynamically updated and
+          #[code.inline lib.js] is just compiled once.
+        p.
+          If large npm module is imported into #[code.inline main.js], every time #[code.inline main.js] is built,
+          all the way the large source code will be scanned and compiled even if your code changes a little.
+
+        p.
+          It is recommended to put static library files into #[code.inline src/js/lib/] folder to avoid
+          building overhead.
+
+        h2 Building Pug for HTML
+        .build-image.html
+          img.clickable-img(src=webRoot + "/image/build-html.png")
+        p.
+          Building pug is different to previous ones.#[br]
+          For building stylus and es6, only #[code.inline main.styl]/#[code.inline main.js] or library files are compiled.#[br]
+          For pug, all pug files except for *.part.pug files under #[code.inline src/html] folder will be compiled.
+
+        p.
+          Because *.part.pug files will be ignored, you can use this files as template or shared components such as
+          header, sidebar, footer and so on.
+
+        p.
+          Additionally, #[code.inline src/html/index.pug] and other pug files are build in different process.
+
+        h3
+          | src/html/index.pug
+        p.
+          It is compiled into #[code.inline docs/index.html] by default.#[br]
+          The location of #[code.inline index.html] can be specified via #[code.inline --root|-r] option.
+
+        p.
+          You should be careful to specify local resource(js/css/image) path in the pug file.#[br]
+          When you write
+          #[code.inline &lt;script src="..."&gt;] or #[code.inline &lt;link href="..."&gt;] or
+          #[code.inline &lt;img src="..."&gt;] or so, ALWAYS specify its path relative to
+          the actual path where #[code.inline index.html] will be compiled into.
+
+        h3
+          | other .pug files
+        p.
+          Unlike the #[code.inline index.pug], all .pug files except for .part.pug files will be compiled into
+          #[code.inline docs/contents/].#[br]
+          Folders you create under #[code.inline src/html/] will be preserved and created under the
+          #[code.inline docs/contents] folder.
+
+        p.
+          Like the #[code.inline index.pug], local resource path should be carefully specified.#[br]
+          Resource path should be relative to the path where there .pug files will be compiled into.
+
+        h3
+          | .part.pug files
+        p.
+          As already mentioned, these files will be ignored unless they are #[code.inline extended] or
+          #[code.inline included] by compiling .pug files.#[br]
+          You can use this to write sharable html components or store pug variables/mixins.
+
+
+        h2 Building Image/Misc files
+        p.
+          Image files in #[code.inline src/image/] and misc files in #[code.inline src/misc/] will be
+          just copied into #[code.inline docs/image] and #[code.inline docs/misc].

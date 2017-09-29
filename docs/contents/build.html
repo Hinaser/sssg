@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1">
+    <title>SSSG - Build</title>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/main.css?7005d087e2" rel="stylesheet">
+    <script src="../js/lib.js"></script>
+    <script src="../js/main.js?0708199950"></script>
+  </head>
+  <body><a class="github-ribbon" href="https://github.com/Hinaser/sssg"><img style="z-index:99; position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+    <div id="main" data-page="dev">
+      <div id="sidebar-area">
+        <div class="sidebar-logo">
+          <div class="circle">&nbsp;</div><img src="../image/sssg.png">
+        </div>
+        <div class="sidebar-menu">
+          <ul class="nav">
+            <li><a href="../contents/overview.html" data-page="overview">
+                <div class="logo">O</div>
+                <div class="logo-circle"></div>
+                <div class="label">Overview</div></a></li>
+            <li><a href="../contents/usage.html" data-page="usage">
+                <div class="logo">U</div>
+                <div class="logo-circle"></div>
+                <div class="label">Usage</div></a></li>
+            <li><a href="../contents/build.html" data-page="build">
+                <div class="logo">B</div>
+                <div class="logo-circle"></div>
+                <div class="label">Build Mechanism</div></a></li>
+          </ul>
+        </div>
+        <div class="sidebar-toggle"><a class="btn">
+            <div class="to-expand">></div>
+            <div class="to-collapse"><</div></a></div>
+      </div>
+      <div id="content-area">
+        <div class="build-mechanism" id="content">
+          <h1 class="title">Build Mechanism</h1>
+          <div class="build-image overview"><img class="clickable-img" src="../image/build-image.png"></div>
+          <p><b class="red-bold">Red bold folders/files</b> ... Fixed name folders/files required for build<br>
+            <span class="grayed-thin">Grayed thin folders/files</span> ... User defined folders/files optional for build
+            
+          </p>
+          <p>
+            The picture above depicts how source files are built into output folder.
+            <br>
+            Only red bold folders/files are recognized as build target. Thin black folders/files
+            will be ignored if they are not referred to by the red bold source files.
+            
+          </p>
+          <p><code class="inline">src/</code> and <code class="inline">docs/</code> are customizable via --src/--dst options.<br>
+            For all available options on build, please check out <a href="./usage.html#sssg-build">Usage</a>
+            
+          </p>
+          <p>Build process can be divided by target contents such as html/css/javascript/others.<br>
+            If you want to go deep as to how SSSG works, please check the source hosted in
+            <a href="https://github.com/Hinaser/sssg">GitHub</a>.
+            
+          </p>
+          <h2>Building Stylus for CSS</h2>
+          <div class="build-image css"><img class="clickable-img" src="../image/build-css.png"></div>
+          <p>SSSG build <code class="inline">src/css/main.styl</code> into <code class="inline">docs/css/main.css</code>.<br>
+            All library files in <code class="inline">src/css/lib/</code> such as
+            <code class="inline">bootstrap.css</code> and <code class="inline">font-awesome.css</code> will be just merged into
+            <code class="inline">docs/css/lib.css</code>.
+            
+          </p>
+          <p>You can modularize stylus files by utilizing <code class="inline">import</code> statement. In the example above,
+            <code class="inline">main.styl</code> imports <code class="inline">aaa.styl</code>. You can break a file into pieces based on
+            pages.<br>
+            All files except for <code class="inline">main.styl</code> or files under <code class="inline">src/css/lib/</code> will be ignored
+            unless they are <code class="inline">import</code>ed by <code class="inline">main.styl</code>.
+            
+          </p>
+          <p>In <code class="inline">sssg serve</code> command, building time of <code class="inline">main.css</code> and <code class="inline">lib.css</code> should be noted carefully.<br>
+            While <code class="inline">main.css</code> is dynamically and frequently updated as you edit source stylus files,
+            <code class="inline">lib.css</code> is only compiled/updated once <code class="inline">sssg serve</code> launches.
+            
+          </p>
+          <h2>Building ES6 Javascript for Browser compatible ES5 Javascript</h2>
+          <div class="build-image js"><img class="clickable-img" src="../image/build-js.png"></div>
+          <p>
+            Building javascript is very similar to building css. Other than file extension and folder name,
+            I can say they are almost the same.
+            
+          </p>
+          <p>SSSG build <code class="inline">src/js/main.js</code> into <code class="inline">docs/js/main.js</code>.<br>
+            Although file extension does not change, its content transforms from es6 into
+            es5, which most modern(~2017) browsers support.
+            All library files in <code class="inline">src/js/lib/</code> such as
+            <code class="inline">jquery.js</code> and <code class="inline">bootstrap.js</code> will be just merged into
+            <code class="inline">docs/js/lib.js</code>.
+            
+          </p>
+          <p>There is one thing to remember.<br>
+            <code class="inline">import</code> statement works against global/local npm modules.<br>
+            If you installed SSSG as a local npm module, you can <code class="inline">import</code> modules
+            in <code class="inline">node_modules</code> folder.
+            
+          </p>
+          <p>
+            Though importing from npm_modules is helpful, it is not recommended because it imports
+            npm module into <code class="inline">main.js</code>, not <code class="inline">lib.js</code>.<br>
+            As well as building stylus, in <code class="inline">sssg serve</code> command, <code class="inline">main.js</code> is dynamically updated and
+            <code class="inline">lib.js</code> is just compiled once.
+          </p>
+          <p>If large npm module is imported into <code class="inline">main.js</code>, every time <code class="inline">main.js</code> is built,
+            all the way the large source code will be scanned and compiled even if your code changes a little.
+            
+          </p>
+          <p>It is recommended to put static library files into <code class="inline">src/js/lib/</code> folder to avoid
+            building overhead.
+            
+          </p>
+          <h2>Building Pug for HTML</h2>
+          <div class="build-image html"><img class="clickable-img" src="../image/build-html.png"></div>
+          <p>Building pug is different to previous ones.<br>
+            For building stylus and es6, only <code class="inline">main.styl</code>/<code class="inline">main.js</code> or library files are compiled.<br>
+            For pug, all pug files except for *.part.pug files under <code class="inline">src/html</code> folder will be compiled.
+            
+          </p>
+          <p>
+            Because *.part.pug files will be ignored, you can use this files as template or shared components such as
+            header, sidebar, footer and so on.
+            
+          </p>
+          <p>Additionally, <code class="inline">src/html/index.pug</code> and other pug files are build in different process.
+            
+          </p>
+          <h3>src/html/index.pug</h3>
+          <p>It is compiled into <code class="inline">docs/index.html</code> by default.<br>
+            The location of <code class="inline">index.html</code> can be specified via <code class="inline">--root|-r</code> option.
+            
+          </p>
+          <p>You should be careful to specify local resource(js/css/image) path in the pug file.<br>
+            When you write
+            <code class="inline">&lt;script src="..."&gt;</code> or <code class="inline">&lt;link href="..."&gt;</code> or
+            <code class="inline">&lt;img src="..."&gt;</code> or so, ALWAYS specify its path relative to
+            the actual path where <code class="inline">index.html</code> will be compiled into.
+            
+          </p>
+          <h3>other .pug files</h3>
+          <p>Unlike the <code class="inline">index.pug</code>, all .pug files except for .part.pug files will be compiled into
+            <code class="inline">docs/contents/</code>.<br>
+            Folders you create under <code class="inline">src/html/</code> will be preserved and created under the
+            <code class="inline">docs/contents</code> folder.
+            
+          </p>
+          <p>Like the <code class="inline">index.pug</code>, local resource path should be carefully specified.<br>
+            Resource path should be relative to the path where there .pug files will be compiled into.
+            
+          </p>
+          <h3>.part.pug files</h3>
+          <p>As already mentioned, these files will be ignored unless they are <code class="inline">extended</code> or
+            <code class="inline">included</code> by compiling .pug files.<br>
+            You can use this to write sharable html components or store pug variables/mixins.
+            
+            
+          </p>
+          <h2>Building Image/Misc files</h2>
+          <p>Image files in <code class="inline">src/image/</code> and misc files in <code class="inline">src/misc/</code> will be
+            just copied into <code class="inline">docs/image</code> and <code class="inline">docs/misc</code>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
