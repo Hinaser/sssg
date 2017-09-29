@@ -3,6 +3,7 @@ var plumber = require('gulp-plumber');
 var newer = require('gulp-newer');
 var debug = require('gulp-debug');
 var gutil = require('gulp-util');
+var debug = require('gulp-debug');
 
 /**
  * Copy image files into destination folder.
@@ -19,6 +20,7 @@ gulp.task('build:image', function(){
     .pipe(debug({title: "build:image"}))
     .pipe(plumber())
     .pipe(gulp.dest(config['image']['destDir']))
+    .pipe(debug({title: "build:image"}))
     .on("end", function(){gutil.log("build:image finished in: " + (new Date().getTime() - startTime) + "ms")})
     ;
 });

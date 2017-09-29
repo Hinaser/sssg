@@ -28,10 +28,10 @@ gulp.task('build:js', function(){
     .on("error", function (err) { console.log("Error : " + err.message); })
     .pipe(source("main.js"))
     .pipe(buffer())
-    .pipe(debug({title: "build:js"}))
     .pipe(plumber())
     .pipe(gulpif(config['js']['compress'], uglify()))
     .pipe(gulp.dest(config['js']['destDir']))
+    .pipe(debug({title: "build:js"}))
     .on("end", function(){gutil.log("build:js finished in: " + (new Date().getTime() - startTime) + "ms")})
     ;
 });
