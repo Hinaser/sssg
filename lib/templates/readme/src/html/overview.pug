@@ -27,6 +27,15 @@ block body
             .input.clickable
             .dev.clickable
             .output.clickable
+
+        .catch-phrase
+          p.
+            Code less, Review quick, Get productive by
+          .prod-images
+            img(src=webRoot + '/image/pug.png')
+            img(src=webRoot + '/image/stylus.png')
+            img(src=webRoot + '/image/es6.png')
+
         h1 Get started
         code.
           $ npm install -g git+https://github.com/Hinaser/sssg#[br]
@@ -37,17 +46,16 @@ block body
 
         h1 Overview
         p.
-          SSSG is a super-lightweight framework for composing static website with live preview.
+          SSSG(Simple Static Site Generator) is a super-lightweight framework for composing static website with live preview.
         p.
           The goal for this framework are:
         ul
           li.
-            to code web service in developer friendly languages
-            Pug, Stylus, ES6 Javascript.
+            to code less and proactive with Pug, Stylus, ES6 Javascript.
           li.
-            to see real time preview of a web page on coding. (WYSIWYG)
+            to preview web page on coding. (WYSIWYG)
           li.
-            to export resulted static web files anywhere.
+            to serve generated static web files anywhere.
         p.
           I originally wanted prototyping tool for website and found some wireframing services.
           Those services are useful in that users don't need to code anything to outline site design.
@@ -99,7 +107,8 @@ block body
           While SSSG does just simple works, you can fully take advantages of pug/stylus/es6 features without concerns.
 
         b
-          a(href="https://pugjs.org/", target="_blank") Pug
+          a(href="https://pugjs.org/", target="_blank")
+            img(src=webRoot + "/image/pug.png")
         p.
           Pug is equipped with code template system. If your website utilizes the same layout over several pages,
           you should split the pages into static components(sidebar, header, footer, etc) and dynamic components.
@@ -109,7 +118,8 @@ block body
           How you structure your website components is up to you. The choice is yours.
 
         b
-          a(href="https://stylus-lang.com", target="_blank") Stylus
+          a(href="https://stylus-lang.com", target="_blank")
+            img(src=webRoot + "/image/stylus.png")
         p.
           Haven't you hear DRY coding? If no, you've got a chance to learn it. As well as Pug,
           Stylus makes you code less, by representing parent-child relationship as an indent.
@@ -121,10 +131,11 @@ block body
           Of course, you can write all style information only in #[code.inline main.styl].
 
         b
-          a(href="http://es6-features.org", target="_blank") ES6
+          a(href="http://es6-features.org", target="_blank")
+            img(src=webRoot + "/image/es6.png")
         p.
           Unlike Pug/Stylus, ES6 itself is not equipped with DRY syntax.
-          But it has asynchronous system with `Promise`, native class support,
+          But it has asynchronous system with #[code.inline Promise], native #[code.inline class] support,
           and like Stylus, #[code.inline import] statement.
           #[br]
           With #[code.inline class] and #[code.inline import] feature, you can fully modularize your front-end

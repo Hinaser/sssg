@@ -5,7 +5,7 @@
     <meta name="viewport" content="initial-scale=1">
     <title>SSSG - Overview</title>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="../css/main.css?7005d087e2" rel="stylesheet">
+    <link href="../css/main.css?4ac318c62f" rel="stylesheet">
     <script src="../js/lib.js"></script>
     <script src="../js/main.js?0708199950"></script>
   </head>
@@ -47,6 +47,10 @@
               <div class="output clickable"></div>
             </div>
           </div>
+          <div class="catch-phrase">
+            <p>Code less, Review quick, Get productive by</p>
+            <div class="prod-images"><img src="../image/pug.png"><img src="../image/stylus.png"><img src="../image/es6.png"></div>
+          </div>
           <h1>Get started</h1><code>$ npm install -g git+https://github.com/Hinaser/sssg<br>
             $ cd [work folder]<br>
             $ sssg try</code>
@@ -54,15 +58,12 @@
             
           </p>
           <h1>Overview</h1>
-          <p>SSSG is a super-lightweight framework for composing static website with live preview.</p>
+          <p>SSSG(Simple Static Site Generator) is a super-lightweight framework for composing static website with live preview.</p>
           <p>The goal for this framework are:</p>
           <ul>
-            <li>
-              to code web service in developer friendly languages
-              Pug, Stylus, ES6 Javascript.
-            </li>
-            <li>to see real time preview of a web page on coding. (WYSIWYG)</li>
-            <li>to export resulted static web files anywhere.</li>
+            <li>to code less and proactive with Pug, Stylus, ES6 Javascript.</li>
+            <li>to preview web page on coding. (WYSIWYG)</li>
+            <li>to serve generated static web files anywhere.</li>
           </ul>
           <p>
             I originally wanted prototyping tool for website and found some wireframing services.
@@ -118,7 +119,7 @@
           <p>
             While SSSG does just simple works, you can fully take advantages of pug/stylus/es6 features without concerns.
             
-          </p><b><a href="https://pugjs.org/" target="_blank">Pug</a></b>
+          </p><b><a href="https://pugjs.org/" target="_blank"><img src="../image/pug.png"></a></b>
           <p>
             Pug is equipped with code template system. If your website utilizes the same layout over several pages,
             you should split the pages into static components(sidebar, header, footer, etc) and dynamic components.
@@ -127,7 +128,7 @@
             <br>
             How you structure your website components is up to you. The choice is yours.
             
-          </p><b><a href="https://stylus-lang.com" target="_blank">Stylus</a></b>
+          </p><b><a href="https://stylus-lang.com" target="_blank"><img src="../image/stylus.png"></a></b>
           <p>
             Haven't you hear DRY coding? If no, you've got a chance to learn it. As well as Pug,
             Stylus makes you code less, by representing parent-child relationship as an indent.
@@ -138,10 +139,10 @@
             <br>
             Of course, you can write all style information only in <code class="inline">main.styl</code>.
             
-          </p><b><a href="http://es6-features.org" target="_blank">ES6</a></b>
+          </p><b><a href="http://es6-features.org" target="_blank"><img src="../image/es6.png"></a></b>
           <p>
             Unlike Pug/Stylus, ES6 itself is not equipped with DRY syntax.
-            But it has asynchronous system with `Promise`, native class support,
+            But it has asynchronous system with <code class="inline">Promise</code>, native <code class="inline">class</code> support,
             and like Stylus, <code class="inline">import</code> statement.
             <br>
             With <code class="inline">class</code> and <code class="inline">import</code> feature, you can fully modularize your front-end
