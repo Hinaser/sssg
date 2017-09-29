@@ -7,6 +7,7 @@ var browserify = require('browserify');
 var buffer = require('vinyl-buffer');
 var source = require('vinyl-source-stream');
 var debug = require('gulp-debug');
+var gutil = require('gulp-util');
 
 var babel_presets = [
   require.resolve("babel-preset-flow"),
@@ -17,6 +18,7 @@ var babel_presets = [
  * Build es6 js files to standard es5 js files.
  */
 gulp.task('build:js', function(){
+  var startTime = new Date().getTime();
   var config = require('../config.js');
   
   return browserify({debug: config['js']['sourcemaps']})
@@ -29,5 +31,7 @@ gulp.task('build:js', function(){
     .pipe(debug({title: "build:js"}))
     .pipe(plumber())
     .pipe(gulpif(config['js']['compress'], uglify()))
-    .pipe(gulp.dest(config['js']['destDir']));
+    .pipe(gulp.dest(config['js']['destDir']))
+    .on("end", function(){gutil.log("build:js finished in: " + (new Date().getTime() - startTime) + "ms")})
+    ;
 });

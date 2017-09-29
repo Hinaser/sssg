@@ -6,11 +6,13 @@ var plumber = require('gulp-plumber');
 var cleanCSS = require('gulp-clean-css');
 var newer = require('gulp-newer');
 var debug = require('gulp-debug');
+var gutil = require('gulp-util');
 
 /**
  * Build library css files like Bootstrap.
  */
 gulp.task('build:lib:css', function(){
+  var startTime = new Date().getTime();
   var config = require('../config.js');
   
   return gulp.src(config['css']['libDir'] + '/*.css')
@@ -22,4 +24,6 @@ gulp.task('build:lib:css', function(){
     .pipe(concat('lib.css'))
     .pipe(gulpif(config['css']['sourcemaps'], sourcemaps.write()))
     .pipe(gulp.dest(config['css']['destDir']))
+    .on("end", function(){gutil.log("build:lib:css finished in: " + (new Date().getTime() - startTime) + "ms")})
+  ;
 });

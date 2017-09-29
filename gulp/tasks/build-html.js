@@ -2,13 +2,21 @@ var gulp = require('gulp');
 var pug = require('gulp-pug');
 var plumber = require('gulp-plumber');
 var uncache = require('gulp-uncache');
+var runSequence = require('run-sequence');
+var gutil = require('gulp-util');
 var path = require('path');
 
 /**
  * Build html file from source pug files.
  * This task builds not only html but also css/js/image files.
  */
-gulp.task('build:html', ['build:html:root', 'build:html:sub']);
+gulp.task('build:html', function(){
+  var startTime = new Date().getTime();
+  
+  return runSequence(['build:html:root', 'build:html:sub'], function(){
+    gutil.log("build:html finished in: " + (new Date().getTime() - startTime) + "ms");
+  });
+});
 
 gulp.task("build:html:root", function(){
   var config = require('../config.js');

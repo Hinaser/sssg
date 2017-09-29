@@ -7,6 +7,6 @@ require('./build-lib');
 require('./build-html');
 
 gulp.task('build', function(cb){
-  runSequence(['build:css', 'build:js', 'build:image', 'build:lib'], 'build:html', cb);
+  return runSequence(['build:css', 'build:js', 'build:image', 'build:lib'], 'build:html', cb);
 });
 
