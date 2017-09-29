@@ -25,6 +25,9 @@ var docRoot = argv.root || dstDir;
  * Default configuration.(Targetting env=production)
  */
 var defaultConfig = {
+  "environment": "production",
+  "srcDir": srcDir,
+  "dstDir": dstDir,
   "js": {
     "srcDir": srcDir + "/js",
     "destDir": dstDir + "/js",
@@ -78,8 +81,7 @@ var defaultConfig = {
   "misc": {
     "srcDir": srcDir + "/misc",
     "destDir": dstDir + "/misc"
-  },
-  "environment": "production"
+  }
 };
 
 var config = defaultConfig;

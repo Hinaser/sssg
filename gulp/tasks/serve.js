@@ -1,5 +1,7 @@
 var gulp = require('gulp');
 var browsersync = require( 'browser-sync').create();
+var path = require('path');
+
 require('./rebuild');
 require('./build-js');
 require('./build-css');
@@ -21,10 +23,21 @@ gulp.task('serve', ['rebuild'], function(){
           baseDir: config["html"]["destIndexDir"]
         }
       }, function(){
-        gulp.watch(config['js']['srcDir'] + '/**/*.js', ['build:js:sync']);
-        gulp.watch(config['css']['srcDir'] + '/**/*.styl', ['build:css:sync']);
-        gulp.watch(config['image']['srcDir'] + '/**/*.{tiff,svg,jpeg,jpg,png,gif}', ['build:image:sync']);
-        gulp.watch(config['html']['srcDir'] + '/**/*.pug', ['build:html:sync']);
+        global.isWatching = true;
+        
+        var watcher_js = gulp.watch(config['js']['srcDir'] + '/**/*.js', ['build:js:sync']);
+        var watcher_stylus = gulp.watch(config['css']['srcDir'] + '/**/*.styl', ['build:css:sync']);
+        var watcher_image = gulp.watch(config['image']['srcDir'] + '/**/*.{tiff,svg,jpeg,jpg,png,gif}', ['build:image:sync']);
+        var watcher_pug = gulp.watch(config['html']['srcDir'] + '/**/*.pug', ['build:html:sync']);
+        
+        var log_changed_file = function (e) {
+          console.log("File changed: " + path.relative(config['srcDir'], e.path));
+        };
+  
+        watcher_js.on("change", log_changed_file);
+        watcher_stylus.on("change", log_changed_file);
+        watcher_image.on("change", log_changed_file);
+        watcher_pug.on("change", log_changed_file);
         
         resolve();
       });

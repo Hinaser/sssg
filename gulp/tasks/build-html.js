@@ -1,10 +1,17 @@
 var gulp = require('gulp');
 var pug = require('gulp-pug');
+var pugInheritance = require('gulp-pug-inheritance');
+var changed = require('gulp-changed');
+var cached = require('gulp-cached');
+var gulpif = require('gulp-if');
+var filter = require('gulp-filter');
 var plumber = require('gulp-plumber');
 var uncache = require('gulp-uncache');
 var runSequence = require('run-sequence');
 var gutil = require('gulp-util');
 var path = require('path');
+
+var debug = require('gulp-debug');
 
 /**
  * Build html file from source pug files.
@@ -21,8 +28,14 @@ gulp.task('build:html', function(){
 gulp.task("build:html:root", function(){
   var config = require('../config.js');
   
-  return gulp.src([config['html']['srcDir'] + "/index.pug"], {base: config['html']['srcDir']})
+  return gulp.src([config['html']['srcDir'] + "/**/*.pug"], {base: config['html']['srcDir']})
     .pipe(plumber())
+    .pipe(changed(config['html']['destIndexDir'], {extension: '.html'}))
+    .pipe(gulpif(global.isWatching, cached('pug')))
+    .pipe(pugInheritance({basedir: path.resolve(config['html']['srcDir']), skip: 'node_modules'}))
+    .pipe(filter(function(file){
+      return path.resolve(config['html']['srcDir'] + "/index.pug") === file.path;
+    }))
     .pipe(pug({
       pretty: config['html']['pretty']
     }))
@@ -40,10 +53,15 @@ gulp.task("build:html:sub", function(){
   
   return gulp.src([
     config['html']['srcDir'] + "/**/*.pug",
-    "!" + config['html']['srcDir'] + "/index.pug",
-    "!" + config['html']['srcDir'] + "/**/*.part.pug"
+    "!" + config['html']['srcDir'] + "/index.pug"
   ], {base: config['html']['srcDir']})
     .pipe(plumber())
+    .pipe(changed(config['html']['destDir'], {extension: '.html'}))
+    .pipe(gulpif(global.isWatching, cached('pug')))
+    .pipe(pugInheritance({basedir: path.resolve(config['html']['srcDir']), skip: 'node_modules'}))
+    .pipe(filter(function(file){
+      return !/^.*\.part\.pug/.test(file.relative);
+    }))
     .pipe(pug({
       pretty: config['html']['pretty']
     }))
