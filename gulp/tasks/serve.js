@@ -31,7 +31,7 @@ gulp.task('serve', ['rebuild'], function(){
         var watcher_pug = gulp.watch(config['html']['srcDir'] + '/**/*.pug', ['build:html:sync']);
         
         var log_changed_file = function (e) {
-          console.log("File changed: " + path.relative(config['srcDir'], e.path));
+          console.log("File changed: " + path.relative(process.cwd(), e.path));
         };
   
         watcher_js.on("change", log_changed_file);

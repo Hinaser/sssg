@@ -9,6 +9,7 @@ var plumber = require('gulp-plumber');
 var uncache = require('gulp-uncache');
 var runSequence = require('run-sequence');
 var gutil = require('gulp-util');
+var debug = require('gulp-debug');
 var path = require('path');
 
 /**
@@ -34,7 +35,7 @@ gulp.task("build:html:root", function(){
     .pipe(plumber())
     .pipe(gulpif(!global.isWatching, indexFilter))
     .pipe(changed(config['html']['destIndexDir'], {extension: '.html'}))
-    .pipe(gulpif(global.isWatching, cached('pug')))
+    .pipe(gulpif(global.isWatching, cached('pug-root')))
     .pipe(pugInheritance({basedir: path.resolve(config['html']['srcDir']), skip: 'node_modules'}))
     .pipe(indexFilter)
     .pipe(pug({
@@ -46,6 +47,7 @@ gulp.task("build:html:root", function(){
       srcDir: config['html']['destIndexDir']
     }))
     .pipe(gulp.dest(config['html']['destIndexDir']))
+    .pipe(debug({title: "build:html:root"}))
     ;
 });
 
@@ -57,11 +59,11 @@ gulp.task("build:html:sub", function(){
     "!" + config['html']['srcDir'] + "/index.pug"
   ], {base: config['html']['srcDir']})
     .pipe(plumber())
-    .pipe(gulpif(global.isWatching, filter(function(file){
+    .pipe(gulpif(!global.isWatching, filter(function(file){
       return !/\.part\.pug$/.test(file.relative);
     })))
     .pipe(changed(config['html']['destDir'], {extension: '.html'}))
-    .pipe(gulpif(global.isWatching, cached('pug')))
+    .pipe(gulpif(global.isWatching, cached('pug-sub')))
     .pipe(pugInheritance({basedir: path.resolve(config['html']['srcDir']), skip: 'node_modules'}))
     .pipe(filter(function(file){
       return !/\.part\.pug$/.test(file.relative)
@@ -87,5 +89,6 @@ gulp.task("build:html:sub", function(){
       }
     }))
     .pipe(gulp.dest(config['html']['destDir']))
+    .pipe(debug({title: "build:html:sub"}))
     ;
 });
