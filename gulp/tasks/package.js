@@ -12,7 +12,7 @@ gulp.task('package', function(cb){
   return runSequence(
     "rebuild",
     ['package:html:root', 'package:html:sub'],
-    ['clean:css', 'clean:js', 'clean:image'],
+    ['clean:css', 'clean:js', 'clean:image', 'clean:lib'],
     cb
   );
 });

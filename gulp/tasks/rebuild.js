@@ -7,5 +7,5 @@ require('./rebuild-lib');
 require('./rebuild-html');
 
 gulp.task('rebuild', function(cb){
-  runSequence(['rebuild:css', 'rebuild:js', 'rebuild:image', 'rebuild:lib'], 'rebuild:html', cb);
+  return runSequence(['rebuild:css', 'rebuild:js', 'rebuild:image', 'rebuild:lib'], 'rebuild:html', cb);
 });

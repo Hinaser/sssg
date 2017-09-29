@@ -1,8 +1,8 @@
-extends ../layout.part.pug
+extends ./layout.part.pug
 
 block variables
   - var title = "SSSG - Usage"
-  - var webRoot = "../.."
+  - var webRoot = ".."
 
 block body
   #main(data-page="dev")
@@ -58,7 +58,7 @@ block body
               code.inline sssg serve
               | &nbsp;sequentially.
               br
-              | Try adding code.inlines to &nbsp;
+              | Try adding code to &nbsp;
               code.inline ./src/html/index.pug
               | &nbsp;and see browser changes.
               br

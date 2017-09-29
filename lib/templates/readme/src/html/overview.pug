@@ -1,0 +1,188 @@
+extends ./layout.part.pug
+
+block variables
+  if !included
+    - var webRoot = ".."
+    - var title = "SSSG - Overview"
+
+block body
+  #main(data-page="dev")
+    #sidebar-area
+      include sidebar.part.pug
+    #content-area
+      #content
+        .overview-image
+          .source-sample
+            img.pug-sample(src=webRoot + "/image/pug-sample.png")
+            img(src=webRoot + "/image/pug.png")
+            img.stylus-sample(src=webRoot + "/image/stylus-sample.png")
+            img(src=webRoot + "/image/stylus.png")
+            img.es6-sample(src=webRoot + "/image/es6-sample.png")
+            img(src=webRoot + "/image/es6.png")
+          img.dev-sample.hidden(src=webRoot + "/image/sssg-screenshot.png")
+          img.result-sample.hidden(src=webRoot + "/image/result-sample.png")
+          .switcher
+            .rail
+            .btn
+            .input.clickable
+            .dev.clickable
+            .output.clickable
+
+        .catch-phrase
+          p.
+            Code less, Review quick, Get productive by
+          .prod-images
+            img(src=webRoot + '/image/pug.png')
+            img(src=webRoot + '/image/stylus.png')
+            img(src=webRoot + '/image/es6.png')
+
+        h1 Get started
+        code.
+          $ npm install -g git+https://github.com/Hinaser/sssg#[br]
+          $ cd [work folder]#[br]
+          $ sssg try
+        p.
+          See #[a(href="#try-it-out") more detail] for installation.
+
+        h1 Overview
+        p.
+          SSSG(Simple Static Site Generator) is a super-lightweight framework for composing static website with live preview.
+        p.
+          The goal for this framework are:
+        ul
+          li.
+            to code less and proactive with Pug, Stylus, ES6 Javascript.
+          li.
+            to preview web page on coding. (WYSIWYG)
+          li.
+            to serve generated static web files anywhere.
+        p.
+          I originally wanted prototyping tool for website and found some wireframing services.
+          Those services are useful in that users don't need to code anything to outline site design.
+          #[br]
+          However, as a programmer myself,
+          I needed CODE to spec out web designs.
+          #[br]
+          By the reason above, this framework is targeting coders who want to share prototype design
+          based on text.
+
+        h1 Simple = The rest is yours
+        p.
+          SSSG does only a few things.
+        p.
+          Basically, it
+        ul.sssg-does-few
+          li.
+            compiles #[code.inline index.pug] in source folder into
+            #[code.inline index.html] in destination folder.
+          li.
+            compiles
+            #[code.inline main.styl] in source folder into
+            #[code.inline main.css] in destination folder.
+          li.
+            compiles #[code.inline main.js] in source folder into
+            #[code.inline main.js] in destination folder.
+          li.
+            copies image files and other misc files into destination folder.
+
+        .sssg-build-image
+          img.clickable-img(src=webRoot + "/image/sssg-build-image.png")
+
+        p.
+          This is so simple, isn't it? Actually SSSG is not a framework but kind of a convention of folder structure.
+          #[br]
+          SSSG itself does just a few things. It relies on some useful npm modules such as gulp, babel and so on.
+        p.
+          You even do not need SSSG and write your own task to generate static web site with gulp.
+          However, to generate static website with gulp task,
+          everyone will write similar codes everywhere.
+        p.
+          I believe I could save many of your time by SSSG, which is a collection of common gulp tasks
+          for static websites.
+
+        p.
+          Believe my sense and you will spare your time handsomely.
+
+        p.
+          While SSSG does just simple works, you can fully take advantages of pug/stylus/es6 features without concerns.
+
+        b
+          a(href="https://pugjs.org/", target="_blank")
+            img(src=webRoot + "/image/pug.png")
+        p.
+          Pug is equipped with code template system. If your website utilizes the same layout over several pages,
+          you should split the pages into static components(sidebar, header, footer, etc) and dynamic components.
+          #[br]
+          Pug encourages you to do so.
+          #[br]
+          How you structure your website components is up to you. The choice is yours.
+
+        b
+          a(href="https://stylus-lang.com", target="_blank")
+            img(src=webRoot + "/image/stylus.png")
+        p.
+          Haven't you hear DRY coding? If no, you've got a chance to learn it. As well as Pug,
+          Stylus makes you code less, by representing parent-child relationship as an indent.
+          To fully speed up coding, you should try IDE that supports Stylus.
+          #[br]
+          Additionally, Stylus also supports modular system. It can #[code.inline import] any other stylus files.
+          You can construct your own modular structure as clean as you feel comfortable.
+          #[br]
+          Of course, you can write all style information only in #[code.inline main.styl].
+
+        b
+          a(href="http://es6-features.org", target="_blank")
+            img(src=webRoot + "/image/es6.png")
+        p.
+          Unlike Pug/Stylus, ES6 itself is not equipped with DRY syntax.
+          But it has asynchronous system with #[code.inline Promise], native #[code.inline class] support,
+          and like Stylus, #[code.inline import] statement.
+          #[br]
+          With #[code.inline class] and #[code.inline import] feature, you can fully modularize your front-end
+          business logic into reusable and structured framework.
+
+        h1#try-it-out Try it out
+        h2 Requirements
+        p.
+          You need to have
+          #[a(href="https://git-scm.com/book/id/v2/Getting-Started-Installing-Git", target="_blank") Git]
+          and
+          #[a(href="https://nodejs.org/en/download/package-manager/", target="_blank") NodeJS 6.x]
+          installed on your computer.
+          #[br]
+          Check out official installation manual for details.
+        p.
+          #[strong * For Windows Users.]#[br]
+          Global npm modules location #[i(style="color:red;") %AppData%\npm]
+          must be added to #[i(style="color:red;") PATH] environment variable.
+        h2 Install
+        p.
+          After you installed these requirements, install SSSG globally on your computer.
+        code.
+          $ npm install -g git+https://github.com/Hinaser/sssg
+        p.
+          Let's try
+        code.
+          $ cd [work folder]
+          #[br]
+          $ sssg try
+        p.
+          After dispatching the above command, browser will launch and open ./docs/index.html
+          created in your working folder.
+        p.
+          Let's edit ./src/html/index.pug and see what happens.
+        h2 Tips
+        p.
+          You can try customizing this page by the command below.
+        code.
+          $ sssg try --readme
+
+        h1 Debug
+        .outline-sample
+          img(src=webRoot + "/image/sssg-screenshot.png")
+        p Debug your web design with element outlining by accessing http://localhost:3001
+        p.
+          This debug feature comes from&nbsp;
+          #[a(href="https://www.browsersync.io/", target="_blank") BrowserSync]
+        .debug-screen
+          img(src=webRoot + "/image/debug.png")

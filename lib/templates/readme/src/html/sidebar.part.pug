@@ -1,0 +1,27 @@
+.sidebar-logo
+  .circle
+    | &nbsp;
+  img(src=webRoot + "/image/sssg.png")
+.sidebar-menu
+  ul.nav
+    li
+      a(href=webRoot + "/contents/overview.html", data-page="overview")
+        .logo O
+        .logo-circle
+        .label Overview
+    li
+      a(href=webRoot + "/contents/usage.html", data-page="usage")
+        .logo U
+        .logo-circle
+        .label Usage
+    li
+      a(href=webRoot + "/contents/build.html", data-page="build")
+        .logo B
+        .logo-circle
+        .label Build Mechanism
+.sidebar-toggle
+  a.btn
+    .to-expand
+      | >
+    .to-collapse
+      | <
