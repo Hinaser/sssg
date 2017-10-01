@@ -21,6 +21,7 @@ gulp.task('build:html', function(cb){
   
   return runSequence(['build:html:root', 'build:html:sub'], function(){
     gutil.log("build:html finished in: " + (new Date().getTime() - startTime) + "ms");
+    global.runs !== undefined && global.runs++;
     cb();
   });
 });
@@ -31,11 +32,16 @@ gulp.task("build:html:root", function(){
     return path.resolve(config['html']['srcDir'] + "/index.pug") === file.path;
   });
   
-  return gulp.src([config['html']['srcDir'] + "/**/*.pug"], {base: config['html']['srcDir']})
+  var src = config['html']['srcDir'] + "/*.pug";
+  if(global.runs && global.fileChanged){
+    src = global.fileChanged;
+  }
+  
+  return gulp.src(src, {base: config['html']['srcDir']})
     .pipe(plumber())
-    .pipe(gulpif(!global.isWatching, indexFilter))
+    .pipe(gulpif(!global.runs, indexFilter))
     .pipe(changed(config['html']['destIndexDir'], {extension: '.html'}))
-    .pipe(gulpif(global.isWatching, cached('pug-root')))
+    .pipe(gulpif(global.runs !== undefined, cached('pug-root')))
     .pipe(pugInheritance({basedir: path.resolve(config['html']['srcDir']), skip: 'node_modules'}))
     .pipe(indexFilter)
     .pipe(pug({
@@ -54,16 +60,21 @@ gulp.task("build:html:root", function(){
 gulp.task("build:html:sub", function(){
   var config = require('../config.js');
   
-  return gulp.src([
+  var src = [
     config['html']['srcDir'] + "/**/*.pug",
     "!" + config['html']['srcDir'] + "/index.pug"
-  ], {base: config['html']['srcDir']})
+  ];
+  if(global.runs && global.fileChanged){
+    src = global.fileChanged;
+  }
+  
+  return gulp.src(src, {base: config['html']['srcDir']})
     .pipe(plumber())
-    .pipe(gulpif(!global.isWatching, filter(function(file){
+    .pipe(gulpif(!global.runs, filter(function(file){
       return !/\.part\.pug$/.test(file.relative);
     })))
     .pipe(changed(config['html']['destDir'], {extension: '.html'}))
-    .pipe(gulpif(global.isWatching, cached('pug-sub')))
+    .pipe(gulpif(global.runs !== undefined, cached('pug-sub')))
     .pipe(pugInheritance({basedir: path.resolve(config['html']['srcDir']), skip: 'node_modules'}))
     .pipe(filter(function(file){
       return !/\.part\.pug$/.test(file.relative)

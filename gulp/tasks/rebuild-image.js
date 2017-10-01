@@ -1,6 +1,8 @@
 var gulp = require('gulp');
-var plumber = require('gulp-plumber');
+var runSequence = require('run-sequence');
+
 require('./clean-image');
+require('./build-image');
 
 /**
  * Copy image files into destination folder.
@@ -9,10 +11,6 @@ require('./clean-image');
  * 'tiff', 'svg', 'jpeg', 'jpg', 'png' or 'gif'.
  */
 
-gulp.task('rebuild:image', ['clean:image'], function(){
-  var config = require('../config.js');
-  
-  return gulp.src([config['image']['srcDir'] + '/**/*.{tiff,svg,jpeg,jpg,png,gif}'], {base: config['image']['srcDir']})
-    .pipe(plumber())
-    .pipe(gulp.dest(config['image']['destDir']));
+gulp.task('rebuild:image', function(cb){
+  return runSequence('clean:image', 'build:image', cb);
 });
