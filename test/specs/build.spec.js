@@ -13,25 +13,41 @@ var cache = require('gulp-cached');
 // Load main module for test
 var ssg = require('../../');
 
-var DEBUG = false; // Set true to show verbose messages in test
+var DEBUG = true; // Set true to show verbose messages in test
+
+function before_and_after(config, task, beforeCallback, afterCallback){
+  before(function(done){
+    this.timeout(30000);
+    if(!DEBUG) config.suppressConsole();
+  
+    // Clear cache
+    cache.caches = {};
+    
+    if(typeof(beforeCallback)==="function") beforeCallback();
+    
+    ssg.do(task, config.testConfig, function(){
+      config.resetConsole();
+      done();
+    });
+  });
+  
+  if(!DEBUG){
+    after(function(done){
+      if(typeof(afterCallback)==="function") afterCallback();
+      
+      del(config.testdata.output, {force: true}).then(function(){
+        done();
+      });
+    });
+  }
+}
 
 describe('Build', function(){
   describe('#all', function(){
     var share = new Share();
     
-    before(function(done){
-      this.timeout(30000);
-      if(!DEBUG) share.suppressConsole();
-  
-      // Clear cache
-      cache.caches = {};
-  
-      ssg.do("build", share.testConfig, function(){
-        share.resetConsole();
-        done();
-      });
-    });
-  
+    before_and_after(share, "build");
+    
     it('should generate index.html', function(){
       expect(file(share.testdata.output + "/index.html")).to.equal(file(share.testdata.expected + "/index.html"));
     });
@@ -63,13 +79,19 @@ describe('Build', function(){
     it('should copy raw misc files', function(){
       expect(file(share.testdata.output + "/misc/sample1/test.json")).to.equal(file(share.testdata.expected + "/misc/sample1/test.json"));
     });
-    
-    if(!DEBUG){
-      after(function(done){
-        del(share.testdata.output, {force: true}).then(function(){
-          done();
-        });
-      });
-    }
-  })
+  });
+  
+  describe('#js', function() {
+    describe('#with .babelrc', function(){
+      var share = new Share();
+      share.testConfig.src = share.testdata.input =  __dirname + "/../testdata/input/src-build-js/";
+      share.testdata.expected =  __dirname + "/../testdata/input/dst-build-js/";
+      
+      before_and_after(share, "build:js");
+      
+      it('should transpile js code based on .babelrc profile', function(){
+        expect(file(share.testdata.output + "/js/main.js")).to.equal(file(share.testdata.expected + "/js/main.js"));
+      })
+    });
+  });
 });
