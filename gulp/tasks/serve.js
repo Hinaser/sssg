@@ -41,8 +41,7 @@ gulp.task('serve', function(cb){
           watcher_image.on("change", log_changed_file);
           watcher_pug.on("change", log_changed_file);
           
-          cb();
-          resolve();
+          resolve(cb());
         });
       }
       catch(e){
