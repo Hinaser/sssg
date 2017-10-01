@@ -13,7 +13,7 @@ var cache = require('gulp-cached');
 // Load main module for test
 var ssg = require('../../');
 
-var DEBUG = true; // Set true to show verbose messages in test
+var DEBUG = false; // Set true to show verbose messages in test
 
 function before_and_after(config, task, beforeCallback, afterCallback){
   before(function(done){
@@ -89,6 +89,18 @@ describe('Build', function(){
       
       before_and_after(share, "build:js");
       
+      it('should transpile js code based on .babelrc profile', function(){
+        expect(file(share.testdata.output + "/js/main.js")).to.equal(file(share.testdata.expected + "/js/main.js"));
+      })
+    });
+    
+    describe('#with .babelrc short preset name', function(){
+      var share = new Share();
+      share.testConfig.src = share.testdata.input =  __dirname + "/../testdata/input/src-build-js2/";
+      share.testdata.expected =  __dirname + "/../testdata/input/dst-build-js2/";
+    
+      before_and_after(share, "build:js");
+    
       it('should transpile js code based on .babelrc profile', function(){
         expect(file(share.testdata.output + "/js/main.js")).to.equal(file(share.testdata.expected + "/js/main.js"));
       })

@@ -31,7 +31,16 @@ gulp.task('build:js', function(){
     babel_config = JSON.parse(fs.readFileSync(babelRc));
     var newPresets = babel_config.presets;
     newPresets = newPresets.map(function(val){
-      return require.resolve(val);
+      try{
+        return require.resolve(val);
+      }
+      catch(e){
+        if(e.code === "MODULE_NOT_FOUND"){
+          return val;
+        }
+        
+        throw e;
+      }
     });
   
     // Merge new and old presets keeping only unique values
