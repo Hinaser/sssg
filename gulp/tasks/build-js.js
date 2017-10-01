@@ -4,6 +4,7 @@ var uglify = require('gulp-uglify');
 var plumber = require('gulp-plumber');
 var babelify = require('babelify');
 var browserify = require('browserify');
+var watchify = require('watchify');
 var buffer = require('vinyl-buffer');
 var source = require('vinyl-source-stream');
 var debug = require('gulp-debug');
@@ -30,20 +31,73 @@ gulp.task('build:js', function(){
     loadBabelRc(babelRc);
   }
   
-  return browserify({debug: config['js']['sourcemaps']})
-    .add(config['js']['srcDir'] + '/main.js')
-    .transform(babelify, babel_config)
-    .bundle()
-    .on("error", function (err) { console.log("Error : " + err.message); })
-    .pipe(source("main.js"))
-    .pipe(buffer())
-    .pipe(plumber())
-    .pipe(gulpif(config['js']['compress'], uglify()))
-    .pipe(gulp.dest(config['js']['destDir']))
-    .pipe(debug({title: "build:js"}))
-    .on("end", function(){gutil.log("build:js finished in: " + (new Date().getTime() - startTime) + "ms")})
-    ;
+  var b = browserify({debug: config['js']['sourcemaps']});
+  b.add(config['js']['srcDir'] + '/main.js').transform(babelify, babel_config);
+  
+  function bundle(){
+    return b
+      .bundle()
+      .on("error", function (err) { console.log("Error : " + err.message); })
+      .pipe(source("main.js"))
+      .pipe(buffer())
+      .pipe(plumber())
+      .pipe(gulpif(config['js']['compress'], uglify()))
+      .pipe(gulp.dest(config['js']['destDir']))
+      .on("end", function(){
+        if(typeof(cb) === "function") cb();
+        gutil.log("build:js finished in: " + (new Date().getTime() - startTime) + "ms");
+      })
+      .pipe(debug({title: "build:js"}))
+      ;
+  }
+  
+  return bundle();
 });
+
+function watchfy(cb){
+  var config = require('../config.js');
+  
+  var babelRc = config['js']['srcDir'] + '/.babelrc';
+  if(fs.existsSync(babelRc)){
+    loadBabelRc(babelRc);
+  }
+  
+  var b = browserify({
+    cache: {},
+    packageCache: {},
+    debug: config['js']['sourcemaps'],
+    plugin: [watchify]
+  });
+  b.add(config['js']['srcDir'] + '/main.js').transform(babelify, babel_config);
+  
+  b.on('log', gutil.log);
+  b.on('update', bundle);
+  
+  function bundle(newCb){
+    var startTime = new Date().getTime();
+    
+    return b
+      .bundle()
+      .on("error", function (err) { console.log("Error : " + err.message); })
+      .pipe(source("main.js"))
+      .pipe(buffer())
+      .pipe(plumber())
+      .pipe(gulpif(config['js']['compress'], uglify()))
+      .pipe(gulp.dest(config['js']['destDir']))
+      .on("end", function(){
+        if(typeof(newCb) === "function")
+          newCb();
+        else if(typeof(cb) === "function")
+          cb();
+        gutil.log("build:js finished in: " + (new Date().getTime() - startTime) + "ms");
+      })
+      .pipe(debug({title: "build:js"}))
+      ;
+  }
+  
+  // To start watching, bundle() must be called at least once.
+  return bundle;
+}
 
 /**
  * Load babel configuration from .babelrc.
@@ -78,3 +132,5 @@ function loadBabelRc(file){
     babel_config.plugins = plugins;
   }
 }
+
+module.exports.watchfy = watchfy;
