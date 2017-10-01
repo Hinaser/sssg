@@ -15,7 +15,7 @@ gulp.task('build:image:sync', ['build:image'], function(){browsersync.reload();}
 gulp.task('build:html:sync', ['build:html'], function(){browsersync.reload();});
 
 gulp.task('serve', function(cb){
-  global.isWatching = true;
+  global.runs = 0;
   
   return runSequence('rebuild', function(){
     var config = require( '../config.js');
@@ -33,6 +33,7 @@ gulp.task('serve', function(cb){
           var watcher_pug = gulp.watch(config['html']['srcDir'] + '/**/*.pug', ['build:html:sync']);
         
           var log_changed_file = function (e) {
+            global.fileChanged = e.path;
             console.log("File changed: " + path.relative(process.cwd(), e.path));
           };
         
