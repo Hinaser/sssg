@@ -1,6 +1,7 @@
 # sssg - Simple Static Site Generator
-<a href="https://travis-ci.org/Hinaser/sssg" target="_blank"><img src="https://travis-ci.org/Hinaser/sssg.svg" alt="Build Status"></a>
-<a href="https://coveralls.io/github/Hinaser/sssg" target="_blank"><img src="https://coveralls.io/repos/github/Hinaser/sssg/badge.svg" alt="Coverage Status"></a>
+[![Build status](https://travis-ci.org/Hinaser/sssg.svg)](https://travis-ci.org/Hinaser/sssg)
+[![Coverage status](https://coveralls.io/repos/github/Hinaser/sssg/badge.svg)](https://coveralls.io/github/Hinaser/sssg)
+[![npm version](https://badge.fury.io/js/sssg.svg)](https://badge.fury.io/js/sssg)
 
 Generate static website from developer-friendly languages like pug, stylus, es6.
 
