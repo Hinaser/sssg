@@ -15,7 +15,10 @@
     "type": "git",
     "url": "git+https://github.com/Hinaser/sssg.git"
   },
-  "author": "Hinaser",
+  "author": {
+    "name": "Hinaser",
+    "url": "https://github.com/Hinaser"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Hinaser/sssg/issues"
