@@ -10,7 +10,7 @@ See [document](https://hinaser.github.io/sssg) for details.
 
 # Install
 ```
-npm install -g git+https://github.com/Hinaser/sssg
+npm install -g sssg
 ```
 
 # Try prototyping
