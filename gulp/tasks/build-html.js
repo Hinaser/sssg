@@ -11,10 +11,11 @@ var runSequence = require('run-sequence');
 var gutil = require('gulp-util');
 var debug = require('gulp-debug');
 var path = require('path');
+var notifier = require('node-notifier');
 
 /**
  * Build html file from source pug files.
- * This task builds not only html but also css/js/image files.
+ * By using gulp-pug-inheritance, these tasks enable incremental build.
  */
 gulp.task('build:html', function(cb){
   var startTime = new Date().getTime();
@@ -26,11 +27,46 @@ gulp.task('build:html', function(cb){
   });
 });
 
-gulp.task("build:html:root", function(){
+// A filter which only passes the index.pug
+var indexFilter = function(){
   var config = require('../config.js');
-  var indexFilter = filter(function(file){
+  
+  return filter(function(file){
     return path.resolve(config['html']['srcDir'] + "/index.pug") === file.path;
   });
+};
+
+/**
+ * A filter which passes *.pug except for partial pug files and root index.pug.
+ * Examples for ignored files:
+ * aaa.part.pug, _layout.pug, _test/aaa.pug
+ */
+var content_filter = function(){
+  var config = require('../config.js');
+  
+  return filter(function (file) {
+    var part_pug = /\.part\.pug$/.test(file.relative);
+    var _pug = /\/_/.test(path.relative(process.cwd(), file.path)) || /^_/.test(file.relative);
+    var index_pug = path.resolve(config['html']['srcDir'] + "/index.pug") === file.path;
+  
+    return !part_pug && !_pug && !index_pug
+  });
+};
+
+var onError = function (err) {
+  var config = require('../config.js');
+  
+  global.runs !== undefined && global.runs > 0 && !config.silent && notifier.notify({
+    title: "Building pug to html failed!",
+    message: err.message,
+    wait: false,
+    closeLabel: "close"
+  });
+  console.error(err.message);
+};
+
+gulp.task("build:html:root", function(){
+  var config = require('../config.js');
   
   var src = config['html']['srcDir'] + "/*.pug";
   if(global.runs && global.fileChanged){
@@ -39,14 +75,15 @@ gulp.task("build:html:root", function(){
   
   return gulp.src(src, {base: config['html']['srcDir']})
     .pipe(plumber())
-    .pipe(gulpif(!global.runs, indexFilter))
+    .pipe(gulpif(!global.runs, indexFilter()))
     .pipe(changed(config['html']['destIndexDir'], {extension: '.html'}))
     .pipe(gulpif(global.runs !== undefined, cached('pug-root')))
     .pipe(pugInheritance({basedir: path.resolve(config['html']['srcDir']), skip: 'node_modules'}))
-    .pipe(indexFilter)
+    .pipe(indexFilter())
     .pipe(pug({
       pretty: config['html']['pretty']
     }))
+    .on('error', onError)
     .pipe(uncache({
       rename: false,
       append: "hash",
@@ -70,19 +107,15 @@ gulp.task("build:html:sub", function(){
   
   return gulp.src(src, {base: config['html']['srcDir']})
     .pipe(plumber())
-    .pipe(gulpif(!global.runs, filter(function(file){
-      return !/\.part\.pug$/.test(file.relative);
-    })))
+    .pipe(gulpif(!global.runs, content_filter()))
     .pipe(changed(config['html']['destDir'], {extension: '.html'}))
     .pipe(gulpif(global.runs !== undefined, cached('pug-sub')))
     .pipe(pugInheritance({basedir: path.resolve(config['html']['srcDir']), skip: 'node_modules'}))
-    .pipe(filter(function(file){
-      return !/\.part\.pug$/.test(file.relative)
-        && path.resolve(config['html']['srcDir'] + "/index.pug") !== file.path;
-    }))
+    .pipe(content_filter())
     .pipe(pug({
       pretty: config['html']['pretty']
     }))
+    .on('error', onError)
     .pipe(uncache({
       rename: false,
       append: "hash",

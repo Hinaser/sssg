@@ -1,4 +1,4 @@
-extends ./layout.part.pug
+extends ./_layout.pug
 
 block variables
   - var title = "SSSG - Usage"
@@ -7,7 +7,7 @@ block variables
 block body
   #main(data-page="dev")
     #sidebar-area
-      include sidebar.part.pug
+      include _sidebar.pug
     #content-area
       #content
         h1.title
@@ -35,7 +35,7 @@ block body
 
         .command#sssg-try
           h3
-            | sssg try [--readme]
+            | sssg try [--readme] [--silent]
           .description
             pre.sample
               | $ sssg try
@@ -75,6 +75,17 @@ block body
                 br
                 | If this option is set, ./src folder is initialized
                 | with this introduction document.
+                br
+                | If not set, the minimal set of files will be put into ./src.
+
+            .option
+              .label
+                | --silent
+              .desc
+                | Optional.
+                br
+                | This is disabled by default. #[br]
+                | Suppress notification on successful builds/errors.
                 br
                 | If not set, the minimal set of files will be put into ./src.
 
@@ -239,7 +250,7 @@ block body
 
           .command
           h3#sssg-serve
-            | sssg serve [--src|-s path] [--dst|-d path] [--env|-e env] [--root|-r path]
+            | sssg serve [--src|-s path] [--dst|-d path] [--env|-e env] [--root|-r path] [--silent]
           .description
             pre.sample
               | $ sssg serve

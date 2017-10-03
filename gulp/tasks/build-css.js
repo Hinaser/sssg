@@ -6,6 +6,7 @@ var autoprefixer = require('gulp-autoprefixer');
 var plumber = require('gulp-plumber');
 var gutil = require('gulp-util');
 var debug = require('gulp-debug');
+var notifier = require('node-notifier');
 
 /**
  * Build css file from stylus based source files.
@@ -20,14 +21,20 @@ gulp.task('build:css', function(){
   
   return gulp.src(config['css']['srcDir'] + '/main.styl')
     .pipe(plumber())
-    .on('error', function(err){
-      console.error(err.message);
-    })
     .pipe(gulpif(config['css']['sourcemaps'], sourcemaps.init()))
     .pipe(stylus({
       'compress': config['css']['compress'],
       'include css': true
     }))
+    .on('error', function(err){
+      global.runs !== undefined && global.runs > 0 && !config.silent && notifier.notify({
+        title: "Building stylus to css failed!",
+        message: err.message,
+        wait: false,
+        closeLabel: "close"
+      });
+      console.error(err.message);
+    })
     .pipe(autoprefixer())
     .pipe(gulpif(config['css']['sourcemaps'], sourcemaps.write()))
     .pipe(gulp.dest(config['css']['destDir']))

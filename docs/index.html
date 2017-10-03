@@ -61,12 +61,26 @@
             
           </p>
           <h1>Overview</h1>
-          <p>SSSG(Simple Static Site Generator) is a super-lightweight framework for composing static website with live preview.</p>
-          <p>The goal for this framework are:</p>
+          <p>
+            SSSG(Simple Static Site Generator) is a super-lightweight framework for composing static website with live preview.
+            
+          </p>
+          <h3>Don't waste your time creating gulp tasks for developing static website.</h3>
+          <p>
+            Many people creates similar gulp tasks everywhere. For common cases, you don't need to
+            spend your time debugging gulp, instead you should crash your head against what you are
+            truly creating.
+            
+          </p>
+          <p>
+            Don't forget what you start creating. You create your website, not gulp tasks.
+            
+          </p>
+          <p>The purposes for this framework are:<br></p>
           <ul>
             <li>to code less and proactive with Pug, Stylus, ES6 Javascript.</li>
             <li>to preview web page on coding. (WYSIWYG)</li>
-            <li>to serve generated static web files anywhere.</li>
+            <li>to generate portable static web files.</li>
           </ul>
           <p>
             I originally wanted prototyping tool for website and found some wireframing services.
@@ -80,8 +94,8 @@
             
           </p>
           <h1>Simple = The rest is yours</h1>
-          <p>SSSG does only a few things.</p>
-          <p>Basically, it</p>
+          <p>SSSG does only simple tasks.</p>
+          <p>In summary, it</p>
           <ul class="sssg-does-few">
             <li>compiles <code class="inline">*.pug</code> in source folder into
               <code class="inline">*.html</code> in destination folder.
@@ -124,12 +138,12 @@
             
           </p><b><a href="https://pugjs.org/" target="_blank"><img src="./image/pug.png"></a></b>
           <p>
-            Pug is equipped with code template system. If your website utilizes the same layout over several pages,
-            you should split the pages into static components(sidebar, header, footer, etc) and dynamic components.
+            Pug is equipped with code templating system. If your website utilizes the same layout over several pages,
+            you should split the pages into static components(sidebar, header, footer, etc) and variable contents.
             <br>
             Pug encourages you to do so.
             <br>
-            How you structure your website components is up to you. The choice is yours.
+            Anyway, how you structure your website components is up to you.
             
           </p><b><a href="https://stylus-lang.com" target="_blank"><img src="./image/stylus.png"></a></b>
           <p>
@@ -174,7 +188,7 @@
             <br>
             $ sssg try</code>
           <p>
-            After dispatching the above command, browser will launch and open ./docs/index.html
+            After dispatching the command above, browser will launch and open ./docs/index.html
             created in your working folder.
           </p>
           <p>Let's edit ./src/html/index.pug and see what happens.</p>

@@ -9,6 +9,7 @@ var buffer = require('vinyl-buffer');
 var source = require('vinyl-source-stream');
 var debug = require('gulp-debug');
 var gutil = require('gulp-util');
+var notifier = require('node-notifier');
 
 var fs = require('fs');
 
@@ -19,6 +20,18 @@ var babel_config = {
   ]
 };
 
+function onError(err){
+  var config = require('../config.js');
+  
+  global.runs !== undefined && global.runs > 0 && !config.silent && notifier.notify({
+    title: "Building es6 to javascript failed!",
+    message: err.message,
+    wait: false,
+    closeLabel: "close"
+  });
+  console.log("Error : " + err.message);
+}
+
 /**
  * Build es6 js files to standard es5 js files.
  */
@@ -28,7 +41,7 @@ gulp.task('build:js', function(){
   
   var babelRc = config['js']['srcDir'] + '/.babelrc';
   if(fs.existsSync(babelRc)){
-    loadBabelRc(babelRc);
+    babel_config = loadBabelRc(babelRc);
   }
   
   var b = browserify({debug: config['js']['sourcemaps']});
@@ -37,7 +50,7 @@ gulp.task('build:js', function(){
   function bundle(){
     return b
       .bundle()
-      .on("error", function (err) { console.log("Error : " + err.message); })
+      .on("error", onError)
       .pipe(source("main.js"))
       .pipe(buffer())
       .pipe(plumber())
@@ -59,7 +72,7 @@ function watchfy(cb){
   
   var babelRc = config['js']['srcDir'] + '/.babelrc';
   if(fs.existsSync(babelRc)){
-    loadBabelRc(babelRc);
+    babel_config = loadBabelRc(babelRc);
   }
   
   var b = browserify({
@@ -78,7 +91,7 @@ function watchfy(cb){
     
     return b
       .bundle()
-      .on("error", function (err) { console.log("Error : " + err.message); })
+      .on("error", onError)
       .pipe(source("main.js"))
       .pipe(buffer())
       .pipe(plumber())
@@ -107,9 +120,9 @@ function watchfy(cb){
  */
 function loadBabelRc(file){
   // Merge presets
-  var oldPresets = babel_config.presets;
-  babel_config = JSON.parse(fs.readFileSync(file));
-  var newPresets = babel_config.presets;
+  var oldPresets = babel_config.presets.slice();
+  var newBabelConfig = JSON.parse(fs.readFileSync(file));
+  var newPresets = newBabelConfig.presets;
   
   if(newPresets){
     newPresets = newPresets.map(function(val){
@@ -117,20 +130,22 @@ function loadBabelRc(file){
     });
   
     // Merge new and old presets keeping only unique values
-    babel_config.presets = oldPresets.concat(newPresets.filter(function(i){
+    newBabelConfig.presets = oldPresets.concat(newPresets.filter(function(i){
       return oldPresets.indexOf(i) === -1;
     }));
   }
   
   // Load plugins
-  var plugins = babel_config.plugins;
+  var plugins = newBabelConfig.plugins;
   if(plugins){
     plugins = plugins.map(function(val){
       return require.resolve((val.slice(0,13) === "babel-plugin-") ? val : "babel-plugin-" + val);
     });
   
-    babel_config.plugins = plugins;
+    newBabelConfig.plugins = plugins;
   }
+  
+  return newBabelConfig;
 }
 
 module.exports.watchfy = watchfy;

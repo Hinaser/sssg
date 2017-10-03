@@ -53,7 +53,7 @@
           </ul>
           <hr>
           <div class="command" id="sssg-try">
-            <h3>sssg try [--readme]</h3>
+            <h3>sssg try [--readme] [--silent]</h3>
             <div class="description">
               <pre class="sample">$ sssg try
 Creating src directory to ./src
@@ -66,6 +66,12 @@ Finished!</pre>
                 <div class="label">--readme</div>
                 <div class="desc">Optional.<br>If this option is set, ./src folder is initialized
                   with this introduction document.<br>If not set, the minimal set of files will be put into ./src.
+                </div>
+              </div>
+              <div class="option">
+                <div class="label">--silent</div>
+                <div class="desc">Optional.<br>This is disabled by default. <br>
+                  Suppress notification on successful builds/errors.<br>If not set, the minimal set of files will be put into ./src.
                 </div>
               </div>
             </div>
@@ -154,7 +160,7 @@ Finished!</pre>
               <p>Just do<code class="inline">sssg clean</code>&nbsp;and&nbsp;<code class="inline">sssg build</code></p>
             </div>
             <div class="command"></div>
-            <h3 id="sssg-serve">sssg serve [--src|-s path] [--dst|-d path] [--env|-e env] [--root|-r path]</h3>
+            <h3 id="sssg-serve">sssg serve [--src|-s path] [--dst|-d path] [--env|-e env] [--root|-r path] [--silent]</h3>
             <div class="description">
               <pre class="sample">$ sssg serve
 [17:21:24] Active configuration: {
