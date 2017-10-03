@@ -20,6 +20,7 @@ var docRoot = argv.root || dstDir;
 /**
  * Set custom options
  */
+var silentMode = argv.silent || false;
 
 /**
  * Default configuration.(Targetting env=production)
@@ -28,6 +29,7 @@ var defaultConfig = {
   "environment": "production",
   "srcDir": srcDir,
   "dstDir": dstDir,
+  "silent": silentMode,
   "js": {
     "srcDir": srcDir + "/js",
     "destDir": dstDir + "/js",

@@ -11,6 +11,7 @@ var runSequence = require('run-sequence');
 var gutil = require('gulp-util');
 var debug = require('gulp-debug');
 var path = require('path');
+var notifier = require('node-notifier');
 
 /**
  * Build html file from source pug files.
@@ -52,6 +53,18 @@ var content_filter = function(){
   });
 };
 
+var onError = function (err) {
+  var config = require('../config.js');
+  
+  global.runs !== undefined && global.runs > 0 && !config.silent && notifier.notify({
+    title: "Building pug to html failed!",
+    message: err.message,
+    wait: false,
+    closeLabel: "close"
+  });
+  console.error(err.message);
+};
+
 gulp.task("build:html:root", function(){
   var config = require('../config.js');
   
@@ -70,6 +83,7 @@ gulp.task("build:html:root", function(){
     .pipe(pug({
       pretty: config['html']['pretty']
     }))
+    .on('error', onError)
     .pipe(uncache({
       rename: false,
       append: "hash",
@@ -101,6 +115,7 @@ gulp.task("build:html:sub", function(){
     .pipe(pug({
       pretty: config['html']['pretty']
     }))
+    .on('error', onError)
     .pipe(uncache({
       rename: false,
       append: "hash",

@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var browsersync = require( 'browser-sync').create();
 var runSequence = require('run-sequence');
 var path = require('path');
+var notifier = require('node-notifier');
 
 require('./rebuild');
 require('./build-css');
@@ -9,9 +10,21 @@ require('./build-image');
 require('./build-html');
 var watchfy = require('./build-js').watchfy;
 
-gulp.task('build:css:sync', ['build:css'], function(){browsersync.reload();});
-gulp.task('build:image:sync', ['build:image'], function(){browsersync.reload();});
-gulp.task('build:html:sync', ['build:html'], function(){browsersync.reload();});
+function onSuccessBuild(){
+  var config = require( '../config.js');
+  
+  !config["silent"] && notifier.notify({
+    title: "Build success!",
+    message: "Check refreshed page on your browser.",
+    wait: false,
+    closeLabel: "close"
+  });
+  browsersync.reload();
+}
+
+gulp.task('build:css:sync', ['build:css'], onSuccessBuild);
+gulp.task('build:image:sync', ['build:image'], onSuccessBuild);
+gulp.task('build:html:sync', ['build:html'], onSuccessBuild);
 
 gulp.task('serve', function(cb){
   global.runs = 0;
@@ -35,7 +48,7 @@ gulp.task('serve', function(cb){
     watcher_pug.on("change", log_changed_file);
     watcher_js.on("change", log_changed_file);
   
-    return watchfy(function(){browsersync.reload()})(function(){
+    return watchfy(onSuccessBuild)(function(){
       browsersync.init({
         server: {
           baseDir: config["html"]["destIndexDir"]
