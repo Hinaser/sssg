@@ -1,4 +1,4 @@
-extends ./layout.part.pug
+extends ./_layout.pug
 
 block variables
   - var title = "SSSG - Build"
@@ -7,7 +7,7 @@ block variables
 block body
   #main(data-page="dev")
     #sidebar-area
-      include sidebar.part.pug
+      include _sidebar.pug
     #content-area
       #content.build-mechanism
         h1.title
@@ -31,7 +31,7 @@ block body
           For all available options on build, please check out #[a(href="./usage.html#sssg-build") Usage]
 
         p.
-          Build process can be divided by target contents such as html/css/javascript/others.#[br]
+          Build process varies depending on content type such as html/css/javascript/others.#[br]
           If you want to go deep as to how SSSG works, please check the source hosted in
           #[a(href="https://github.com/Hinaser/sssg") GitHub].
 
@@ -71,8 +71,15 @@ block body
           #[code.inline jquery.js] and #[code.inline bootstrap.js] will be just merged into
           #[code.inline docs/js/lib.js].
 
+        h3 incremental build
         p.
-          There is one thing to remember.#[br]
+          SSSG adopts #[code.inline watchify], which only compiles modified javascript files
+          in dependency tree.#[br]
+          As unmodified files are cached and not re-compiled at build time, building speed becomes
+          incredibly fast!
+
+        h3 import from node_modues
+        p.
           #[code.inline import] statement works against global/local npm modules.#[br]
           If you installed SSSG as a local npm module, you can #[code.inline import] modules
           in #[code.inline node_modules] folder.
@@ -96,17 +103,30 @@ block body
         p.
           Building pug is different to previous ones.#[br]
           For building stylus and es6, only #[code.inline main.styl]/#[code.inline main.js] or library files are compiled.#[br]
-          For pug, all pug files except for *.part.pug files under #[code.inline src/html] folder will be compiled.
+          For pug, all pug files except for partial pug files under #[code.inline src/html] folder will be compiled.
 
         p.
-          Because *.part.pug files will be ignored, you can use this files as template or shared components such as
-          header, sidebar, footer and so on.
+          Please note that #[code.inline src/html/index.pug] and other pug files are build in different process.#[br]
+          Detailed reason about this is described in #[a(href="https://github.com/Hinaser/sssg/blob/master/gulp/config.js", target="_blank") source code].
+
+        h3 incremental build
+        p.
+          Building html goes incremental, meaning only modified file and files referencing the modified file
+          will be compiled.#[br]
+
+        h3 partial pug files
+        p.
+          A pug file is recognized as partial if :#[br]
+          - its filename ends with ".part.pug" (i.e. layout.part.pug)#[br]
+          - its filename starts with "_" (i.e. _layout.pug)#[br]
+          - its parent folder name starts with "_" (i.e. _common/layout.pug)
 
         p.
-          Additionally, #[code.inline src/html/index.pug] and other pug files are build in different process.
+          These partial pug files will be ignored unless they are #[code.inline extended] or
+          #[code.inline included] by normal pug files.#[br]
+          You can use this to write sharable html components or store pug variables/mixins.
 
-        h3
-          | src/html/index.pug
+        h3 src/html/index.pug
         p.
           It is compiled into #[code.inline docs/index.html] by default.#[br]
           The location of #[code.inline index.html] can be specified via #[code.inline --root|-r] option.
@@ -118,10 +138,9 @@ block body
           #[code.inline &lt;img src="..."&gt;] or so, ALWAYS specify its path relative to
           the actual path where #[code.inline index.html] will be compiled into.
 
-        h3
-          | other .pug files
+        h3 other .pug files
         p.
-          Unlike the #[code.inline index.pug], all .pug files except for .part.pug files will be compiled into
+          Unlike the #[code.inline index.pug], all .pug files except for partial pug files will be compiled into
           #[code.inline docs/contents/].#[br]
           Folders you create under #[code.inline src/html/] will be preserved and created under the
           #[code.inline docs/contents] folder.
@@ -129,14 +148,6 @@ block body
         p.
           Like the #[code.inline index.pug], local resource path should be carefully specified.#[br]
           Resource path should be relative to the path where there .pug files will be compiled into.
-
-        h3
-          | .part.pug files
-        p.
-          As already mentioned, these files will be ignored unless they are #[code.inline extended] or
-          #[code.inline included] by compiling .pug files.#[br]
-          You can use this to write sharable html components or store pug variables/mixins.
-
 
         h2 Building Image/Misc files
         p.

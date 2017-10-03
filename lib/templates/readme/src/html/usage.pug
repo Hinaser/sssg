@@ -1,4 +1,4 @@
-extends ./layout.part.pug
+extends ./_layout.pug
 
 block variables
   - var title = "SSSG - Usage"
@@ -7,7 +7,7 @@ block variables
 block body
   #main(data-page="dev")
     #sidebar-area
-      include sidebar.part.pug
+      include _sidebar.pug
     #content-area
       #content
         h1.title

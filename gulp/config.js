@@ -47,11 +47,11 @@ var defaultConfig = {
     "destDir": dstDir + "/image"
   },
   /**
-   * As for html, transaction is bit different than other types of source file.
+   * As for html, process is bit different to other content types(js/css/image).
    * An index html file will be generated at the `docRoot` directory and other
-   * html(pug) files will be generated under `dstDir`/contents dirctory.
+   * html(pug) files will be generated under `dstDir`/contents directory.
    *
-   * This is because this module is thought to be used mainly with Github Pages.
+   * This is because this module is thought to be used with Github Pages.
    * In Github Pages, both "User site" and "Project site" can be created.
    * The problem is, url of User site and Project site may conflict.
    *
