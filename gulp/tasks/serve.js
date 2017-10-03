@@ -35,20 +35,15 @@ gulp.task('serve', function(cb){
     watcher_pug.on("change", log_changed_file);
     watcher_js.on("change", log_changed_file);
   
-    return new Promise(function(resolve, reject){
-      try {
-        browsersync.init({
-          server: {
-            baseDir: config["html"]["destIndexDir"]
-          }
-        }, function(){
-          // Do incremental build by watchify instead of gulp.watch
-          resolve(watchfy(function(){browsersync.reload()})(cb));
-        });
-      }
-      catch(e){
-        reject();
-      }
+    return watchfy(function(){browsersync.reload()})(function(){
+      browsersync.init({
+        server: {
+          baseDir: config["html"]["destIndexDir"]
+        }
+      }, function(){
+        // Do incremental build by watchify instead of gulp.watch
+        cb();
+      });
     });
   });
 });
