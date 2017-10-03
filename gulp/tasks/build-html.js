@@ -12,6 +12,9 @@ var gutil = require('gulp-util');
 var debug = require('gulp-debug');
 var path = require('path');
 var notifier = require('node-notifier');
+var through = require('through2');
+var padEnd = require('lodash.padend');
+var chalk = require('chalk');
 
 /**
  * Build html file from source pug files.
@@ -20,7 +23,7 @@ var notifier = require('node-notifier');
 gulp.task('build:html', function(cb){
   var startTime = new Date().getTime();
   
-  return runSequence(['build:html:root', 'build:html:sub'], function(){
+  return runSequence('build:html:index', 'build:html:sub', function(){
     gutil.log("build:html finished in: " + (new Date().getTime() - startTime) + "ms");
     global.runs !== undefined && global.runs++;
     cb();
@@ -65,7 +68,14 @@ var onError = function (err) {
   console.error(err.message);
 };
 
-gulp.task("build:html:root", function(){
+var pipe_fn = function(fn){
+  return through.obj(function(file, enc, cb){
+    fn(path.relative(process.cwd(), file.path));
+    return cb(null, file);
+  });
+};
+
+gulp.task("build:html:index", function(){
   var config = require('../config.js');
   
   var src = config['html']['srcDir'] + "/*.pug";
@@ -73,24 +83,50 @@ gulp.task("build:html:root", function(){
     src = global.fileChanged;
   }
   
+  var timer = new Date().getTime();
+  
   return gulp.src(src, {base: config['html']['srcDir']})
     .pipe(plumber())
     .pipe(gulpif(!global.runs, indexFilter()))
     .pipe(changed(config['html']['destIndexDir'], {extension: '.html'}))
     .pipe(gulpif(global.runs !== undefined, cached('pug-root')))
+    .pipe(pipe_fn(function(file){
+      gutil.log(padEnd("build:html:index Prebuild: ", 37)
+        + chalk.green(padEnd(((new Date().getTime() - timer) + "ms"), 6))
+        + " "
+        + chalk.blue(file)
+      );
+      timer = new Date().getTime();
+    }))
     .pipe(pugInheritance({basedir: path.resolve(config['html']['srcDir']), skip: 'node_modules'}))
+    .pipe(pipe_fn(function(file){
+      gutil.log(padEnd("build:html:index Resolve dependency: ", 37)
+        + chalk.green(padEnd(((new Date().getTime() - timer) + "ms"), 6))
+        + " "
+        + chalk.blue(file)
+      );
+      timer = new Date().getTime();
+    }))
     .pipe(indexFilter())
     .pipe(pug({
       pretty: config['html']['pretty']
     }))
     .on('error', onError)
+    .pipe(pipe_fn(function(file){
+      gutil.log(padEnd("build:html:index Pug compile: ", 37)
+        + chalk.green(padEnd(((new Date().getTime() - timer) + "ms"), 6))
+        + " "
+        + chalk.blue(file)
+      );
+      timer = new Date().getTime();
+    }))
     .pipe(uncache({
       rename: false,
       append: "hash",
       srcDir: config['html']['destIndexDir']
     }))
     .pipe(gulp.dest(config['html']['destIndexDir']))
-    .pipe(debug({title: "build:html:root"}))
+    .pipe(debug({title: "build:html:index"}))
     ;
 });
 
@@ -105,17 +141,43 @@ gulp.task("build:html:sub", function(){
     src = global.fileChanged;
   }
   
+  var timer = new Date().getTime();
+  
   return gulp.src(src, {base: config['html']['srcDir']})
     .pipe(plumber())
     .pipe(gulpif(!global.runs, content_filter()))
     .pipe(changed(config['html']['destDir'], {extension: '.html'}))
     .pipe(gulpif(global.runs !== undefined, cached('pug-sub')))
+    .pipe(pipe_fn(function(file){
+      gutil.log(padEnd("build:html:sub Prebuild: ", 37)
+        + chalk.green(padEnd(((new Date().getTime() - timer) + "ms"), 6))
+        + " "
+        + chalk.blue(file)
+      );
+      timer = new Date().getTime();
+    }))
     .pipe(pugInheritance({basedir: path.resolve(config['html']['srcDir']), skip: 'node_modules'}))
+    .pipe(pipe_fn(function(file){
+      gutil.log(padEnd("build:html:sub Resolve dependency: ", 37)
+        + chalk.green(padEnd(((new Date().getTime() - timer) + "ms"), 6))
+        + " "
+        + chalk.blue(file)
+      );
+      timer = new Date().getTime();
+    }))
     .pipe(content_filter())
     .pipe(pug({
       pretty: config['html']['pretty']
     }))
     .on('error', onError)
+    .pipe(pipe_fn(function(file){
+      gutil.log(padEnd("build:html:sub Pug compile: ", 37)
+        + chalk.green(padEnd(((new Date().getTime() - timer) + "ms"), 6))
+        + " "
+        + chalk.blue(file)
+      );
+      timer = new Date().getTime();
+    }))
     .pipe(uncache({
       rename: false,
       append: "hash",
