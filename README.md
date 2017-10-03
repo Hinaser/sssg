@@ -4,6 +4,8 @@
 
 Generate static website from developer-friendly languages like pug, stylus, es6.
 
+[![](https://raw.github.com/Hinaser/sssg/master/lib/templates/readme/src/image/sssg-build-image.png)](https://hinaser.github.io/sssg/)
+
 See [document](https://hinaser.github.io/sssg) for details.
 
 # Install
