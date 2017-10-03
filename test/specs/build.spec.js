@@ -6,6 +6,7 @@ var chaiFiles = require('chai-files');
 chai.use(chaiFiles);
 var del = require('del');
 var file = chaiFiles.file;
+var dir = chaiFiles.dir;
 var Share = require('./shared');
 
 var cache = require('gulp-cached');
@@ -54,6 +55,15 @@ describe('Build', function(){
 
     it('should generate sub content html', function(){
       expect(file(share.testdata.output + "/contents/sub1/test.html")).to.equal(file(share.testdata.expected + "/contents/sub1/test.html"));
+    });
+  
+    it('should ignore partial pug files', function(){
+      expect(file(share.testdata.output + "/contents/_partial_test.html")).to.not.exist;
+      expect(file(share.testdata.output + "/contents/layout.part.html")).to.not.exist;
+    });
+    
+    it('should ignore partial pug folder', function(){
+      expect(dir(share.testdata.output + "/contents/_sub2")).to.not.exist;
     });
 
     it('should generate css file', function(){
