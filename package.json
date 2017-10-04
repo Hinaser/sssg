@@ -76,6 +76,7 @@
     "gulp-util": "^3.0.8",
     "lodash.padend": "^4.6.1",
     "node-notifier": "^5.1.2",
+    "pug": "^2.0.0-rc.4",
     "require-dir": "^0.3.2",
     "run-sequence": "^2.1.0",
     "through2": "^2.0.3",
