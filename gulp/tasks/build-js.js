@@ -114,38 +114,17 @@ function watchfy(cb){
 
 /**
  * Load babel configuration from .babelrc.
- * babel-presets-env and babel-presets-flow are loaded always.
  *
  * @param file
  */
 function loadBabelRc(file){
-  // Merge presets
-  var oldPresets = babel_config.presets.slice();
-  var newBabelConfig = JSON.parse(fs.readFileSync(file));
-  var newPresets = newBabelConfig.presets;
+  var _babelrc = fs.readFileSync(file);
+  var json = JSON.parse(_babelrc);
   
-  if(newPresets){
-    newPresets = newPresets.map(function(val){
-      return require.resolve((val.slice(0,13) === "babel-preset-") ? val : "babel-preset-" + val);
-    });
+  console.log("Loading " + file);
+  console.log(JSON.stringify(json));
   
-    // Merge new and old presets keeping only unique values
-    newBabelConfig.presets = oldPresets.concat(newPresets.filter(function(i){
-      return oldPresets.indexOf(i) === -1;
-    }));
-  }
-  
-  // Load plugins
-  var plugins = newBabelConfig.plugins;
-  if(plugins){
-    plugins = plugins.map(function(val){
-      return require.resolve((val.slice(0,13) === "babel-plugin-") ? val : "babel-plugin-" + val);
-    });
-  
-    newBabelConfig.plugins = plugins;
-  }
-  
-  return newBabelConfig;
+  return json;
 }
 
 module.exports.watchfy = watchfy;
