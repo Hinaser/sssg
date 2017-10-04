@@ -13,6 +13,23 @@ if(task !== "try" && !main.isSupported(task)){
   return;
 }
 
+
+/**
+ * Work around for a bug in pug-inheritance.
+ * pug-inheritance assumes package.json always exists on working folder.
+ * This behavior does not consider global use.
+ *
+ * @TODO Remove the code below when pug-inheritance fix the bug
+ */
+var fs = require('fs');
+var chalk = require('chalk');
+if(!fs.existsSync("package.json")){
+  console.log(chalk.red("Due to a bug in pug-inheritance, we need to create empty package.json here"));
+  console.log(chalk.red("\"I'll fix this behavior as soon as pug-inheritance patches this bug\""));
+  console.log("");
+  fs.writeFileSync("package.json", "{}");
+}
+
 if(task === "try"){
   options.env = "development";
   
