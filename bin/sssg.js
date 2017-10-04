@@ -7,7 +7,7 @@ var main = require('../');
 var task = argv._[0];
 var options = {};
 
-if(!main.isSupported(task)){
+if(task !== "try" && !main.isSupported(task)){
   console.error("Error unsupported task: " + task);
   args.showHelp();
   return;
