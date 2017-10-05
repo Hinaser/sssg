@@ -4,7 +4,7 @@ var browsersync = require( 'browser-sync').create();
 var runSequence = require('run-sequence');
 var path = require('path');
 var url = require('url');
-var fs = require('fs');
+var fs = require('fs-extra');
 var pug = require('pug');
 var del = require('del');
 var notifier = require('node-notifier');
@@ -200,7 +200,7 @@ function pugMiddleware(req, res, next){
   res.end(Buffer.from(content));
   
   // Write new content to destination path
-  fs.writeFileSync(dstPath, content);
+  fs.outputFileSync(dstPath, content);
   gutil.log('build:html finished in ' + chalk.green((new Date().getTime() - build_timer) + 'ms'));
   gutil.log('build:html ' + chalk.blue(dstPath));
 }

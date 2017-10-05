@@ -52,6 +52,7 @@
     "detect-mocha": "^0.1.0",
     "event-stream": "^3.3.4",
     "flow-bin": "^0.54.0",
+    "fs-extra": "^4.0.2",
     "globby": "^6.1.0",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^4.0.0",
