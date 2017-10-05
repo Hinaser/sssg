@@ -9,6 +9,7 @@ var buffer = require('vinyl-buffer');
 var source = require('vinyl-source-stream');
 var debug = require('gulp-debug');
 var gutil = require('gulp-util');
+var es = require('event-stream');
 var notifier = require('node-notifier');
 
 var fs = require('fs');
@@ -29,19 +30,29 @@ function onError(err){
     wait: false,
     closeLabel: "close"
   });
-  console.log("Error : " + err.message);
+  
+  console.error(err.name);
+  console.error(err.message);
+  console.error(err.stack);
 }
 
 /**
  * Build es6 js files to standard es5 js files.
  */
-gulp.task('build:js', function(cb){
+gulp.task('build:js', function(){
   var startTime = new Date().getTime();
   var config = require('../config.js');
   
   var babelRc = config['js']['srcDir'] + '/.babelrc';
-  if(fs.existsSync(babelRc)){
-    babel_config = loadBabelRc(babelRc);
+  try{
+    if(fs.existsSync(babelRc)){
+      babel_config = loadBabelRc(babelRc);
+    }
+  }
+  catch(e){
+    gutil.log('.babelrc is broken. ' + babelRc);
+    onError(e);
+    return es.merge([]); // Return empty stream
   }
   
   var b = browserify({debug: config['js']['sourcemaps']});
@@ -52,7 +63,7 @@ gulp.task('build:js', function(cb){
       .bundle()
       .on("error", function(err){
         onError(err);
-        cb();
+        this.emit('end');
       })
       .pipe(source("main.js"))
       .pipe(buffer())
@@ -69,12 +80,28 @@ gulp.task('build:js', function(cb){
   return bundle();
 });
 
+/**
+ * This function is assumed to be used in task:serve.
+ *
+ * @param {Function} cb - Function called on every js file change
+ * @returns {bundle} You can set callback which runs once watchify starts monitoring
+ */
 function watchfy(cb){
   var config = require('../config.js');
   
   var babelRc = config['js']['srcDir'] + '/.babelrc';
-  if(fs.existsSync(babelRc)){
-    babel_config = loadBabelRc(babelRc);
+  try{
+    if(fs.existsSync(babelRc)){
+      babel_config = loadBabelRc(babelRc);
+    }
+  }
+  catch(e){
+    gutil.log('.babelrc is broken. ' + babelRc);
+    /**
+     * .babelrc is only loaded once.
+     * If loading fails, let task:serve fail.
+     */
+    throw e;
   }
   
   var b = browserify({
@@ -88,21 +115,18 @@ function watchfy(cb){
   b.on('log', gutil.log);
   b.on('update', bundle);
   
-  function bundle(newCb){
+  function bundle(cb_only_once){
     var startTime = new Date().getTime();
     
     return b
       .bundle()
       .on("error", function(err){
         onError(err);
-        if(typeof(newCb) === "function"){
-          newCb();
-          newCb = undefined;
+        if(typeof(cb_only_once) === "function"){
+          cb_only_once();
+          cb_only_once = undefined;
         }
-        else if(typeof(cb) === "function"){
-          cb();
-          cb = undefined;
-        }
+        this.emit('end');
       })
       .pipe(source("main.js"))
       .pipe(buffer())
@@ -110,8 +134,8 @@ function watchfy(cb){
       .pipe(gulpif(config['js']['compress'], uglify()))
       .pipe(gulp.dest(config['js']['destDir']))
       .on("end", function(){
-        if(typeof(newCb) === "function"){
-          newCb();
+        if(typeof(cb_only_once) === "function"){
+          cb_only_once();
         }
         else if(typeof(cb) === "function"){
           cb();

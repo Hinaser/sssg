@@ -34,10 +34,10 @@ var tasks = {
 };
 
 /**
- * SSG = Static Site Generator.
+ * SSSG = Simple Static Site Generator.
  * Utility object for executing site generation tasks via nodejs scripts.
  */
-var SSG = {};
+var SSSG = {};
 
 /**
  * @typedef {object} Options
@@ -52,7 +52,7 @@ var SSG = {};
  * @param {string} task - Name of task. i.e. build/clean/serve
  * @returns {boolean}
  */
-SSG.isSupported = function(task){
+SSSG.isSupported = function(task){
   return Object.keys(tasks).includes(task);
 };
 
@@ -62,8 +62,8 @@ SSG.isSupported = function(task){
  * @param {Options} options
  * @param {function=} cb - Function called when task has done.
  */
-SSG.do = function(task, options, cb){
-  if(!SSG.isSupported(task)){
+SSSG.do = function(task, options, cb){
+  if(!SSSG.isSupported(task)){
     throw new Error("[Error] Task " + task + " is not supported.");
   }
   
@@ -181,12 +181,14 @@ function parseArgs(argv){
  */
 function errorHandler(err){
   if(err){
-    console.error(err);
-    console.log("Error!")
+    console.error(err.name);
+    console.error(err.message);
+    console.error(err.stack);
+    process.exit(1);
   }
   else{
     console.log("Finished!");
   }
 }
 
-module.exports = SSG;
+module.exports = SSSG;
