@@ -20,7 +20,7 @@ sssg try
 ```
 
 After dispatching `sssg try`,
-- Directories `./src` and `./dst` will be created at your working directory.
+- Directories `./src` and `./docs` will be created at your working directory.
 - Browser app will launch and open `./docs/index.html`.
 - The web page in browser will be live-reloaded when you update files in `./src` folder. 
 

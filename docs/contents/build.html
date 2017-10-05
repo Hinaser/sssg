@@ -126,7 +126,7 @@
 }</pre>
           <p>
             From here you can write ReactJS code. If you want code samples,
-            Check <a href="https://github.com/Hinaser/sssg/tree/master/lib/tempaltes/react/" target="_blank">THIS</a> out.
+            Check <a href="https://github.com/Hinaser/sssg/tree/master/lib/templates/react/" target="_blank">THIS</a> out.
             
           </p>
           <h3>import from node_modues</h3>
@@ -217,6 +217,19 @@
             pug files grows. If there are tens of pug files, building time would be over 10 seconds.<br>
             But with this build mechanism, building time would be 10 - 100 times faster because html files not requested
             yet won't be compiled until you requests it.
+            
+          </p>
+          <h3>Don't forget to rebuild after developing by <code class="inline">sssg serve</code> has done.</h3>
+          <p>
+            Since build mechanism for html/pug is bit abnormal, please take a deep breath before publishing your
+            files generated in <code class="inline">docs/</code>.<br>
+            As html files in <code class="inline">docs/contents, docs/index.html</code> might be deleted by last edit,
+            you should always <code class="inline">sssg rebuild</code> before porting files in <code class="inline">docs/</code> to anywhere.
+            
+          </p>
+          <p>
+            This is not so comfortable I know. It's trade-off with build performance. I think developing speed matters
+            than making an effort not to forget <code class="inline">sssg rebuild</code>.
             
           </p>
           <h2>Building Image/Misc files</h2>
