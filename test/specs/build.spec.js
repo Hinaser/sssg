@@ -115,5 +115,16 @@ describe('Build', function(){
         expect(file(share.testdata.output + "/js/main.js")).to.equal(file(share.testdata.expected + "/js/main.js"));
       })
     });
+  
+    describe('#compiling javascript file which has invalid syntax', function(){
+      var share = new Share();
+      share.testConfig.src = share.testdata.input =  __dirname + "/../testdata/input/src-build-js3/";
+    
+      before_and_after(share, "build:js");
+    
+      it('should output nothing', function(){
+        expect(file(share.testdata.output + "/js/main.js")).to.not.exist;
+      })
+    });
   });
 });
