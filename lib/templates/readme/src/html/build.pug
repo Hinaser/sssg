@@ -40,21 +40,22 @@ block body
           img.clickable-img(src=webRoot + "/image/build-css.png")
         p.
           SSSG build #[code.inline src/css/main.styl] into #[code.inline docs/css/main.css].#[br]
-          All library files in #[code.inline src/css/lib/] such as
+          All library files in #[code.inline src/css/lib/], in the above example,
           #[code.inline bootstrap.css] and #[code.inline font-awesome.css] will be just merged into
           #[code.inline docs/css/lib.css].
 
         p.
-          You can modularize stylus files by utilizing #[code.inline import] statement. In the example above,
+          You can modularize stylus files by utilizing #[code.inline @import] statement. In the example above,
           #[code.inline main.styl] imports #[code.inline aaa.styl]. You can break a file into pieces based on
           pages.#[br]
-          All files except for #[code.inline main.styl] or files under #[code.inline src/css/lib/] will be ignored
-          unless they are #[code.inline import]ed by #[code.inline main.styl].
+          All files except for #[code.inline main.styl] and the lib files will be ignored
+          unless they are #[code.inline @import]ed by #[code.inline main.styl].
 
         p.
-          In #[code.inline sssg serve] command, building time of #[code.inline main.css] and #[code.inline lib.css] should be noted carefully.#[br]
+          In #[code.inline sssg serve] command, build frequencies of #[code.inline main.css] and #[code.inline lib.css] should be noted carefully.#[br]
           While #[code.inline main.css] is dynamically and frequently updated as you edit source stylus files,
-          #[code.inline lib.css] is only compiled/updated once #[code.inline sssg serve] launches.
+          #[code.inline lib.css] is only compiled/updated once #[code.inline sssg serve] launches.#[br]
+          So in case you want to add library files, you need to restart #[code.inline sssg serve].
 
         h2 Building ES6 Javascript for Browser compatible ES5 Javascript
         .build-image.js
@@ -67,16 +68,44 @@ block body
           SSSG build #[code.inline src/js/main.js] into #[code.inline docs/js/main.js].#[br]
           Although file extension does not change, its content transforms from es6 into
           es5, which most modern(~2017) browsers support.
-          All library files in #[code.inline src/js/lib/] such as
+          All library files in #[code.inline src/js/lib/], in the above example,
           #[code.inline jquery.js] and #[code.inline bootstrap.js] will be just merged into
           #[code.inline docs/js/lib.js].
 
-        h3 incremental build
+        h3 .babelrc
         p.
-          SSSG adopts #[code.inline watchify], which only compiles modified javascript files
-          in dependency tree.#[br]
-          As unmodified files are cached and not re-compiled at build time, building speed becomes
-          incredibly fast!
+          SSSG is equipped with babel.
+          You can put your original .babelrc just under #[code.inline src/js/]
+          so that you use any babel presets/plugins you want.#[br]
+          By .babelrc, for example you can write code in ReactJS(JSX) syntax.
+
+        h4.
+          Example for ReactJS
+
+        p Move to work folder
+        code.
+          $ cd [some empty folder]
+
+        p.
+          Install ReactJS(react, react-dom) and babel presets.
+        code.
+          $ npm init -y #[br]
+          $ npm install --save-dev react react-dom#[br]
+          $ npm install --save-dev babel-preset-react babel-preset-env#[br]
+
+        p Initialize SSSG
+        code.
+          $ sssg init
+
+        p Create #[code.inline src/js/.babelrc] activating react plugins
+        pre.file-sample
+          | {
+          |   "presets": ["react", "env"]
+          | }
+
+        p.
+          From here you can write ReactJS code. If you want code samples,
+          Check #[a(href='https://github.com/Hinaser/sssg/tree/master/lib/tempaltes/react/' target='_blank') THIS] out.
 
         h3 import from node_modues
         p.
@@ -89,13 +118,19 @@ block body
           npm module into #[code.inline main.js], not #[code.inline lib.js].#[br]
           As well as building stylus, in #[code.inline sssg serve] command, #[code.inline main.js] is dynamically updated and
           #[code.inline lib.js] is just compiled once.
-        p.
-          If large npm module is imported into #[code.inline main.js], every time #[code.inline main.js] is built,
-          all the way the large source code will be scanned and compiled even if your code changes a little.
 
         p.
           It is recommended to put static library files into #[code.inline src/js/lib/] folder to avoid
           building overhead.
+
+        h3.
+          incremental build in #[code.inline sssg serve]
+        p.
+          SSSG adopts #[code.inline watchify], which only compiles modified javascript files
+          in dependency tree.#[br]
+          As unmodified files are cached and not re-compiled at build time, building speed becomes
+          incredibly fast!#[br]
+
 
         h2 Building Pug for HTML
         .build-image.html
@@ -108,11 +143,6 @@ block body
         p.
           Please note that #[code.inline src/html/index.pug] and other pug files are build in different process.#[br]
           Detailed reason about this is described in #[a(href="https://github.com/Hinaser/sssg/blob/master/gulp/config.js", target="_blank") source code].
-
-        h3 incremental build
-        p.
-          Building html goes incremental, meaning only modified file and files referencing the modified file
-          will be compiled.#[br]
 
         h3 partial pug files
         p.
@@ -148,6 +178,23 @@ block body
         p.
           Like the #[code.inline index.pug], local resource path should be carefully specified.#[br]
           Resource path should be relative to the path where there .pug files will be compiled into.
+
+        h3 incremental build in #[code.inline sssg serve]
+        p.
+          Building html goes incremental, meaning only modified file and files referencing the modified file
+          will be compiled.#[br]
+          How this is achieved is bit tricky. First, when you edit any pug file in #[code.inline src/html] folder,
+          all html file in output folder will be deleted.
+          After this deletion completes, http server in SSSG will send a signal to your browser to reload current page.
+          When your html request comes to http server by reloading signal, there are no html files yet
+          because they are all deleted.
+          Now here is a trick. Http server in SSSG tries to compile only a pug file corresponding to requested html
+          and returns it to you.
+        p.
+          This greatly improves building speed for responsive previewing. In general, building time get longer as
+          pug files grows. If there are tens of pug files, building time would be over 10 seconds.#[br]
+          But with this build mechanism, building time would be 10 - 100 times faster because html files not requested
+          yet won't be compiled until you requests it.
 
         h2 Building Image/Misc files
         p.
