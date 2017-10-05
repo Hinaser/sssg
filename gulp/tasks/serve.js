@@ -4,7 +4,7 @@ var browsersync = require( 'browser-sync').create();
 var runSequence = require('run-sequence');
 var path = require('path');
 var url = require('url');
-var fs = require('fs');
+var fs = require('fs-extra');
 var pug = require('pug');
 var del = require('del');
 var notifier = require('node-notifier');
@@ -89,8 +89,12 @@ gulp.task('serve', function(cb){
     watcher_image.on("change", log_changed_file);
     watcher_pug.on("change", log_changed_file);
     watcher_js.on("change", log_changed_file);
-  
-    return watchfy(onSuccessBuild)(function(){
+    
+    var onEveryBuild = function(){
+      onSuccessBuild();
+    };
+    
+    var startBrowserSyncOnce = function(){
       browsersync.init({
         server: {
           baseDir: config["html"]["destIndexDir"],
@@ -100,7 +104,17 @@ gulp.task('serve', function(cb){
         // Do incremental build by watchify instead of gulp.watch
         cb();
       });
-    });
+    };
+  
+    try{
+      // May throw an Error when .babelrc cannot be loaded properly.
+      var bundler = watchfy(onEveryBuild);
+      // The callback's Exception would be passed directly here.
+      return bundler(startBrowserSyncOnce);
+    }
+    catch(e){
+      return cb(e);
+    }
   });
 });
 
@@ -200,7 +214,7 @@ function pugMiddleware(req, res, next){
   res.end(Buffer.from(content));
   
   // Write new content to destination path
-  fs.writeFileSync(dstPath, content);
+  fs.outputFileSync(dstPath, content);
   gutil.log('build:html finished in ' + chalk.green((new Date().getTime() - build_timer) + 'ms'));
   gutil.log('build:html ' + chalk.blue(dstPath));
 }

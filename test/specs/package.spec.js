@@ -9,8 +9,6 @@ var file = chaiFiles.file;
 var dir = chaiFiles.dir;
 var Share = require('./shared');
 
-var cache = require('gulp-cached');
-
 // Load main module for test
 var ssg = require('../../');
 
@@ -22,9 +20,6 @@ describe('Package', function(){
   before(function(done){
     this.timeout(30000);
     if(!DEBUG) share.suppressConsole();
-    
-    // Clear cache
-    cache.caches = {};
     
     ssg.do("package", share.testConfig, function(){
       share.resetConsole();

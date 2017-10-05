@@ -9,8 +9,6 @@ var file = chaiFiles.file;
 var dir = chaiFiles.dir;
 var Share = require('./shared');
 
-var cache = require('gulp-cached');
-
 // Load main module for test
 var ssg = require('../../');
 
@@ -21,9 +19,6 @@ function before_and_after(config, task, beforeCallback, afterCallback){
     this.timeout(30000);
     if(!DEBUG) config.suppressConsole();
   
-    // Clear cache
-    cache.caches = {};
-    
     if(typeof(beforeCallback)==="function") beforeCallback();
     
     ssg.do(task, config.testConfig, function(){
@@ -113,6 +108,17 @@ describe('Build', function(){
     
       it('should transpile js code based on .babelrc profile', function(){
         expect(file(share.testdata.output + "/js/main.js")).to.equal(file(share.testdata.expected + "/js/main.js"));
+      })
+    });
+  
+    describe('#compiling javascript file which has invalid syntax', function(){
+      var share = new Share();
+      share.testConfig.src = share.testdata.input =  __dirname + "/../testdata/input/src-build-js3/";
+    
+      before_and_after(share, "build:js");
+    
+      it('should output nothing', function(){
+        expect(file(share.testdata.output + "/js/main.js")).to.not.exist;
       })
     });
   });
