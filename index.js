@@ -57,14 +57,6 @@ SSG.isSupported = function(task){
 };
 
 /**
- * List all supported tasks.
- * @returns {Array}
- */
-SSG.supportedTasks = function(){
-  return Object.keys(tasks);
-};
-
-/**
  * Do task.
  * @param {string} task - Name of a task.
  * @param {Options} options
@@ -93,9 +85,11 @@ SSG.do = function(task, options, cb){
     return gulp.start(task, cb);
   }
   // Valid for gulp 4.x
+  /*
   else if(gulp.series){
     return gulp.series(task, cb);
   }
+  */
   else{
     throw new Error("Error: Calling gulp task from nodejs script is not supported with current gulp installation.");
   }
