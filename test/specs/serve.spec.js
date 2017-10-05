@@ -9,8 +9,6 @@ var file = chaiFiles.file;
 var del = require('del');
 var Share = require('./shared');
 
-var cache = require('gulp-cached');
-
 // Load main module for test
 var ssg = require('../../');
 
@@ -24,9 +22,6 @@ describe('Serve', function() {
       before(function (done) {
         this.timeout(30000);
         if(!DEBUG) share.suppressConsole();
-    
-        // Clear cache
-        cache.caches = {};
     
         ssg.do("serve", share.testConfig, function () {
           share.resetConsole();
@@ -162,9 +157,6 @@ describe('Serve', function() {
         before(function (done) {
           this.timeout(30000);
           if(!DEBUG) share.suppressConsole();
-    
-          // Clear cache
-          cache.caches = {};
     
           ssg.do("serve", share.testConfig, function () {
             share.resetConsole();

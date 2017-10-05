@@ -9,8 +9,6 @@ var file = chaiFiles.file;
 var dir = chaiFiles.dir;
 var Share = require('./shared');
 
-var cache = require('gulp-cached');
-
 // Load main module for test
 var ssg = require('../../');
 
@@ -21,9 +19,6 @@ function before_and_after(config, task, beforeCallback, afterCallback){
     this.timeout(30000);
     if(!DEBUG) config.suppressConsole();
   
-    // Clear cache
-    cache.caches = {};
-    
     if(typeof(beforeCallback)==="function") beforeCallback();
     
     ssg.do(task, config.testConfig, function(){
