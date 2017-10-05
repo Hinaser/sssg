@@ -35,7 +35,7 @@ function onError(err){
 /**
  * Build es6 js files to standard es5 js files.
  */
-gulp.task('build:js', function(){
+gulp.task('build:js', function(cb){
   var startTime = new Date().getTime();
   var config = require('../config.js');
   
@@ -50,14 +50,16 @@ gulp.task('build:js', function(){
   function bundle(){
     return b
       .bundle()
-      .on("error", onError)
+      .on("error", function(err){
+        onError(err);
+        cb();
+      })
       .pipe(source("main.js"))
       .pipe(buffer())
       .pipe(plumber())
       .pipe(gulpif(config['js']['compress'], uglify()))
       .pipe(gulp.dest(config['js']['destDir']))
       .on("end", function(){
-        if(typeof(cb) === "function") cb();
         gutil.log("build:js finished in: " + (new Date().getTime() - startTime) + "ms");
       })
       .pipe(debug({title: "build:js"}))
@@ -91,17 +93,29 @@ function watchfy(cb){
     
     return b
       .bundle()
-      .on("error", onError)
+      .on("error", function(err){
+        onError(err);
+        if(typeof(newCb) === "function"){
+          newCb();
+          newCb = undefined;
+        }
+        else if(typeof(cb) === "function"){
+          cb();
+          cb = undefined;
+        }
+      })
       .pipe(source("main.js"))
       .pipe(buffer())
       .pipe(plumber())
       .pipe(gulpif(config['js']['compress'], uglify()))
       .pipe(gulp.dest(config['js']['destDir']))
       .on("end", function(){
-        if(typeof(newCb) === "function")
+        if(typeof(newCb) === "function"){
           newCb();
-        else if(typeof(cb) === "function")
+        }
+        else if(typeof(cb) === "function"){
           cb();
+        }
         gutil.log("build:js finished in: " + (new Date().getTime() - startTime) + "ms");
       })
       .pipe(debug({title: "build:js"}))
