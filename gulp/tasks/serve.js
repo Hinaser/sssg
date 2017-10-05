@@ -55,24 +55,12 @@ gulp.task('build:image:sync', ['build:image'], onSuccessBuild);
  */
 gulp.task('build:html:sync', function(){
   var config = require('../config');
+  var timer = new Date().getTime();
   
-  // Get html file path in output folder.
-  var htmlFile = pug2htmlPath(global.fileChanged);
-  
-  /**
-   * Delete output html file for rebuilding.
-   * When user accesses to the deleted html file,
-   * browserSync middleware (See below) will try to build html automatically.
-   */
-  if(fs.existsSync(htmlFile)){
-    del.sync(htmlFile);
-  }
-  // if partial pug file is updated, all html file will be deleted.
-  else{
-    var indexHtml = config['html']['destIndexDir'] + '/index.html';
-    var otherHtml = config['html']['destDir'] + '/**/*.html';
-    del.sync([indexHtml, otherHtml]);
-  }
+  var indexHtml = config['html']['destIndexDir'] + '/index.html';
+  var otherHtml = config['html']['destDir'];
+  del.sync([indexHtml, otherHtml]);
+  gutil.log('Deleted all html outputs to prepare rebuilding: ' + (new Date().getTime() - timer) + 'ms');
   
   browsersync.reload();
 });
@@ -181,12 +169,12 @@ function pugMiddleware(req, res, next){
     pugPath = path.join(config['html']['srcDir'], 'index.pug');
   }
   else{
-    dstPath = requestedPath.replace(/^(\/contents)/, '');
-    if(path.parse(dstPath).ext === ''){
-      dstPath = path.join(dstPath, '/index.html');
+    var relativePath = requestedPath.replace(/^(\/contents)/, '');
+    if(path.parse(relativePath).ext === ''){
+      relativePath = path.join(relativePath, '/index.html');
     }
-    dstPath = path.join(config['html']['destDir'], dstPath);
-    pugPath = path.join(config['html']['srcDir'], path.basename(dstPath, '.html')) + '.pug';
+    dstPath = path.join(config['html']['destDir'], relativePath);
+    pugPath = path.join(config['html']['srcDir'], relativePath.replace(/\.html/, '.pug'));
   }
   
   /**
