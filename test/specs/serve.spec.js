@@ -161,13 +161,19 @@ describe('Serve', function() {
       beforeEach(function(){
         // Clear require cache for testing
         delete require.cache[require.resolve('yargs')];
+        delete require.cache[require.resolve('../../lib/args')];
         delete require.cache[require.resolve('../../gulp/config')];
         
         require('yargs')([
           '--src', share.testConfig.src,
           '--dst', share.testConfig.dst,
-          '--root', share.testConfig.root
+          '--root', share.testConfig.root,
+          '--silent'
         ]);
+        
+        share.doInSilence(function(){
+          require('../../gulp/config');
+        });
       });
   
       describe('#with valid index.pug path', function () {
@@ -211,8 +217,13 @@ describe('Serve', function() {
         require('../../lib/args')([
           '--src', __dirname + '/../testdata/input/src-serve',
           '--dst', __dirname + '/../testdata/output/dst-serve',
-          '--root', __dirname + '/../testdata/output/dst-serve'
+          '--root', __dirname + '/../testdata/output/dst-serve',
+          '--silent'
         ]);
+  
+        share.doInSilence(function(){
+          require('../../gulp/config');
+        });
   
         // Delete folder
         del(__dirname + '/../testdata/output/dst-serve', {force: true}).then(function(){
@@ -274,8 +285,11 @@ describe('Serve', function() {
           var compiledContent = null;
           res.end = function (b) { compiledContent = b };
           var content = pug.renderFile(__dirname + '/../testdata/input/src-serve/html/sub1/test2.pug');
-          
-          pugMiddleware(req, res, next);
+  
+  
+          share.doInSilence(function(){
+            pugMiddleware(req, res, next);
+          });
           expect(compiledContent.toString()).to.equal(content);
         });
       });

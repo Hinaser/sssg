@@ -55,6 +55,12 @@ Shared.prototype.resetConsole = function(cb){
   return this;
 };
 
+Shared.prototype.doInSilence = function (cb) {
+  this.suppressConsole();
+  cb();
+  this.resetConsole();
+};
+
 Shared.prototype.getConsoleOutput = function(){
   return this.stdout;
 };
