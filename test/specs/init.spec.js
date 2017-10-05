@@ -114,4 +114,41 @@ describe('Init', function(){
       });
     });
   });
+  
+  describe('with dest dir specified', function(){
+    var share = new Share();
+    var srcDir = "./lib/templates/minimal/src/";
+    var dstDir = "./src2/";
+    
+    before(function(done){
+      // Clear require cache for testing
+      delete require.cache[require.resolve('../../')];
+      delete require.cache[require.resolve('../../gulp/tasks/init')];
+      delete require.cache[require.resolve('../../lib/args')];
+      delete require.cache[require.resolve('yargs')];
+      
+      // With dst dir specified
+      require('yargs')(['inita', dstDir]);
+      
+      // Load main module for test
+      var ssg = require('../../');
+      
+      this.timeout(30000);
+      if(!DEBUG) share.suppressConsole();
+      ssg.do("init", null, function(){
+        share.resetConsole();
+        done();
+      });
+    });
+    
+    it('should copy index.pug from template dir', function(){
+      expect(file(dstDir + "/html/index.pug")).to.equal(file(srcDir + "/html/index.pug"));
+    });
+    
+    after(function(done){
+      del(dstDir + "/**").then(function(paths){
+        done();
+      });
+    });
+  });
 });

@@ -11,26 +11,41 @@ var file = chaiFiles.file;
 var Share = require('./shared');
 
 // Load main module for test
-var ssg = require('../../');
+var sssg = require('../../');
 
-describe('Main/Index module', function() {
-  it("should support build task", function(){
-    expect(ssg.isSupported("build")).to.be.true;
+describe('sssg/index.js', function() {
+  describe('#isSupported', function(){
+    it("should support build task", function(){
+      expect(sssg.isSupported("build")).to.be.true;
+    });
+  
+    it("should support clean task", function(){
+      expect(sssg.isSupported("clean")).to.be.true;
+    });
+  
+    it("should support rebuild task", function(){
+      expect(sssg.isSupported("rebuild")).to.be.true;
+    });
+  
+    it("should support init task", function(){
+      expect(sssg.isSupported("init")).to.be.true;
+    });
+  
+    it("should support serve task", function(){
+      expect(sssg.isSupported("serve")).to.be.true;
+    });
   });
   
-  it("should support clean task", function(){
-    expect(ssg.isSupported("clean")).to.be.true;
-  });
-  
-  it("should support rebuild task", function(){
-    expect(ssg.isSupported("rebuild")).to.be.true;
-  });
-  
-  it("should support init task", function(){
-    expect(ssg.isSupported("init")).to.be.true;
-  });
-  
-  it("should support serve task", function(){
-    expect(ssg.isSupported("serve")).to.be.true;
+  describe('#do', function(){
+    var share = new Share();
+    
+    it("should throw an Error with unsupported task", function(){
+      expect(function(){sssg.do('some-unsupported-task')}).to.throw();
+    });
+    
+    it("should throw an Error when gulp.start is not implemented", function(){
+      require('gulp').start = undefined;
+      expect(function(){sssg.do('clean', share.testConfig)}).to.throw();
+    });
   });
 });

@@ -1,4 +1,5 @@
 var gutil = require('gulp-util');
+var path_normalize = require('path').normalize;
 var argv = require("../lib/args").argv;
 
 /**
@@ -27,26 +28,26 @@ var silentMode = argv.silent || false;
  */
 var defaultConfig = {
   "environment": "production",
-  "srcDir": srcDir,
-  "dstDir": dstDir,
+  "srcDir": path_normalize(srcDir),
+  "dstDir": path_normalize(dstDir),
   "silent": silentMode,
   "js": {
-    "srcDir": srcDir + "/js",
-    "destDir": dstDir + "/js",
+    "srcDir": path_normalize(srcDir + "/js"),
+    "destDir": path_normalize(dstDir + "/js"),
     "compress": true,
     "sourcemaps": false,
-    "libDir": srcDir + "/js/lib"
+    "libDir": path_normalize(srcDir + "/js/lib")
   },
   "css": {
-    "srcDir": srcDir + "/css",
-    "destDir": dstDir + "/css",
+    "srcDir": path_normalize(srcDir + "/css"),
+    "destDir": path_normalize(dstDir + "/css"),
     "compress": true,
     "sourcemaps": false,
-    "libDir": srcDir + "/css/lib"
+    "libDir": path_normalize(srcDir + "/css/lib")
   },
   "image": {
-    "srcDir": srcDir + "/image",
-    "destDir": dstDir + "/image"
+    "srcDir": path_normalize(srcDir + "/image"),
+    "destDir": path_normalize(dstDir + "/image")
   },
   /**
    * As for html, process is bit different to other content types(js/css/image).
@@ -75,14 +76,14 @@ var defaultConfig = {
    *
    */
   "html": {
-    "srcDir": srcDir + "/html",
-    "destDir": dstDir + "/contents",
-    "destIndexDir": docRoot,
+    "srcDir": path_normalize(srcDir + "/html"),
+    "destDir": path_normalize(dstDir + "/contents"),
+    "destIndexDir": path_normalize(docRoot),
     "pretty": false
   },
   "misc": {
-    "srcDir": srcDir + "/misc",
-    "destDir": dstDir + "/misc"
+    "srcDir": path_normalize(srcDir + "/misc"),
+    "destDir": path_normalize(dstDir + "/misc")
   }
 };
 
