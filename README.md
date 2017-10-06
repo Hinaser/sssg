@@ -5,6 +5,9 @@
 
 Generate static website from developer-friendly languages like pug, stylus, es6.
 
+Not limited to es6, you can develop with ReactJS, flow-type, and any other frameworks/languages
+which babel can transpile. See detail in [Build Mechanism](https://hinaser.github.io/sssg/contents/build.html).
+
 [![](https://raw.github.com/Hinaser/sssg/master/lib/templates/readme/src/image/sssg-build-image.png)](https://hinaser.github.io/sssg/)
 
 See [document](https://hinaser.github.io/sssg) for details.
