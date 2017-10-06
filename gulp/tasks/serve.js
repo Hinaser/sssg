@@ -59,7 +59,7 @@ gulp.task('build:html:sync', function(){
   
   var indexHtml = config['html']['destIndexDir'] + '/index.html';
   var otherHtml = config['html']['destDir'];
-  del.sync([indexHtml, otherHtml]);
+  del.sync([indexHtml, otherHtml], {force: true});
   gutil.log('Deleted all html outputs to prepare rebuilding: ' + (new Date().getTime() - timer) + 'ms');
   
   browsersync.reload();
