@@ -437,7 +437,7 @@ describe('Serve', function() {
       describe('#requests to invalid sub contents html path', function () {
         var urlStr = 'http://localhost:3000/aaaa/test.html';
     
-        it('should return valid path info', function() {
+        it('should return false', function() {
           var local = url2Local(urlStr);
           expect(local).to.be.false;
         });
