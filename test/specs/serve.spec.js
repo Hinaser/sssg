@@ -280,7 +280,7 @@ describe('Serve', function() {
         });
       });
   
-      afterEach(function(done){
+      after(function(done){
         del(__dirname + '/../testdata/output/dst-serve', {force: true}).then(function(){
           done();
         });
@@ -345,6 +345,101 @@ describe('Serve', function() {
         
         it('should do nothing', function() {
           expect(pugMiddleware(req, res, next)).to.equal(next());
+        });
+      });
+    });
+  
+    describe('url2Local', function(){
+      var ncp = require('ncp').ncp;
+      var url2Local;
+    
+      beforeEach(function (done) {
+        // Clear require cache for testing
+        delete require.cache[require.resolve('yargs')];
+        delete require.cache[require.resolve('../../lib/args')];
+        delete require.cache[require.resolve('../../gulp/config')];
+      
+        require('../../lib/args')([
+          '--src', __dirname + '/../testdata/input/src-serve',
+          '--dst', __dirname + '/../testdata/output/dst-serve',
+          '--root', __dirname + '/../testdata/output/dst-serve',
+          '--silent'
+        ]);
+      
+        share.doInSilence(function(){
+          require('../../gulp/config');
+          url2Local = require('../../gulp/tasks/serve').test.url2Local;
+        });
+      
+        // Delete folder
+        del(__dirname + '/../testdata/output/dst-serve', {force: true}).then(function(){
+          // cp -r test data
+          ncp(__dirname + '/../testdata/input/dst-serve',
+            __dirname + '/../testdata/output/dst-serve', function(){
+              done();
+            });
+        });
+      });
+    
+      after(function(done){
+        del(__dirname + '/../testdata/output/dst-serve', {force: true}).then(function(){
+          done();
+        });
+      });
+    
+      describe('#requests to non-html content', function () {
+        var urlStr = 'http://localhost:3000/css/main.css';
+      
+        it('should return false', function() {
+          expect(url2Local(urlStr)).to.be.false;
+        });
+      });
+  
+      describe('#requests to valid index.html path without filename', function () {
+        var urlStr = 'http://localhost:3000/';
+    
+        it('should return valid path info', function() {
+          var local = url2Local(urlStr);
+          expect(local).to.be.an("object");
+          expect(local).to.own.include({
+            html: path.resolve(__dirname + '/../testdata/output/dst-serve/index.html'),
+            pug: path.resolve(__dirname + '/../testdata/input/src-serve/html/index.pug')
+          });
+        });
+      });
+  
+      describe('#requests to valid index.html path with filename', function () {
+        var urlStr = 'http://localhost:3000/index.html';
+    
+        it('should return valid path info', function() {
+          var local = url2Local(urlStr);
+          expect(local).to.be.an("object");
+          expect(local).to.own.include({
+            html: path.resolve(__dirname + '/../testdata/output/dst-serve/index.html'),
+            pug: path.resolve(__dirname + '/../testdata/input/src-serve/html/index.pug')
+          });
+        });
+      });
+  
+      describe('#requests to valid sub contents html path', function () {
+        var urlStr = 'http://localhost:3000/contents/sub1/test.html';
+    
+        it('should return valid path info', function() {
+          var local = url2Local(urlStr);
+          expect(local).to.be.an("object");
+          expect(local).to.own.include({
+            html: path.resolve(__dirname + '/../testdata/output/dst-serve/contents/sub1/test.html'),
+            pug: path.resolve(__dirname + '/../testdata/input/src-serve/html/sub1/test.pug')
+          });
+        });
+      });
+  
+      describe('#requests to invalid sub contents html path', function () {
+        var urlStr = 'http://localhost:3000/aaaa/test.html';
+    
+        it('should return false', function() {
+          var local = url2Local(urlStr);
+          expect(local).to.be.false;
         });
       });
     });
