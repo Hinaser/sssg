@@ -19,6 +19,13 @@
     "name": "Hinaser",
     "url": "https://github.com/Hinaser"
   },
+  "keywords": [
+    "pug",
+    "stylus",
+    "es6",
+    "static-web",
+    "sssg"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Hinaser/sssg/issues"
