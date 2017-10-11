@@ -167,7 +167,7 @@ function pugMiddleware(req, res, next){
   var requestedPath = path.normalize(url.parse(req.url).pathname);
   var ext = path.parse(requestedPath).ext;
   var isRootIndexHtml = ext === '' || requestedPath === '/index.html';
-  var isSubHtml = requestedPath.startsWith('/contents') && (ext === '' || ext === '.html');
+  var isSubHtml = requestedPath.match(/^.*\/contents/) && (ext === '' || ext === '.html');
   
   // Do nothing if request content is not html
   if(!isRootIndexHtml && !isSubHtml){
@@ -183,7 +183,7 @@ function pugMiddleware(req, res, next){
     pugPath = path.join(config['html']['srcDir'], 'index.pug');
   }
   else{
-    var relativePath = requestedPath.replace(/^(\/contents)/, '');
+    var relativePath = requestedPath.replace(/.*(\/contents)/, '');
     if(path.parse(relativePath).ext === ''){
       relativePath = path.join(relativePath, '/index.html');
     }
