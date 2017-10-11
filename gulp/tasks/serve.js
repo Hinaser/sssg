@@ -145,6 +145,49 @@ function pug2htmlPath(pugPath){
 }
 
 /**
+ * Convert url to local html/pug file paths.
+ * If PUG file does not exist in local path, it returns false.
+ *
+ * @param {string} urlStr - Url to convert (i.e. http://localhost/-/contents/test.html)
+ * @returns {{html: string, pug: string}|boolean} - Paths to local html/pug. Or false if *PUG* file does not exist.
+ */
+function url2Local(urlStr){
+  var config = require( '../config.js');
+  
+  var requestedPath = path.normalize(url.parse(urlStr).pathname);
+  var requestedPathArray = requestedPath.split('/');
+  
+  var htmlPath, pugPath;
+  
+  if(requestedPath === "/" || requestedPathArray[1] === "index.html"){
+    htmlPath = path.join(config['html']['destIndexDir'], 'index.html');
+    pugPath = path.join(config['html']['srcDir'], 'index.pug');
+  }
+  else if(requestedPath.match(/^.*(\/contents)/)){
+    htmlPath = path.join(config['html']['destIndexDir'], requestedPath);
+    var relativeFromContents = requestedPath.replace(/^.*(\/contents)/, "");
+    if(path.parse(relativeFromContents).ext !== ".html"){
+      relativeFromContents = path.join(relativeFromContents, "index.html");
+    }
+    
+    relativeFromContents = relativeFromContents.replace(/\.html$/, ".pug");
+    pugPath = path.join(config['html']['srcDir'], relativeFromContents);
+  }
+  else{
+    return false;
+  }
+  
+  if(!fs.existsSync(pugPath)){
+    return false;
+  }
+  
+  return {
+    html: htmlPath,
+    pug: pugPath
+  }
+}
+
+/**
  * Middleware for browserSync.
  *
  * Only working for requests to html files. (requests to css/js/image/etc would be skipped)
@@ -164,48 +207,25 @@ function pug2htmlPath(pugPath){
 function pugMiddleware(req, res, next){
   var build_timer = new Date().getTime();
   
-  var requestedPath = path.normalize(url.parse(req.url).pathname);
-  var ext = path.parse(requestedPath).ext;
-  var isRootIndexHtml = ext === '' || requestedPath === '/index.html';
-  var isSubHtml = requestedPath.match(/^.*\/contents/) && (ext === '' || ext === '.html');
+  var paths = url2Local(req.url);
   
-  // Do nothing if request content is not html
-  if(!isRootIndexHtml && !isSubHtml){
+  // Do nothing if request content is not html or source pug file does not exist
+  if(paths === false){
     return next();
-  }
-  
-  var config = require( '../config.js');
-  var pugPath, dstPath;
-  
-  // Calculate source pug file from requested url
-  if(isRootIndexHtml){
-    dstPath = path.join(config['html']['destIndexDir'], 'index.html');
-    pugPath = path.join(config['html']['srcDir'], 'index.pug');
-  }
-  else{
-    var relativePath = requestedPath.replace(/.*(\/contents)/, '');
-    if(path.parse(relativePath).ext === ''){
-      relativePath = path.join(relativePath, '/index.html');
-    }
-    dstPath = path.join(config['html']['destDir'], relativePath);
-    pugPath = path.join(config['html']['srcDir'], relativePath.replace(/\.html/, '.pug'));
   }
   
   /**
    * If .pug file is modified, corresponding .html file should be deleted.
    * So if .html exists, .pug should not be modified.
    */
-  if(fs.existsSync(dstPath)){
+  if(fs.existsSync(paths.html)){
     return next();
   }
   
-  // If source pug file does not exist, we can do nothing.
-  if(!fs.existsSync(pugPath)){
-    return next();
-  }
+  var config = require( '../config.js');
   
   // Build pug file to html.
-  var content = pug.renderFile(pugPath, {
+  var content = pug.renderFile(paths.pug, {
     baseDir: config['html']['srcDir'],
     pretty: config['html']['pretty']
   });
@@ -214,11 +234,12 @@ function pugMiddleware(req, res, next){
   res.end(Buffer.from(content));
   
   // Write new content to destination path
-  fs.outputFileSync(dstPath, content);
+  fs.outputFileSync(paths.html, content);
   gutil.log('build:html finished in ' + chalk.green((new Date().getTime() - build_timer) + 'ms'));
-  gutil.log('build:html ' + chalk.blue(dstPath));
+  gutil.log('build:html ' + chalk.blue(paths.html));
 }
 
 module.exports.test = {};
 module.exports.test.pug2htmlPath = pug2htmlPath;
+module.exports.test.url2Local = url2Local;
 module.exports.test.pugMiddleware = pugMiddleware;
