@@ -99,7 +99,8 @@ gulp.task('serve', function(cb){
         server: {
           baseDir: config["html"]["destIndexDir"],
           middleware: [pugMiddleware]
-        }
+        },
+        cors: true
       }, function(){
         // Do incremental build by watchify instead of gulp.watch
         cb();
